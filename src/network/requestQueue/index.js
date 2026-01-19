@@ -309,7 +309,8 @@ module.exports = class RequestQueue extends EventEmitter {
     // will be fine, and potentially fix up a new timeout if needed at that time.
     // Note that if we're merely "overloaded" by having too many inflight requests
     // we will anyways check the queue when one of them gets fulfilled.
-    let scheduleAt = this.throttledUntil - Date.now()
+    // `Math.max` added by Daniel Arthur Gallagher to prevent negative timeouts 2026-01-19T17:13+0100
+    let scheduleAt = Math.max(0, this.throttledUntil - Date.now())
     if (!this.throttleCheckTimeoutId) {
       if (this.pending.length > 0) {
         scheduleAt = scheduleAt > 0 ? scheduleAt : CHECK_PENDING_REQUESTS_INTERVAL
