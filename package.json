@@ -24,25 +24,24 @@
   "homepage": "https://kafka.js.org",
   "scripts": {
     "jest": "export KAFKA_VERSION=${KAFKA_VERSION:='2.4'} && NODE_ENV=test echo \"KAFKA_VERSION: ${KAFKA_VERSION}\" && KAFKAJS_DEBUG_PROTOCOL_BUFFERS=1 jest",
-    "test:local": "yarn jest --detectOpenHandles",
-    "test:debug": "NODE_ENV=test KAFKAJS_DEBUG_PROTOCOL_BUFFERS=1 node --inspect-brk $(yarn bin 2>/dev/null)/jest --detectOpenHandles --runInBand --watch",
-    "test:local:watch": "yarn test:local --watch",
-    "test": "yarn lint && JEST_JUNIT_OUTPUT_NAME=test-report.xml ./scripts/testWithKafka.sh 'yarn jest --ci --maxWorkers=4 --no-watchman --forceExit'",
+    "test:local": "jest --detectOpenHandles",
+    "test:local:watch": "npm run test:local --watch",
+    "test": "npm run lint && JEST_JUNIT_OUTPUT_NAME=test-report.xml ./scripts/testWithKafka.sh 'npx jest --ci --maxWorkers=4 --no-watchman --forceExit'",
     "lint": "find . -path ./node_modules -prune -o -path ./coverage -prune -o -path ./website -prune -o -name '*.js' -print0 | xargs -0 eslint",
     "format": "find . -path ./node_modules -prune -o -path ./coverage -prune -o -path ./website -prune -o -name '*.js' -print0 | xargs -0 prettier --write",
     "precommit": "lint-staged",
-    "test:group:broker": "yarn jest --forceExit --testPathPattern 'src/broker/.*'",
-    "test:group:admin": "yarn jest --forceExit --testPathPattern 'src/admin/.*'",
-    "test:group:producer": "yarn jest --forceExit --testPathPattern 'src/producer/.*'",
-    "test:group:consumer": "yarn jest --forceExit --testPathPattern 'src/consumer/.*.spec.js'",
-    "test:group:others": "yarn jest --forceExit --testPathPattern 'src/(?!(broker|admin|producer|consumer)/).*'",
-    "test:group:oauthbearer": "OAUTHBEARER_ENABLED=1 yarn jest --forceExit src/producer/index.spec.js src/broker/__tests__/connect.spec.js src/consumer/__tests__/connection.spec.js src/broker/__tests__/disconnect.spec.js src/admin/__tests__/connection.spec.js src/broker/__tests__/reauthenticate.spec.js",
-    "test:group:broker:ci": "JEST_JUNIT_OUTPUT_NAME=test-report.xml ./scripts/testWithKafka.sh \"yarn test:group:broker --ci --maxWorkers=4 --no-watchman\"",
-    "test:group:admin:ci": "JEST_JUNIT_OUTPUT_NAME=test-report.xml ./scripts/testWithKafka.sh \"yarn test:group:admin --ci --maxWorkers=4 --no-watchman\"",
-    "test:group:producer:ci": "JEST_JUNIT_OUTPUT_NAME=test-report.xml ./scripts/testWithKafka.sh \"yarn test:group:producer --ci --maxWorkers=4 --no-watchman\"",
-    "test:group:consumer:ci": "JEST_JUNIT_OUTPUT_NAME=test-report.xml ./scripts/testWithKafka.sh \"yarn test:group:consumer --ci --maxWorkers=4 --no-watchman\"",
-    "test:group:others:ci": "JEST_JUNIT_OUTPUT_NAME=test-report.xml ./scripts/testWithKafka.sh \"yarn test:group:others --ci --maxWorkers=4 --no-watchman\"",
-    "test:group:oauthbearer:ci": "JEST_JUNIT_OUTPUT_NAME=test-report.xml COMPOSE_FILE='docker-compose.2_4_oauthbearer.yml' ./scripts/testWithKafka.sh \"yarn test:group:oauthbearer --ci --maxWorkers=4 --no-watchman\"",
+    "test:group:broker": "jest --forceExit --testPathPattern 'src/broker/.*'",
+    "test:group:admin": "jest --forceExit --testPathPattern 'src/admin/.*'",
+    "test:group:producer": "jest --forceExit --testPathPattern 'src/producer/.*'",
+    "test:group:consumer": "jest --forceExit --testPathPattern 'src/consumer/.*.spec.js'",
+    "test:group:others": "jest --forceExit --testPathPattern 'src/(?!(broker|admin|producer|consumer)/).*'",
+    "test:group:oauthbearer": "OAUTHBEARER_ENABLED=1 jest --forceExit src/producer/index.spec.js src/broker/__tests__/connect.spec.js src/consumer/__tests__/connection.spec.js src/broker/__tests__/disconnect.spec.js src/admin/__tests__/connection.spec.js src/broker/__tests__/reauthenticate.spec.js",
+    "test:group:broker:ci": "JEST_JUNIT_OUTPUT_NAME=test-report.xml ./scripts/testWithKafka.sh \"npm run test:group:broker --ci --maxWorkers=4 --no-watchman\"",
+    "test:group:admin:ci": "JEST_JUNIT_OUTPUT_NAME=test-report.xml ./scripts/testWithKafka.sh \"npm run test:group:admin --ci --maxWorkers=4 --no-watchman\"",
+    "test:group:producer:ci": "JEST_JUNIT_OUTPUT_NAME=test-report.xml ./scripts/testWithKafka.sh \"npm run test:group:producer --ci --maxWorkers=4 --no-watchman\"",
+    "test:group:consumer:ci": "JEST_JUNIT_OUTPUT_NAME=test-report.xml ./scripts/testWithKafka.sh \"npm run test:group:consumer --ci --maxWorkers=4 --no-watchman\"",
+    "test:group:others:ci": "JEST_JUNIT_OUTPUT_NAME=test-report.xml ./scripts/testWithKafka.sh \"npm run test:group:others --ci --maxWorkers=4 --no-watchman\"",
+    "test:group:oauthbearer:ci": "JEST_JUNIT_OUTPUT_NAME=test-report.xml COMPOSE_FILE='docker-compose.2_4_oauthbearer.yml' ./scripts/testWithKafka.sh \"npm run test:group:oauthbearer --ci --maxWorkers=4 --no-watchman\"",
     "test:types": "tsc -p types/"
   },
   "devDependencies": {
@@ -81,5 +80,5 @@
       "git add"
     ]
   },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  "packageManager": "npm@12.2.0+sha512.66c2632a94e796649738b2d7894d710c2cc2e1696893823066687f6b0d8a52e5f2b54eeaeaa32ffdc513ecca1e49ff794a5c2ec3f9515d879f1b3182b291cf35"
 }
