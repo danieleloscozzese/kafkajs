@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { ApiVersions: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { ApiVersions: apiKey } = require("../../apiKeys");
 
 /**
  * ApiVersionRequest => ApiKeys
@@ -8,6 +8,6 @@ const { ApiVersions: apiKey } = require('../../apiKeys')
 module.exports = () => ({
   apiKey,
   apiVersion: 0,
-  apiName: 'ApiVersions',
+  apiName: "ApiVersions",
   encode: async () => new Encoder(),
-})
+});

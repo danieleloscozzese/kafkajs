@@ -1,4 +1,4 @@
-const { parse, decode: decodeV1 } = require('../v5/response')
+const { parse, decode: decodeV1 } = require("../v5/response");
 
 /**
  * In version 6 on quota violation, brokers send out responses before throttling.
@@ -25,17 +25,17 @@ const { parse, decode: decodeV1 } = require('../v5/response')
  *       isr => INT32
  *       offline_replicas => INT32
  */
-const decode = async rawData => {
-  const decoded = await decodeV1(rawData)
+const decode = async (rawData) => {
+  const decoded = await decodeV1(rawData);
 
   return {
     ...decoded,
     throttleTime: 0,
     clientSideThrottleTime: decoded.throttleTime,
-  }
-}
+  };
+};
 
 module.exports = {
   decode,
   parse,
-}
+};

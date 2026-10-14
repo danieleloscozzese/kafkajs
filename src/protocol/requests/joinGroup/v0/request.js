@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { JoinGroup: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { JoinGroup: apiKey } = require("../../apiKeys");
 
 /**
  * JoinGroup Request (Version: 0) => group_id session_timeout member_id protocol_type [group_protocols]
@@ -15,17 +15,17 @@ const { JoinGroup: apiKey } = require('../../apiKeys')
 module.exports = ({ groupId, sessionTimeout, memberId, protocolType, groupProtocols }) => ({
   apiKey,
   apiVersion: 0,
-  apiName: 'JoinGroup',
+  apiName: "JoinGroup",
   encode: async () => {
     return new Encoder()
       .writeString(groupId)
       .writeInt32(sessionTimeout)
       .writeString(memberId)
       .writeString(protocolType)
-      .writeArray(groupProtocols.map(encodeGroupProtocols))
+      .writeArray(groupProtocols.map(encodeGroupProtocols));
   },
-})
+});
 
 const encodeGroupProtocols = ({ name, metadata = Buffer.alloc(0) }) => {
-  return new Encoder().writeString(name).writeBytes(metadata)
-}
+  return new Encoder().writeString(name).writeBytes(metadata);
+};

@@ -1,4 +1,4 @@
-const requestV0 = require('../v0/request')
+const requestV0 = require("../v0/request");
 
 /**
  * TxnOffsetCommit Request (Version: 1) => transactional_id group_id producer_id producer_epoch [topics]
@@ -17,4 +17,4 @@ const requestV0 = require('../v0/request')
 module.exports = ({ transactionalId, groupId, producerId, producerEpoch, topics }) =>
   Object.assign(requestV0({ transactionalId, groupId, producerId, producerEpoch, topics }), {
     apiVersion: 1,
-  })
+  });

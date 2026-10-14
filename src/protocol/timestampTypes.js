@@ -12,4 +12,4 @@ module.exports = {
 
   // Timestamp relates to the time a message was appended to a Kafka log
   LOG_APPEND_TIME: 1,
-}
+};

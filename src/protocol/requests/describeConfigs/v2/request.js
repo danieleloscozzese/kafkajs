@@ -1,4 +1,4 @@
-const requestV1 = require('../v1/request')
+const requestV1 = require("../v1/request");
 
 /**
  * DescribeConfigs Request (Version: 1) => [resources] include_synonyms
@@ -14,4 +14,4 @@ const requestV1 = require('../v1/request')
  * @param [includeSynonyms=false]
  */
 module.exports = ({ resources, includeSynonyms }) =>
-  Object.assign(requestV1({ resources, includeSynonyms }), { apiVersion: 2 })
+  Object.assign(requestV1({ resources, includeSynonyms }), { apiVersion: 2 });

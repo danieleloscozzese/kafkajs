@@ -1,5 +1,5 @@
-const roundRobin = require('./roundRobinAssigner')
+const roundRobin = require("./roundRobinAssigner");
 
 module.exports = {
   roundRobin,
-}
+};

@@ -1,4 +1,4 @@
-const requestV0 = require('../v0/request')
+const requestV0 = require("../v0/request");
 
 /**
  * AddPartitionsToTxn Request (Version: 1) => transactional_id producer_id producer_epoch [topics]
@@ -18,5 +18,5 @@ module.exports = ({ transactionalId, producerId, producerEpoch, topics }) =>
       producerEpoch,
       topics,
     }),
-    { apiVersion: 1 }
-  )
+    { apiVersion: 1 },
+  );

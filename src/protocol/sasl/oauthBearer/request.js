@@ -25,38 +25,38 @@
  * identity. If both steps succeed, the user is logged in.
  */
 
-const Encoder = require('../../encoder')
+const Encoder = require("../../encoder");
 
-const SEPARATOR = '\u0001' // SOH - Start Of Header ASCII
+const SEPARATOR = "\u0001"; // SOH - Start Of Header ASCII
 
 function formatExtensions(extensions) {
-  let msg = ''
+  let msg = "";
 
   if (extensions == null) {
-    return msg
+    return msg;
   }
 
-  let prefix = ''
+  let prefix = "";
   for (const k in extensions) {
-    msg += `${prefix}${k}=${extensions[k]}`
-    prefix = SEPARATOR
+    msg += `${prefix}${k}=${extensions[k]}`;
+    prefix = SEPARATOR;
   }
 
-  return msg
+  return msg;
 }
 
 module.exports = async ({ authorizationIdentity = null }, oauthBearerToken) => {
-  const authzid = authorizationIdentity == null ? '' : `"a=${authorizationIdentity}`
-  let ext = formatExtensions(oauthBearerToken.extensions)
+  const authzid = authorizationIdentity == null ? "" : `"a=${authorizationIdentity}`;
+  let ext = formatExtensions(oauthBearerToken.extensions);
   if (ext.length > 0) {
-    ext = `${SEPARATOR}${ext}`
+    ext = `${SEPARATOR}${ext}`;
   }
 
-  const oauthMsg = `n,${authzid},${SEPARATOR}auth=Bearer ${oauthBearerToken.value}${ext}${SEPARATOR}${SEPARATOR}`
+  const oauthMsg = `n,${authzid},${SEPARATOR}auth=Bearer ${oauthBearerToken.value}${ext}${SEPARATOR}${SEPARATOR}`;
 
   return {
     encode: async () => {
-      return new Encoder().writeBytes(Buffer.from(oauthMsg)).buffer
+      return new Encoder().writeBytes(Buffer.from(oauthMsg)).buffer;
     },
-  }
-}
+  };
+};

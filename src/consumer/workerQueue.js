@@ -9,9 +9,9 @@
  */
 const createWorkerQueue = ({ workers }) => {
   /** @type {{ batch: T, resolve: (value?: any) => void, reject: (e: Error) => void}[]} */
-  const queue = []
+  const queue = [];
 
-  const getWorkers = () => workers
+  const getWorkers = () => workers;
 
   /**
    * Waits until workers have processed all batches in the queue.
@@ -21,20 +21,20 @@ const createWorkerQueue = ({ workers }) => {
    */
   const push = async (...batches) => {
     const promises = batches.map(
-      batch => new Promise((resolve, reject) => queue.push({ batch, resolve, reject }))
-    )
+      (batch) => new Promise((resolve, reject) => queue.push({ batch, resolve, reject })),
+    );
 
-    workers.forEach(worker => worker.run({ next: () => queue.shift() }))
+    workers.forEach((worker) => worker.run({ next: () => queue.shift() }));
 
-    const results = await Promise.allSettled(promises)
-    const rejected = results.find(result => result.status === 'rejected')
+    const results = await Promise.allSettled(promises);
+    const rejected = results.find((result) => result.status === "rejected");
     if (rejected) {
       // @ts-ignore
-      throw rejected.reason
+      throw rejected.reason;
     }
-  }
+  };
 
-  return { push, getWorkers }
-}
+  return { push, getWorkers };
+};
 
-module.exports = createWorkerQueue
+module.exports = createWorkerQueue;

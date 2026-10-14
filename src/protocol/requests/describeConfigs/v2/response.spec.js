@@ -1,10 +1,10 @@
-const { decode, parse } = require('./response')
-const ConfigResourceTypes = require('../../../configResourceTypes')
-const { DEFAULT_CONFIG } = require('../../../configSource')
+const { decode, parse } = require("./response");
+const ConfigResourceTypes = require("../../../configResourceTypes");
+const { DEFAULT_CONFIG } = require("../../../configSource");
 
-describe('Protocol > Requests > DescribeConfigs > v2', () => {
-  test('response', async () => {
-    const data = await decode(Buffer.from(require('../fixtures/v1_response.json')))
+describe("Protocol > Requests > DescribeConfigs > v2", () => {
+  test("response", async () => {
+    const data = await decode(Buffer.from(require("../fixtures/v1_response.json")));
     expect(data).toEqual({
       clientSideThrottleTime: 0,
       throttleTime: 0,
@@ -13,26 +13,26 @@ describe('Protocol > Requests > DescribeConfigs > v2', () => {
           errorCode: 0,
           errorMessage: null,
           resourceType: ConfigResourceTypes.TOPIC,
-          resourceName: 'topic-test1',
+          resourceName: "topic-test1",
           configEntries: [
             {
-              configName: 'compression.type',
-              configValue: 'producer',
+              configName: "compression.type",
+              configValue: "producer",
               readOnly: false,
               isDefault: true,
               configSource: DEFAULT_CONFIG,
               isSensitive: false,
               configSynonyms: [
                 {
-                  configName: 'compression.type',
+                  configName: "compression.type",
                   configSource: DEFAULT_CONFIG,
-                  configValue: 'producer',
+                  configValue: "producer",
                 },
               ],
             },
             {
-              configName: 'retention.ms',
-              configValue: '604800000',
+              configName: "retention.ms",
+              configValue: "604800000",
               readOnly: false,
               isDefault: true,
               configSource: DEFAULT_CONFIG,
@@ -42,8 +42,8 @@ describe('Protocol > Requests > DescribeConfigs > v2', () => {
           ],
         },
       ],
-    })
+    });
 
-    await expect(parse(data)).resolves.toBeTruthy()
-  })
-})
+    await expect(parse(data)).resolves.toBeTruthy();
+  });
+});

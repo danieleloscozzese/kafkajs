@@ -15,14 +15,14 @@
  * If both steps succeed, the user is logged in.
  */
 
-const Encoder = require('../../encoder')
+const Encoder = require("../../encoder");
 
-const US_ASCII_NULL_CHAR = '\u0000'
+const US_ASCII_NULL_CHAR = "\u0000";
 
 module.exports = ({ authorizationIdentity = null, username, password }) => ({
   encode: async () => {
     return new Encoder().writeBytes(
-      [authorizationIdentity, username, password].join(US_ASCII_NULL_CHAR)
-    ).buffer
+      [authorizationIdentity, username, password].join(US_ASCII_NULL_CHAR),
+    ).buffer;
   },
-})
+});

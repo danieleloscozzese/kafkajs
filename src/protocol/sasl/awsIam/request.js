@@ -1,11 +1,11 @@
-const Encoder = require('../../encoder')
+const Encoder = require("../../encoder");
 
-const US_ASCII_NULL_CHAR = '\u0000'
+const US_ASCII_NULL_CHAR = "\u0000";
 
-module.exports = ({ authorizationIdentity, accessKeyId, secretAccessKey, sessionToken = '' }) => ({
+module.exports = ({ authorizationIdentity, accessKeyId, secretAccessKey, sessionToken = "" }) => ({
   encode: async () => {
     return new Encoder().writeBytes(
-      [authorizationIdentity, accessKeyId, secretAccessKey, sessionToken].join(US_ASCII_NULL_CHAR)
-    ).buffer
+      [authorizationIdentity, accessKeyId, secretAccessKey, sessionToken].join(US_ASCII_NULL_CHAR),
+    ).buffer;
   },
-})
+});

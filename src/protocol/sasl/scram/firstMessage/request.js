@@ -15,8 +15,8 @@
  * to add support for security layers).
  */
 
-const Encoder = require('../../../encoder')
+const Encoder = require("../../../encoder");
 
 module.exports = ({ clientFirstMessage }) => ({
   encode: async () => new Encoder().writeBytes(clientFirstMessage).buffer,
-})
+});

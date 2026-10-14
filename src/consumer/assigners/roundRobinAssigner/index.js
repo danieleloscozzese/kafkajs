@@ -1,11 +1,11 @@
-const { MemberMetadata, MemberAssignment } = require('../../assignerProtocol')
+const { MemberMetadata, MemberAssignment } = require("../../assignerProtocol");
 
 /**
  * RoundRobinAssigner
  * @type {import('types').PartitionAssigner}
  */
 module.exports = ({ cluster }) => ({
-  name: 'RoundRobinAssigner',
+  name: "RoundRobinAssigner",
   version: 0,
 
   /**
@@ -37,36 +37,36 @@ module.exports = ({ cluster }) => ({
    *                   ]
    */
   async assign({ members, topics }) {
-    const membersCount = members.length
-    const sortedMembers = members.map(({ memberId }) => memberId).sort()
-    const assignment = {}
+    const membersCount = members.length;
+    const sortedMembers = members.map(({ memberId }) => memberId).sort();
+    const assignment = {};
 
-    const topicsPartitions = topics.flatMap(topic => {
-      const partitionMetadata = cluster.findTopicPartitionMetadata(topic)
-      return partitionMetadata.map(m => ({ topic: topic, partitionId: m.partitionId }))
-    })
+    const topicsPartitions = topics.flatMap((topic) => {
+      const partitionMetadata = cluster.findTopicPartitionMetadata(topic);
+      return partitionMetadata.map((m) => ({ topic: topic, partitionId: m.partitionId }));
+    });
 
     topicsPartitions.forEach((topicPartition, i) => {
-      const assignee = sortedMembers[i % membersCount]
+      const assignee = sortedMembers[i % membersCount];
 
       if (!assignment[assignee]) {
-        assignment[assignee] = Object.create(null)
+        assignment[assignee] = Object.create(null);
       }
 
       if (!assignment[assignee][topicPartition.topic]) {
-        assignment[assignee][topicPartition.topic] = []
+        assignment[assignee][topicPartition.topic] = [];
       }
 
-      assignment[assignee][topicPartition.topic].push(topicPartition.partitionId)
-    })
+      assignment[assignee][topicPartition.topic].push(topicPartition.partitionId);
+    });
 
-    return Object.keys(assignment).map(memberId => ({
+    return Object.keys(assignment).map((memberId) => ({
       memberId,
       memberAssignment: MemberAssignment.encode({
         version: this.version,
         assignment: assignment[memberId],
       }),
-    }))
+    }));
   },
 
   protocol({ topics }) {
@@ -76,6 +76,6 @@ module.exports = ({ cluster }) => ({
         version: this.version,
         topics,
       }),
-    }
+    };
   },
-})
+});

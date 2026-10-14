@@ -1,5 +1,5 @@
-const Decoder = require('../../../decoder')
-const { failure, createErrorFromCode } = require('../../../error')
+const Decoder = require("../../../decoder");
+const { failure, createErrorFromCode } = require("../../../error");
 
 /**
  * TxnOffsetCommit Response (Version: 0) => throttle_time_ms [topics]
@@ -10,42 +10,42 @@ const { failure, createErrorFromCode } = require('../../../error')
  *       partition => INT32
  *       error_code => INT16
  */
-const decode = async rawData => {
-  const decoder = new Decoder(rawData)
-  const throttleTime = decoder.readInt32()
-  const topics = await decoder.readArrayAsync(decodeTopic)
+const decode = async (rawData) => {
+  const decoder = new Decoder(rawData);
+  const throttleTime = decoder.readInt32();
+  const topics = await decoder.readArrayAsync(decodeTopic);
 
   return {
     throttleTime,
     topics,
-  }
-}
+  };
+};
 
-const decodeTopic = async decoder => ({
+const decodeTopic = async (decoder) => ({
   topic: decoder.readString(),
   partitions: await decoder.readArrayAsync(decodePartition),
-})
+});
 
-const decodePartition = decoder => ({
+const decodePartition = (decoder) => ({
   partition: decoder.readInt32(),
   errorCode: decoder.readInt16(),
-})
+});
 
-const parse = async data => {
+const parse = async (data) => {
   const topicsWithErrors = data.topics
     .map(({ partitions }) => ({
       partitionsWithErrors: partitions.filter(({ errorCode }) => failure(errorCode)),
     }))
-    .filter(({ partitionsWithErrors }) => partitionsWithErrors.length)
+    .filter(({ partitionsWithErrors }) => partitionsWithErrors.length);
 
   if (topicsWithErrors.length > 0) {
-    throw createErrorFromCode(topicsWithErrors[0].partitionsWithErrors[0].errorCode)
+    throw createErrorFromCode(topicsWithErrors[0].partitionsWithErrors[0].errorCode);
   }
 
-  return data
-}
+  return data;
+};
 
 module.exports = {
   decode,
   parse,
-}
+};

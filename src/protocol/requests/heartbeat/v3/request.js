@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { Heartbeat: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { Heartbeat: apiKey } = require("../../apiKeys");
 
 /**
  * Version 3 adds group_instance_id to indicate member identity across restarts.
@@ -15,12 +15,12 @@ const { Heartbeat: apiKey } = require('../../apiKeys')
 module.exports = ({ groupId, groupGenerationId, memberId, groupInstanceId }) => ({
   apiKey,
   apiVersion: 3,
-  apiName: 'Heartbeat',
+  apiName: "Heartbeat",
   encode: async () => {
     return new Encoder()
       .writeString(groupId)
       .writeInt32(groupGenerationId)
       .writeString(memberId)
-      .writeString(groupInstanceId)
+      .writeString(groupInstanceId);
   },
-})
+});

@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { DeleteAcls: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { DeleteAcls: apiKey } = require("../../apiKeys");
 
 /**
  * DeleteAcls Request (Version: 1) => [filters]
@@ -29,14 +29,14 @@ const encodeFilters = ({
     .writeString(principal)
     .writeString(host)
     .writeInt8(operation)
-    .writeInt8(permissionType)
-}
+    .writeInt8(permissionType);
+};
 
 module.exports = ({ filters }) => ({
   apiKey,
   apiVersion: 1,
-  apiName: 'DeleteAcls',
+  apiName: "DeleteAcls",
   encode: async () => {
-    return new Encoder().writeArray(filters.map(encodeFilters))
+    return new Encoder().writeArray(filters.map(encodeFilters));
   },
-})
+});

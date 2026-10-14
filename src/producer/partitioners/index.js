@@ -1,5 +1,5 @@
-const DefaultPartitioner = require('./default')
-const LegacyPartitioner = require('./legacy')
+const DefaultPartitioner = require("./default");
+const LegacyPartitioner = require("./legacy");
 
 module.exports = {
   DefaultPartitioner,
@@ -11,4 +11,4 @@ module.exports = {
    * and made to be the default in 2.0.0.
    */
   JavaCompatiblePartitioner: DefaultPartitioner,
-}
+};

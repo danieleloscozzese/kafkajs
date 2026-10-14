@@ -39,4 +39,4 @@ module.exports = {
    * A token ID.
    */
   DELEGATION_TOKEN: 6,
-}
+};

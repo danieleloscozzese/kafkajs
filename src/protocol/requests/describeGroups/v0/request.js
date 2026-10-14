@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { DescribeGroups: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { DescribeGroups: apiKey } = require("../../apiKeys");
 
 /**
  * DescribeGroups Request (Version: 0) => [group_ids]
@@ -12,8 +12,8 @@ const { DescribeGroups: apiKey } = require('../../apiKeys')
 module.exports = ({ groupIds }) => ({
   apiKey,
   apiVersion: 0,
-  apiName: 'DescribeGroups',
+  apiName: "DescribeGroups",
   encode: async () => {
-    return new Encoder().writeArray(groupIds)
+    return new Encoder().writeArray(groupIds);
   },
-})
+});

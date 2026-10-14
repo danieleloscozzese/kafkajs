@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { AlterConfigs: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { AlterConfigs: apiKey } = require("../../apiKeys");
 
 /**
  * AlterConfigs Request (Version: 0) => [resources] validate_only
@@ -19,19 +19,19 @@ const { AlterConfigs: apiKey } = require('../../apiKeys')
 module.exports = ({ resources, validateOnly = false }) => ({
   apiKey,
   apiVersion: 0,
-  apiName: 'AlterConfigs',
+  apiName: "AlterConfigs",
   encode: async () => {
-    return new Encoder().writeArray(resources.map(encodeResource)).writeBoolean(validateOnly)
+    return new Encoder().writeArray(resources.map(encodeResource)).writeBoolean(validateOnly);
   },
-})
+});
 
 const encodeResource = ({ type, name, configEntries }) => {
   return new Encoder()
     .writeInt8(type)
     .writeString(name)
-    .writeArray(configEntries.map(encodeConfigEntries))
-}
+    .writeArray(configEntries.map(encodeConfigEntries));
+};
 
 const encodeConfigEntries = ({ name, value }) => {
-  return new Encoder().writeString(name).writeString(value)
-}
+  return new Encoder().writeString(name).writeString(value);
+};

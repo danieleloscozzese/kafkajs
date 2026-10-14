@@ -1,4 +1,4 @@
-const NETWORK_DELAY = 5000
+const NETWORK_DELAY = 5000;
 
 /**
  * @see https://github.com/apache/kafka/pull/5203
@@ -8,16 +8,16 @@ const NETWORK_DELAY = 5000
  * increased, so we have to check for potential overflows
  **/
 const requestTimeout = ({ rebalanceTimeout, sessionTimeout }) => {
-  const timeout = rebalanceTimeout || sessionTimeout
-  return Number.isSafeInteger(timeout + NETWORK_DELAY) ? timeout + NETWORK_DELAY : timeout
-}
+  const timeout = rebalanceTimeout || sessionTimeout;
+  return Number.isSafeInteger(timeout + NETWORK_DELAY) ? timeout + NETWORK_DELAY : timeout;
+};
 
-const logResponseError = memberId => memberId != null && memberId !== ''
+const logResponseError = (memberId) => memberId != null && memberId !== "";
 
 const versions = {
   0: ({ groupId, sessionTimeout, memberId, protocolType, groupProtocols }) => {
-    const request = require('./v0/request')
-    const response = require('./v0/response')
+    const request = require("./v0/request");
+    const response = require("./v0/response");
 
     return {
       request: request({
@@ -29,11 +29,11 @@ const versions = {
       }),
       response,
       requestTimeout: requestTimeout({ rebalanceTimeout: null, sessionTimeout }),
-    }
+    };
   },
   1: ({ groupId, sessionTimeout, rebalanceTimeout, memberId, protocolType, groupProtocols }) => {
-    const request = require('./v1/request')
-    const response = require('./v1/response')
+    const request = require("./v1/request");
+    const response = require("./v1/response");
 
     return {
       request: request({
@@ -46,11 +46,11 @@ const versions = {
       }),
       response,
       requestTimeout: requestTimeout({ rebalanceTimeout, sessionTimeout }),
-    }
+    };
   },
   2: ({ groupId, sessionTimeout, rebalanceTimeout, memberId, protocolType, groupProtocols }) => {
-    const request = require('./v2/request')
-    const response = require('./v2/response')
+    const request = require("./v2/request");
+    const response = require("./v2/response");
 
     return {
       request: request({
@@ -63,11 +63,11 @@ const versions = {
       }),
       response,
       requestTimeout: requestTimeout({ rebalanceTimeout, sessionTimeout }),
-    }
+    };
   },
   3: ({ groupId, sessionTimeout, rebalanceTimeout, memberId, protocolType, groupProtocols }) => {
-    const request = require('./v3/request')
-    const response = require('./v3/response')
+    const request = require("./v3/request");
+    const response = require("./v3/response");
 
     return {
       request: request({
@@ -80,11 +80,11 @@ const versions = {
       }),
       response,
       requestTimeout: requestTimeout({ rebalanceTimeout, sessionTimeout }),
-    }
+    };
   },
   4: ({ groupId, sessionTimeout, rebalanceTimeout, memberId, protocolType, groupProtocols }) => {
-    const request = require('./v4/request')
-    const response = require('./v4/response')
+    const request = require("./v4/request");
+    const response = require("./v4/response");
 
     return {
       request: request({
@@ -98,7 +98,7 @@ const versions = {
       response,
       requestTimeout: requestTimeout({ rebalanceTimeout, sessionTimeout }),
       logResponseError: logResponseError(memberId),
-    }
+    };
   },
   5: ({
     groupId,
@@ -109,8 +109,8 @@ const versions = {
     protocolType,
     groupProtocols,
   }) => {
-    const request = require('./v5/request')
-    const response = require('./v5/response')
+    const request = require("./v5/request");
+    const response = require("./v5/response");
 
     return {
       request: request({
@@ -125,11 +125,11 @@ const versions = {
       response,
       requestTimeout: requestTimeout({ rebalanceTimeout, sessionTimeout }),
       logResponseError: logResponseError(memberId),
-    }
+    };
   },
-}
+};
 
 module.exports = {
   versions: Object.keys(versions),
   protocol: ({ version }) => versions[version],
-}
+};

@@ -1,6 +1,6 @@
-const Encoder = require('../../../encoder')
-const { Fetch: apiKey } = require('../../apiKeys')
-const ISOLATION_LEVEL = require('../../../isolationLevel')
+const Encoder = require("../../../encoder");
+const { Fetch: apiKey } = require("../../apiKeys");
+const ISOLATION_LEVEL = require("../../../isolationLevel");
 
 /**
  * Fetch Request (Version: 5) => replica_id max_wait_time min_bytes max_bytes isolation_level [topics]
@@ -28,7 +28,7 @@ module.exports = ({
 }) => ({
   apiKey,
   apiVersion: 5,
-  apiName: 'Fetch',
+  apiName: "Fetch",
   encode: async () => {
     return new Encoder()
       .writeInt32(replicaId)
@@ -36,18 +36,18 @@ module.exports = ({
       .writeInt32(minBytes)
       .writeInt32(maxBytes)
       .writeInt8(isolationLevel)
-      .writeArray(topics.map(encodeTopic))
+      .writeArray(topics.map(encodeTopic));
   },
-})
+});
 
 const encodeTopic = ({ topic, partitions }) => {
-  return new Encoder().writeString(topic).writeArray(partitions.map(encodePartition))
-}
+  return new Encoder().writeString(topic).writeArray(partitions.map(encodePartition));
+};
 
 const encodePartition = ({ partition, fetchOffset, logStartOffset = -1, maxBytes }) => {
   return new Encoder()
     .writeInt32(partition)
     .writeInt64(fetchOffset)
     .writeInt64(logStartOffset)
-    .writeInt32(maxBytes)
-}
+    .writeInt32(maxBytes);
+};

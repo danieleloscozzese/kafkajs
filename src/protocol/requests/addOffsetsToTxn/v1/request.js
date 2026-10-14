@@ -1,4 +1,4 @@
-const requestV0 = require('../v0/request')
+const requestV0 = require("../v0/request");
 
 /**
  * AddOffsetsToTxn Request (Version: 1) => transactional_id producer_id producer_epoch group_id
@@ -16,5 +16,5 @@ module.exports = ({ transactionalId, producerId, producerEpoch, groupId }) =>
       producerEpoch,
       groupId,
     }),
-    { apiVersion: 1 }
-  )
+    { apiVersion: 1 },
+  );

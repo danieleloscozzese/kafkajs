@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { DeleteGroups: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { DeleteGroups: apiKey } = require("../../apiKeys");
 
 /**
  * DeleteGroups Request (Version: 0) => [groups_names]
@@ -8,15 +8,15 @@ const { DeleteGroups: apiKey } = require('../../apiKeys')
 
 /**
  */
-module.exports = groupIds => ({
+module.exports = (groupIds) => ({
   apiKey,
   apiVersion: 0,
-  apiName: 'DeleteGroups',
+  apiName: "DeleteGroups",
   encode: async () => {
-    return new Encoder().writeArray(groupIds.map(encodeGroups))
+    return new Encoder().writeArray(groupIds.map(encodeGroups));
   },
-})
+});
 
-const encodeGroups = group => {
-  return new Encoder().writeString(group)
-}
+const encodeGroups = (group) => {
+  return new Encoder().writeString(group);
+};

@@ -1,6 +1,6 @@
-const Decoder = require('../../../decoder')
-const { KafkaJSDeleteTopicRecordsError } = require('../../../../errors')
-const { failure, createErrorFromCode } = require('../../../error')
+const Decoder = require("../../../decoder");
+const { KafkaJSDeleteTopicRecordsError } = require("../../../../errors");
+const { failure, createErrorFromCode } = require("../../../error");
 
 /**
  * DeleteRecords Response (Version: 0) => throttle_time_ms [topics]
@@ -13,37 +13,37 @@ const { failure, createErrorFromCode } = require('../../../error')
  *      error_code => INT16
  */
 
-const topicNameComparator = (a, b) => a.topic.localeCompare(b.topic)
+const topicNameComparator = (a, b) => a.topic.localeCompare(b.topic);
 
-const decode = async rawData => {
-  const decoder = new Decoder(rawData)
+const decode = async (rawData) => {
+  const decoder = new Decoder(rawData);
   return {
     throttleTime: decoder.readInt32(),
     topics: decoder
-      .readArray(decoder => ({
+      .readArray((decoder) => ({
         topic: decoder.readString(),
-        partitions: decoder.readArray(decoder => ({
+        partitions: decoder.readArray((decoder) => ({
           partition: decoder.readInt32(),
           lowWatermark: decoder.readInt64(),
           errorCode: decoder.readInt16(),
         })),
       }))
       .sort(topicNameComparator),
-  }
-}
+  };
+};
 
-const parse = requestTopics => async data => {
+const parse = (requestTopics) => async (data) => {
   const topicsWithErrors = data.topics
     .map(({ partitions }) => ({
       partitionsWithErrors: partitions.filter(({ errorCode }) => failure(errorCode)),
     }))
-    .filter(({ partitionsWithErrors }) => partitionsWithErrors.length)
+    .filter(({ partitionsWithErrors }) => partitionsWithErrors.length);
 
   if (topicsWithErrors.length > 0) {
     // at present we only ever request one topic at a time, so can destructure the arrays
-    const [{ topic }] = data.topics // topic name
-    const [{ partitions: requestPartitions }] = requestTopics // requested offset(s)
-    const [{ partitionsWithErrors }] = topicsWithErrors // partition(s) + error(s)
+    const [{ topic }] = data.topics; // topic name
+    const [{ partitions: requestPartitions }] = requestTopics; // requested offset(s)
+    const [{ partitionsWithErrors }] = topicsWithErrors; // partition(s) + error(s)
 
     throw new KafkaJSDeleteTopicRecordsError({
       topic,
@@ -51,15 +51,15 @@ const parse = requestTopics => async data => {
         partition,
         error: createErrorFromCode(errorCode),
         // attach the original offset from the request, onto the error response
-        offset: requestPartitions.find(p => p.partition === partition).offset,
+        offset: requestPartitions.find((p) => p.partition === partition).offset,
       })),
-    })
+    });
   }
 
-  return data
-}
+  return data;
+};
 
 module.exports = ({ topics }) => ({
   decode,
   parse: parse(topics),
-})
+});

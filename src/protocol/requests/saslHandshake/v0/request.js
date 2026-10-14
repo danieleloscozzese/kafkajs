@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { SaslHandshake: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { SaslHandshake: apiKey } = require("../../apiKeys");
 
 /**
  * SaslHandshake Request (Version: 0) => mechanism
@@ -12,6 +12,6 @@ const { SaslHandshake: apiKey } = require('../../apiKeys')
 module.exports = ({ mechanism }) => ({
   apiKey,
   apiVersion: 0,
-  apiName: 'SaslHandshake',
+  apiName: "SaslHandshake",
   encode: async () => new Encoder().writeString(mechanism),
-})
+});

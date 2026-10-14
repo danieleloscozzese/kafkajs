@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { Fetch: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { Fetch: apiKey } = require("../../apiKeys");
 
 /**
  * Fetch Request (Version: 3) => replica_id max_wait_time min_bytes max_bytes [topics]
@@ -39,24 +39,21 @@ const { Fetch: apiKey } = require('../../apiKeys')
 module.exports = ({ replicaId, maxWaitTime, minBytes, maxBytes, topics }) => ({
   apiKey,
   apiVersion: 3,
-  apiName: 'Fetch',
+  apiName: "Fetch",
   encode: async () => {
     return new Encoder()
       .writeInt32(replicaId)
       .writeInt32(maxWaitTime)
       .writeInt32(minBytes)
       .writeInt32(maxBytes)
-      .writeArray(topics.map(encodeTopic))
+      .writeArray(topics.map(encodeTopic));
   },
-})
+});
 
 const encodeTopic = ({ topic, partitions }) => {
-  return new Encoder().writeString(topic).writeArray(partitions.map(encodePartition))
-}
+  return new Encoder().writeString(topic).writeArray(partitions.map(encodePartition));
+};
 
 const encodePartition = ({ partition, fetchOffset, maxBytes }) => {
-  return new Encoder()
-    .writeInt32(partition)
-    .writeInt64(fetchOffset)
-    .writeInt32(maxBytes)
-}
+  return new Encoder().writeInt32(partition).writeInt64(fetchOffset).writeInt32(maxBytes);
+};

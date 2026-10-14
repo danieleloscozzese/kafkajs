@@ -6,7 +6,7 @@
  */
 class Long {
   constructor(value) {
-    this.value = value
+    this.value = value;
   }
 
   /**
@@ -16,7 +16,7 @@ class Long {
    * @inner
    */
   static isLong(obj) {
-    return typeof obj.value === 'bigint'
+    return typeof obj.value === "bigint";
   }
 
   /**
@@ -25,7 +25,7 @@ class Long {
    * @inner
    */
   static fromBits(value) {
-    return new Long(BigInt(value))
+    return new Long(BigInt(value));
   }
 
   /**
@@ -34,9 +34,9 @@ class Long {
    * @inner
    */
   static fromInt(value) {
-    if (isNaN(value)) return Long.ZERO
+    if (isNaN(value)) return Long.ZERO;
 
-    return new Long(BigInt.asIntN(64, BigInt(value)))
+    return new Long(BigInt.asIntN(64, BigInt(value)));
   }
 
   /**
@@ -45,9 +45,9 @@ class Long {
    * @inner
    */
   static fromNumber(value) {
-    if (isNaN(value)) return Long.ZERO
+    if (isNaN(value)) return Long.ZERO;
 
-    return new Long(BigInt(value))
+    return new Long(BigInt(value));
   }
 
   /**
@@ -57,12 +57,12 @@ class Long {
    * @inner
    */
   static fromValue(val) {
-    if (typeof val === 'number') return this.fromNumber(val)
-    if (typeof val === 'string') return this.fromString(val)
-    if (typeof val === 'bigint') return new Long(val)
-    if (this.isLong(val)) return new Long(BigInt(val.value))
+    if (typeof val === "number") return this.fromNumber(val);
+    if (typeof val === "string") return this.fromString(val);
+    if (typeof val === "bigint") return new Long(val);
+    if (this.isLong(val)) return new Long(BigInt(val.value));
 
-    return new Long(BigInt(val))
+    return new Long(BigInt(val));
   }
 
   /**
@@ -71,10 +71,10 @@ class Long {
    * @inner
    */
   static fromString(str) {
-    if (str.length === 0) throw Error('empty string')
-    if (str === 'NaN' || str === 'Infinity' || str === '+Infinity' || str === '-Infinity')
-      return Long.ZERO
-    return new Long(BigInt(str))
+    if (str.length === 0) throw Error("empty string");
+    if (str === "NaN" || str === "Infinity" || str === "+Infinity" || str === "-Infinity")
+      return Long.ZERO;
+    return new Long(BigInt(str));
   }
 
   /**
@@ -82,7 +82,7 @@ class Long {
    * @returns {boolean}
    */
   isZero() {
-    return this.value === BigInt(0)
+    return this.value === BigInt(0);
   }
 
   /**
@@ -90,7 +90,7 @@ class Long {
    * @returns {boolean}
    */
   isNegative() {
-    return this.value < BigInt(0)
+    return this.value < BigInt(0);
   }
 
   /**
@@ -99,7 +99,7 @@ class Long {
    * @override
    */
   toString() {
-    return String(this.value)
+    return String(this.value);
   }
 
   /**
@@ -108,7 +108,7 @@ class Long {
    * @override
    */
   toNumber() {
-    return Number(this.value)
+    return Number(this.value);
   }
 
   /**
@@ -116,7 +116,7 @@ class Long {
    * @returns {number}
    */
   toInt() {
-    return Number(BigInt.asIntN(32, this.value))
+    return Number(BigInt.asIntN(32, this.value));
   }
 
   /**
@@ -125,7 +125,7 @@ class Long {
    * @override
    */
   toJSON() {
-    return this.toString()
+    return this.toString();
   }
 
   /**
@@ -134,7 +134,7 @@ class Long {
    * @returns {!Long} Shifted bigint
    */
   shiftLeft(numBits) {
-    return new Long(this.value << BigInt(numBits))
+    return new Long(this.value << BigInt(numBits));
   }
 
   /**
@@ -143,7 +143,7 @@ class Long {
    * @returns {!Long} Shifted bigint
    */
   shiftRight(numBits) {
-    return new Long(this.value >> BigInt(numBits))
+    return new Long(this.value >> BigInt(numBits));
   }
 
   /**
@@ -152,8 +152,8 @@ class Long {
    * @returns {!Long}
    */
   or(other) {
-    if (!Long.isLong(other)) other = Long.fromValue(other)
-    return Long.fromBits(this.value | other.value)
+    if (!Long.isLong(other)) other = Long.fromValue(other);
+    return Long.fromBits(this.value | other.value);
   }
 
   /**
@@ -162,8 +162,8 @@ class Long {
    * @returns {!Long}
    */
   xor(other) {
-    if (!Long.isLong(other)) other = Long.fromValue(other)
-    return new Long(this.value ^ other.value)
+    if (!Long.isLong(other)) other = Long.fromValue(other);
+    return new Long(this.value ^ other.value);
   }
 
   /**
@@ -172,8 +172,8 @@ class Long {
    * @returns {!Long}
    */
   and(other) {
-    if (!Long.isLong(other)) other = Long.fromValue(other)
-    return new Long(this.value & other.value)
+    if (!Long.isLong(other)) other = Long.fromValue(other);
+    return new Long(this.value & other.value);
   }
 
   /**
@@ -181,7 +181,7 @@ class Long {
    * @returns {!Long}
    */
   not() {
-    return new Long(~this.value)
+    return new Long(~this.value);
   }
 
   /**
@@ -190,7 +190,7 @@ class Long {
    * @returns {!Long} Shifted bigint
    */
   shiftRightUnsigned(numBits) {
-    return new Long(this.value >> BigInt.asUintN(64, BigInt(numBits)))
+    return new Long(this.value >> BigInt.asUintN(64, BigInt(numBits)));
   }
 
   /**
@@ -199,8 +199,8 @@ class Long {
    * @returns {boolean}
    */
   equals(other) {
-    if (!Long.isLong(other)) other = Long.fromValue(other)
-    return this.value === other.value
+    if (!Long.isLong(other)) other = Long.fromValue(other);
+    return this.value === other.value;
   }
 
   /**
@@ -209,17 +209,17 @@ class Long {
    * @returns {boolean}
    */
   greaterThanOrEqual(other) {
-    if (!Long.isLong(other)) other = Long.fromValue(other)
-    return this.value >= other.value
+    if (!Long.isLong(other)) other = Long.fromValue(other);
+    return this.value >= other.value;
   }
 
   gte(other) {
-    return this.greaterThanOrEqual(other)
+    return this.greaterThanOrEqual(other);
   }
 
   notEquals(other) {
-    if (!Long.isLong(other)) other = Long.fromValue(other)
-    return !this.equals(/* validates */ other)
+    if (!Long.isLong(other)) other = Long.fromValue(other);
+    return !this.equals(/* validates */ other);
   }
 
   /**
@@ -228,8 +228,8 @@ class Long {
    * @returns {!Long} Sum
    */
   add(addend) {
-    if (!Long.isLong(addend)) addend = Long.fromValue(addend)
-    return new Long(this.value + addend.value)
+    if (!Long.isLong(addend)) addend = Long.fromValue(addend);
+    return new Long(this.value + addend.value);
   }
 
   /**
@@ -238,8 +238,8 @@ class Long {
    * @returns {!Long} Difference
    */
   subtract(subtrahend) {
-    if (!Long.isLong(subtrahend)) subtrahend = Long.fromValue(subtrahend)
-    return this.add(subtrahend.negate())
+    if (!Long.isLong(subtrahend)) subtrahend = Long.fromValue(subtrahend);
+    return this.add(subtrahend.negate());
   }
 
   /**
@@ -248,9 +248,9 @@ class Long {
    * @returns {!Long} Product
    */
   multiply(multiplier) {
-    if (this.isZero()) return Long.ZERO
-    if (!Long.isLong(multiplier)) multiplier = Long.fromValue(multiplier)
-    return new Long(this.value * multiplier.value)
+    if (this.isZero()) return Long.ZERO;
+    if (!Long.isLong(multiplier)) multiplier = Long.fromValue(multiplier);
+    return new Long(this.value * multiplier.value);
   }
 
   /**
@@ -260,9 +260,9 @@ class Long {
    * @returns {!Long} Quotient
    */
   divide(divisor) {
-    if (!Long.isLong(divisor)) divisor = Long.fromValue(divisor)
-    if (divisor.isZero()) throw Error('division by zero')
-    return new Long(this.value / divisor.value)
+    if (!Long.isLong(divisor)) divisor = Long.fromValue(divisor);
+    if (divisor.isZero()) throw Error("division by zero");
+    return new Long(this.value / divisor.value);
   }
 
   /**
@@ -272,10 +272,10 @@ class Long {
    *  if the given one is greater
    */
   compare(other) {
-    if (!Long.isLong(other)) other = Long.fromValue(other)
-    if (this.value === other.value) return 0
-    if (this.value > other.value) return 1
-    if (other.value > this.value) return -1
+    if (!Long.isLong(other)) other = Long.fromValue(other);
+    if (this.value === other.value) return 0;
+    if (this.value > other.value) return 1;
+    if (other.value > this.value) return -1;
   }
 
   /**
@@ -284,8 +284,8 @@ class Long {
    * @returns {boolean}
    */
   lessThan(other) {
-    if (!Long.isLong(other)) other = Long.fromValue(other)
-    return this.value < other.value
+    if (!Long.isLong(other)) other = Long.fromValue(other);
+    return this.value < other.value;
   }
 
   /**
@@ -294,9 +294,9 @@ class Long {
    */
   negate() {
     if (this.equals(Long.MIN_VALUE)) {
-      return Long.MIN_VALUE
+      return Long.MIN_VALUE;
     }
-    return this.not().add(Long.ONE)
+    return this.not().add(Long.ONE);
   }
 
   /**
@@ -304,7 +304,7 @@ class Long {
    * @returns {number} Signed high bits
    */
   getHighBits() {
-    return Number(BigInt.asIntN(32, this.value >> BigInt(32)))
+    return Number(BigInt.asIntN(32, this.value >> BigInt(32)));
   }
 
   /**
@@ -312,7 +312,7 @@ class Long {
    * @returns {number} Signed low bits
    */
   getLowBits() {
-    return Number(BigInt.asIntN(32, this.value))
+    return Number(BigInt.asIntN(32, this.value));
   }
 }
 
@@ -320,24 +320,24 @@ class Long {
  * Minimum signed value.
  * @type {bigint}
  */
-Long.MIN_VALUE = new Long(BigInt('-9223372036854775808'))
+Long.MIN_VALUE = new Long(BigInt("-9223372036854775808"));
 
 /**
  * Maximum signed value.
  * @type {bigint}
  */
-Long.MAX_VALUE = new Long(BigInt('9223372036854775807'))
+Long.MAX_VALUE = new Long(BigInt("9223372036854775807"));
 
 /**
  * Signed zero.
  * @type {Long}
  */
-Long.ZERO = Long.fromInt(0)
+Long.ZERO = Long.fromInt(0);
 
 /**
  * Signed one.
  * @type {!Long}
  */
-Long.ONE = Long.fromInt(1)
+Long.ONE = Long.fromInt(1);
 
-module.exports = Long
+module.exports = Long;

@@ -1,16 +1,16 @@
-const Long = require('../../utils/long')
-const isInvalidOffset = require('./isInvalidOffset')
-const initializeConsumerOffsets = require('./initializeConsumerOffsets')
+const Long = require("../../utils/long");
+const isInvalidOffset = require("./isInvalidOffset");
+const initializeConsumerOffsets = require("./initializeConsumerOffsets");
 const {
   events: { COMMIT_OFFSETS },
-} = require('../instrumentationEvents')
+} = require("../instrumentationEvents");
 
-const { keys, assign } = Object
-const indexTopics = topics => topics.reduce((obj, topic) => assign(obj, { [topic]: {} }), {})
+const { keys, assign } = Object;
+const indexTopics = (topics) => topics.reduce((obj, topic) => assign(obj, { [topic]: {} }), {});
 
 const PRIVATE = {
-  COMMITTED_OFFSETS: Symbol('private:OffsetManager:committedOffsets'),
-}
+  COMMITTED_OFFSETS: Symbol("private:OffsetManager:committedOffsets"),
+};
 module.exports = class OffsetManager {
   /**
    * @param {Object} options
@@ -39,29 +39,29 @@ module.exports = class OffsetManager {
     generationId,
     memberId,
   }) {
-    this.cluster = cluster
-    this.coordinator = coordinator
+    this.cluster = cluster;
+    this.coordinator = coordinator;
 
     // memberAssignment format:
     // {
     //   'topic1': [0, 1, 2, 3],
     //   'topic2': [0, 1, 2, 3, 4, 5],
     // }
-    this.memberAssignment = memberAssignment
+    this.memberAssignment = memberAssignment;
 
-    this.topicConfigurations = topicConfigurations
-    this.instrumentationEmitter = instrumentationEmitter
-    this.groupId = groupId
-    this.generationId = generationId
-    this.memberId = memberId
+    this.topicConfigurations = topicConfigurations;
+    this.instrumentationEmitter = instrumentationEmitter;
+    this.groupId = groupId;
+    this.generationId = generationId;
+    this.memberId = memberId;
 
-    this.autoCommit = autoCommit
-    this.autoCommitInterval = autoCommitInterval
-    this.autoCommitThreshold = autoCommitThreshold
-    this.lastCommit = Date.now()
+    this.autoCommit = autoCommit;
+    this.autoCommitInterval = autoCommitInterval;
+    this.autoCommitThreshold = autoCommitThreshold;
+    this.lastCommit = Date.now();
 
-    this.topics = keys(memberAssignment)
-    this.clearAllOffsets()
+    this.topics = keys(memberAssignment);
+    this.clearAllOffsets();
   }
 
   /**
@@ -71,15 +71,15 @@ module.exports = class OffsetManager {
    */
   nextOffset(topic, partition) {
     if (!this.resolvedOffsets[topic][partition]) {
-      this.resolvedOffsets[topic][partition] = this.committedOffsets()[topic][partition]
+      this.resolvedOffsets[topic][partition] = this.committedOffsets()[topic][partition];
     }
 
-    let offset = this.resolvedOffsets[topic][partition]
+    let offset = this.resolvedOffsets[topic][partition];
     if (isInvalidOffset(offset)) {
-      offset = '0'
+      offset = "0";
     }
 
-    return Long.fromValue(offset)
+    return Long.fromValue(offset);
   }
 
   /**
@@ -87,60 +87,58 @@ module.exports = class OffsetManager {
    */
   async getCoordinator() {
     if (!this.coordinator.isConnected()) {
-      this.coordinator = await this.cluster.findBroker(this.coordinator)
+      this.coordinator = await this.cluster.findBroker(this.coordinator);
     }
 
-    return this.coordinator
+    return this.coordinator;
   }
 
   /**
    * @param {import("../../../types").TopicPartition} topicPartition
    */
   resetOffset({ topic, partition }) {
-    this.resolvedOffsets[topic][partition] = this.committedOffsets()[topic][partition]
+    this.resolvedOffsets[topic][partition] = this.committedOffsets()[topic][partition];
   }
 
   /**
    * @param {import("../../../types").TopicPartitionOffset} topicPartitionOffset
    */
   resolveOffset({ topic, partition, offset }) {
-    this.resolvedOffsets[topic][partition] = Long.fromValue(offset)
-      .add(1)
-      .toString()
+    this.resolvedOffsets[topic][partition] = Long.fromValue(offset).add(1).toString();
   }
 
   /**
    * @returns {Long}
    */
   countResolvedOffsets() {
-    const committedOffsets = this.committedOffsets()
+    const committedOffsets = this.committedOffsets();
 
     const subtractOffsets = (resolvedOffset, committedOffset) => {
-      const resolvedOffsetLong = Long.fromValue(resolvedOffset)
+      const resolvedOffsetLong = Long.fromValue(resolvedOffset);
       return isInvalidOffset(committedOffset)
         ? resolvedOffsetLong
-        : resolvedOffsetLong.subtract(Long.fromValue(committedOffset))
-    }
+        : resolvedOffsetLong.subtract(Long.fromValue(committedOffset));
+    };
 
     const subtractPartitionOffsets = (resolvedTopicOffsets, committedTopicOffsets) =>
-      keys(resolvedTopicOffsets).map(partition =>
-        subtractOffsets(resolvedTopicOffsets[partition], committedTopicOffsets[partition])
-      )
+      keys(resolvedTopicOffsets).map((partition) =>
+        subtractOffsets(resolvedTopicOffsets[partition], committedTopicOffsets[partition]),
+      );
 
-    const subtractTopicOffsets = topic =>
-      subtractPartitionOffsets(this.resolvedOffsets[topic], committedOffsets[topic])
+    const subtractTopicOffsets = (topic) =>
+      subtractPartitionOffsets(this.resolvedOffsets[topic], committedOffsets[topic]);
 
-    const offsetsDiff = this.topics.flatMap(subtractTopicOffsets)
-    return offsetsDiff.reduce((sum, offset) => sum.add(offset), Long.fromValue(0))
+    const offsetsDiff = this.topics.flatMap(subtractTopicOffsets);
+    return offsetsDiff.reduce((sum, offset) => sum.add(offset), Long.fromValue(0));
   }
 
   /**
    * @param {import("../../../types").TopicPartition} topicPartition
    */
   async setDefaultOffset({ topic, partition }) {
-    const { groupId, generationId, memberId } = this
-    const defaultOffset = this.cluster.defaultOffset(this.topicConfigurations[topic])
-    const coordinator = await this.getCoordinator()
+    const { groupId, generationId, memberId } = this;
+    const defaultOffset = this.cluster.defaultOffset(this.topicConfigurations[topic]);
+    const coordinator = await this.getCoordinator();
 
     await coordinator.offsetCommit({
       groupId,
@@ -152,9 +150,9 @@ module.exports = class OffsetManager {
           partitions: [{ partition, offset: defaultOffset }],
         },
       ],
-    })
+    });
 
-    this.clearOffsets({ topic, partition })
+    this.clearOffsets({ topic, partition });
   }
 
   /**
@@ -165,22 +163,20 @@ module.exports = class OffsetManager {
    */
   async seek({ topic, partition, offset }) {
     if (!this.memberAssignment[topic] || !this.memberAssignment[topic].includes(partition)) {
-      return
+      return;
     }
 
     if (!this.autoCommit) {
       this.resolveOffset({
         topic,
         partition,
-        offset: Long.fromValue(offset)
-          .subtract(1)
-          .toString(),
-      })
-      return
+        offset: Long.fromValue(offset).subtract(1).toString(),
+      });
+      return;
     }
 
-    const { groupId, generationId, memberId } = this
-    const coordinator = await this.getCoordinator()
+    const { groupId, generationId, memberId } = this;
+    const coordinator = await this.getCoordinator();
 
     await coordinator.offsetCommit({
       groupId,
@@ -192,23 +188,23 @@ module.exports = class OffsetManager {
           partitions: [{ partition, offset }],
         },
       ],
-    })
+    });
 
-    this.clearOffsets({ topic, partition })
+    this.clearOffsets({ topic, partition });
   }
 
   async commitOffsetsIfNecessary() {
-    const now = Date.now()
+    const now = Date.now();
 
     const timeoutReached =
-      this.autoCommitInterval != null && now >= this.lastCommit + this.autoCommitInterval
+      this.autoCommitInterval != null && now >= this.lastCommit + this.autoCommitInterval;
 
     const thresholdReached =
       this.autoCommitThreshold != null &&
-      this.countResolvedOffsets().gte(Long.fromValue(this.autoCommitThreshold))
+      this.countResolvedOffsets().gte(Long.fromValue(this.autoCommitThreshold));
 
     if (timeoutReached || thresholdReached) {
-      return this.commitOffsets()
+      return this.commitOffsets();
     }
   }
 
@@ -217,39 +213,39 @@ module.exports = class OffsetManager {
    * @returns {import('../../../types').OffsetsByTopicPartition}
    */
   uncommittedOffsets() {
-    const offsets = topic => keys(this.resolvedOffsets[topic])
-    const emptyPartitions = ({ partitions }) => partitions.length > 0
-    const toPartitions = topic => partition => ({
+    const offsets = (topic) => keys(this.resolvedOffsets[topic]);
+    const emptyPartitions = ({ partitions }) => partitions.length > 0;
+    const toPartitions = (topic) => (partition) => ({
       partition,
       offset: this.resolvedOffsets[topic][partition],
-    })
-    const changedOffsets = topic => ({ partition, offset }) => {
-      return (
-        offset !== this.committedOffsets()[topic][partition] &&
-        Long.fromValue(offset).greaterThanOrEqual(0)
-      )
-    }
+    });
+    const changedOffsets =
+      (topic) =>
+      ({ partition, offset }) => {
+        return (
+          offset !== this.committedOffsets()[topic][partition] &&
+          Long.fromValue(offset).greaterThanOrEqual(0)
+        );
+      };
 
     // Select and format updated partitions
     const topicsWithPartitionsToCommit = this.topics
-      .map(topic => ({
+      .map((topic) => ({
         topic,
-        partitions: offsets(topic)
-          .map(toPartitions(topic))
-          .filter(changedOffsets(topic)),
+        partitions: offsets(topic).map(toPartitions(topic)).filter(changedOffsets(topic)),
       }))
-      .filter(emptyPartitions)
+      .filter(emptyPartitions);
 
-    return { topics: topicsWithPartitionsToCommit }
+    return { topics: topicsWithPartitionsToCommit };
   }
 
   async commitOffsets(offsets = {}) {
-    const { groupId, generationId, memberId } = this
-    const { topics = this.uncommittedOffsets().topics } = offsets
+    const { groupId, generationId, memberId } = this;
+    const { topics = this.uncommittedOffsets().topics } = offsets;
 
     if (topics.length === 0) {
-      this.lastCommit = Date.now()
-      return
+      this.lastCommit = Date.now();
+      return;
     }
 
     const payload = {
@@ -257,63 +253,63 @@ module.exports = class OffsetManager {
       memberId,
       groupGenerationId: generationId,
       topics,
-    }
+    };
 
     try {
-      const coordinator = await this.getCoordinator()
-      await coordinator.offsetCommit(payload)
-      this.instrumentationEmitter.emit(COMMIT_OFFSETS, payload)
+      const coordinator = await this.getCoordinator();
+      await coordinator.offsetCommit(payload);
+      this.instrumentationEmitter.emit(COMMIT_OFFSETS, payload);
 
       // Update local reference of committed offsets
       topics.forEach(({ topic, partitions }) => {
         const updatedOffsets = partitions.reduce(
           (obj, { partition, offset }) => assign(obj, { [partition]: offset }),
-          {}
-        )
+          {},
+        );
 
         this[PRIVATE.COMMITTED_OFFSETS][topic] = assign(
           {},
           this.committedOffsets()[topic],
-          updatedOffsets
-        )
-      })
+          updatedOffsets,
+        );
+      });
 
-      this.lastCommit = Date.now()
+      this.lastCommit = Date.now();
     } catch (e) {
       // metadata is stale, the coordinator has changed due to a restart or
       // broker reassignment
-      if (e.type === 'NOT_COORDINATOR_FOR_GROUP') {
-        await this.cluster.refreshMetadata()
+      if (e.type === "NOT_COORDINATOR_FOR_GROUP") {
+        await this.cluster.refreshMetadata();
       }
 
-      throw e
+      throw e;
     }
   }
 
   async resolveOffsets() {
-    const { groupId } = this
-    const invalidOffset = topic => partition => {
-      return isInvalidOffset(this.committedOffsets()[topic][partition])
-    }
+    const { groupId } = this;
+    const invalidOffset = (topic) => (partition) => {
+      return isInvalidOffset(this.committedOffsets()[topic][partition]);
+    };
 
     const pendingPartitions = this.topics
-      .map(topic => ({
+      .map((topic) => ({
         topic,
         partitions: this.memberAssignment[topic]
           .filter(invalidOffset(topic))
-          .map(partition => ({ partition })),
+          .map((partition) => ({ partition })),
       }))
-      .filter(t => t.partitions.length > 0)
+      .filter((t) => t.partitions.length > 0);
 
     if (pendingPartitions.length === 0) {
-      return
+      return;
     }
 
-    const coordinator = await this.getCoordinator()
+    const coordinator = await this.getCoordinator();
     const { responses: consumerOffsets } = await coordinator.offsetFetch({
       groupId,
       topics: pendingPartitions,
-    })
+    });
 
     const unresolvedPartitions = consumerOffsets.map(({ topic, partitions }) =>
       assign(
@@ -323,27 +319,27 @@ module.exports = class OffsetManager {
             .filter(({ offset }) => isInvalidOffset(offset))
             .map(({ partition }) => assign({ partition })),
         },
-        this.topicConfigurations[topic]
-      )
-    )
+        this.topicConfigurations[topic],
+      ),
+    );
 
     const indexPartitions = (obj, { partition, offset }) => {
-      return assign(obj, { [partition]: offset })
-    }
+      return assign(obj, { [partition]: offset });
+    };
 
-    const hasUnresolvedPartitions = () => unresolvedPartitions.some(t => t.partitions.length > 0)
+    const hasUnresolvedPartitions = () => unresolvedPartitions.some((t) => t.partitions.length > 0);
 
-    let offsets = consumerOffsets
+    let offsets = consumerOffsets;
     if (hasUnresolvedPartitions()) {
-      const topicOffsets = await this.cluster.fetchTopicsOffset(unresolvedPartitions)
-      offsets = initializeConsumerOffsets(consumerOffsets, topicOffsets)
+      const topicOffsets = await this.cluster.fetchTopicsOffset(unresolvedPartitions);
+      offsets = initializeConsumerOffsets(consumerOffsets, topicOffsets);
     }
 
     offsets.forEach(({ topic, partitions }) => {
       this.committedOffsets()[topic] = partitions.reduce(indexPartitions, {
         ...this.committedOffsets()[topic],
-      })
-    })
+      });
+    });
   }
 
   /**
@@ -351,34 +347,34 @@ module.exports = class OffsetManager {
    * @param {import("../../../types").TopicPartition} topicPartition
    */
   clearOffsets({ topic, partition }) {
-    delete this.committedOffsets()[topic][partition]
-    delete this.resolvedOffsets[topic][partition]
+    delete this.committedOffsets()[topic][partition];
+    delete this.resolvedOffsets[topic][partition];
   }
 
   /**
    * @private
    */
   clearAllOffsets() {
-    const committedOffsets = this.committedOffsets()
+    const committedOffsets = this.committedOffsets();
 
     for (const topic in committedOffsets) {
-      delete committedOffsets[topic]
+      delete committedOffsets[topic];
     }
 
     for (const topic of this.topics) {
-      committedOffsets[topic] = {}
+      committedOffsets[topic] = {};
     }
 
-    this.resolvedOffsets = indexTopics(this.topics)
+    this.resolvedOffsets = indexTopics(this.topics);
   }
 
   committedOffsets() {
     if (!this[PRIVATE.COMMITTED_OFFSETS]) {
       this[PRIVATE.COMMITTED_OFFSETS] = this.groupId
         ? this.cluster.committedOffsets({ groupId: this.groupId })
-        : {}
+        : {};
     }
 
-    return this[PRIVATE.COMMITTED_OFFSETS]
+    return this[PRIVATE.COMMITTED_OFFSETS];
   }
-}
+};

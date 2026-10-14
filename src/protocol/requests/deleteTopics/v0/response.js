@@ -1,5 +1,5 @@
-const Decoder = require('../../../decoder')
-const { failure, createErrorFromCode } = require('../../../error')
+const Decoder = require("../../../decoder");
+const { failure, createErrorFromCode } = require("../../../error");
 
 /**
  * DeleteTopics Response (Version: 0) => [topic_error_codes]
@@ -8,30 +8,30 @@ const { failure, createErrorFromCode } = require('../../../error')
  *     error_code => INT16
  */
 
-const topicNameComparator = (a, b) => a.topic.localeCompare(b.topic)
+const topicNameComparator = (a, b) => a.topic.localeCompare(b.topic);
 
-const topicErrors = decoder => ({
+const topicErrors = (decoder) => ({
   topic: decoder.readString(),
   errorCode: decoder.readInt16(),
-})
+});
 
-const decode = async rawData => {
-  const decoder = new Decoder(rawData)
+const decode = async (rawData) => {
+  const decoder = new Decoder(rawData);
   return {
     topicErrors: decoder.readArray(topicErrors).sort(topicNameComparator),
-  }
-}
+  };
+};
 
-const parse = async data => {
-  const topicsWithError = data.topicErrors.filter(({ errorCode }) => failure(errorCode))
+const parse = async (data) => {
+  const topicsWithError = data.topicErrors.filter(({ errorCode }) => failure(errorCode));
   if (topicsWithError.length > 0) {
-    throw createErrorFromCode(topicsWithError[0].errorCode)
+    throw createErrorFromCode(topicsWithError[0].errorCode);
   }
 
-  return data
-}
+  return data;
+};
 
 module.exports = {
   decode,
   parse,
-}
+};

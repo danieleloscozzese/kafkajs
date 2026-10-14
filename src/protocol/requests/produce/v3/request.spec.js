@@ -1,7 +1,7 @@
-const RequestV3Protocol = require('./request')
+const RequestV3Protocol = require("./request");
 
-describe('Protocol > Requests > Produce > v3', () => {
-  let args
+describe("Protocol > Requests > Produce > v3", () => {
+  let args;
 
   beforeEach(() => {
     args = {
@@ -11,34 +11,34 @@ describe('Protocol > Requests > Produce > v3', () => {
       compression: 0,
       topicData: [
         {
-          topic: 'test-topic-ebba68879c6f5081d8c2',
+          topic: "test-topic-ebba68879c6f5081d8c2",
           partitions: [
             {
               partition: 0,
               firstSequence: 0,
               messages: [
                 {
-                  key: 'key-9d0f348cb2e730e1edc4',
-                  value: 'some-value-a17b4c81f9ecd1e896e3',
+                  key: "key-9d0f348cb2e730e1edc4",
+                  value: "some-value-a17b4c81f9ecd1e896e3",
                   timestamp: 1509928155660,
-                  headers: { a: 'b', c: ['d', 'e'] },
+                  headers: { a: "b", c: ["d", "e"] },
                 },
               ],
             },
           ],
         },
       ],
-    }
-  })
+    };
+  });
 
-  describe('when acks=0', () => {
-    test('expectResponse returns false', () => {
-      const request = RequestV3Protocol({ ...args, acks: 0 })
-      expect(request.expectResponse()).toEqual(false)
-    })
-  })
+  describe("when acks=0", () => {
+    test("expectResponse returns false", () => {
+      const request = RequestV3Protocol({ ...args, acks: 0 });
+      expect(request.expectResponse()).toEqual(false);
+    });
+  });
 
-  test('request', async () => {
+  test("request", async () => {
     const { buffer } = await RequestV3Protocol({
       transactionalId: null,
       acks: -1,
@@ -46,37 +46,37 @@ describe('Protocol > Requests > Produce > v3', () => {
       compression: 0,
       topicData: [
         {
-          topic: 'test-topic-ebba68879c6f5081d8c2',
+          topic: "test-topic-ebba68879c6f5081d8c2",
           partitions: [
             {
               partition: 0,
               firstSequence: 10,
               messages: [
                 {
-                  key: 'key-9d0f348cb2e730e1edc4',
-                  value: 'some-value-a17b4c81f9ecd1e896e3',
+                  key: "key-9d0f348cb2e730e1edc4",
+                  value: "some-value-a17b4c81f9ecd1e896e3",
                   timestamp: 1509928155660,
-                  headers: { a: 'b', c: ['d', 'e'] },
+                  headers: { a: "b", c: ["d", "e"] },
                 },
                 {
-                  key: 'key-c7073e965c34b4cc6442',
-                  value: 'some-value-65df422070d7ad73914f',
+                  key: "key-c7073e965c34b4cc6442",
+                  value: "some-value-65df422070d7ad73914f",
                   timestamp: 1509928155660,
-                  headers: { a: 'b' },
+                  headers: { a: "b" },
                 },
                 {
-                  key: 'key-1693b184a9b52dbe03bc',
-                  value: 'some-value-3fcb65ffca087cba20ad',
+                  key: "key-1693b184a9b52dbe03bc",
+                  value: "some-value-3fcb65ffca087cba20ad",
                   timestamp: 1509928155660,
-                  headers: { a: 'b' },
+                  headers: { a: "b" },
                 },
               ],
             },
           ],
         },
       ],
-    }).encode()
+    }).encode();
 
-    expect(buffer).toEqual(Buffer.from(require('../fixtures/v3_request.json')))
-  })
-})
+    expect(buffer).toEqual(Buffer.from(require("../fixtures/v3_request.json")));
+  });
+});

@@ -1,5 +1,5 @@
-const Decoder = require('../../../decoder')
-const { failure, createErrorFromCode } = require('../../../error')
+const Decoder = require("../../../decoder");
+const { failure, createErrorFromCode } = require("../../../error");
 
 /**
  * ListPartitionReassignments Response (Version: 0) => throttle_time_ms error_code error_message [topics] TAG_BUFFER
@@ -15,58 +15,58 @@ const { failure, createErrorFromCode } = require('../../../error')
  *       removing_replicas => INT32
  */
 
-const decodeReplicas = decoder => {
-  return decoder.readInt32()
-}
+const decodeReplicas = (decoder) => {
+  return decoder.readInt32();
+};
 
-const decodePartitions = decoder => {
+const decodePartitions = (decoder) => {
   const partition = {
     partition: decoder.readInt32(),
     replicas: decoder.readUVarIntArray(decodeReplicas),
     addingReplicas: decoder.readUVarIntArray(decodeReplicas),
     removingReplicas: decoder.readUVarIntArray(decodeReplicas),
-  }
+  };
 
   // Read tagged fields
-  decoder.readTaggedFields()
-  return partition
-}
+  decoder.readTaggedFields();
+  return partition;
+};
 
-const decodeTopics = decoder => {
+const decodeTopics = (decoder) => {
   const topic = {
     name: decoder.readUVarIntString(),
     partitions: decoder.readUVarIntArray(decodePartitions),
-  }
+  };
 
   // Read tagged fields
-  decoder.readTaggedFields()
-  return topic
-}
-const decode = async rawData => {
-  const decoder = new Decoder(rawData)
+  decoder.readTaggedFields();
+  return topic;
+};
+const decode = async (rawData) => {
+  const decoder = new Decoder(rawData);
 
   // Read tagged fields
-  decoder.readTaggedFields()
-  const throttleTime = decoder.readInt32()
-  const errorCode = decoder.readInt16()
+  decoder.readTaggedFields();
+  const throttleTime = decoder.readInt32();
+  const errorCode = decoder.readInt16();
   // Read error message
-  decoder.readUVarIntString()
+  decoder.readUVarIntString();
   return {
     throttleTime,
     errorCode,
     topics: decoder.readUVarIntArray(decodeTopics),
-  }
-}
+  };
+};
 
-const parse = async data => {
+const parse = async (data) => {
   if (failure(data.errorCode)) {
-    throw createErrorFromCode(data.errorCode)
+    throw createErrorFromCode(data.errorCode);
   }
 
-  return data
-}
+  return data;
+};
 
 module.exports = {
   decode,
   parse,
-}
+};

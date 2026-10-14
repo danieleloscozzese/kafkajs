@@ -1,52 +1,52 @@
-const { MemberMetadata, MemberAssignment } = require('../assignerProtocol')
+const { MemberMetadata, MemberAssignment } = require("../assignerProtocol");
 
 const FIXTURE_ROUND_ROBIN_METADATA = Buffer.from(
-  require('./fixtures/roundRobinAssigner/memberMetadata.json')
-)
+  require("./fixtures/roundRobinAssigner/memberMetadata.json"),
+);
 const FIXTURE_ROUND_ROBIN_ASSIGNER = Buffer.from(
-  require('./fixtures/roundRobinAssigner/memberAssignment.json')
-)
+  require("./fixtures/roundRobinAssigner/memberAssignment.json"),
+);
 
-describe('Consumer > assignerProtocol', () => {
-  describe('MemberMetadata', () => {
-    test('encode', () => {
+describe("Consumer > assignerProtocol", () => {
+  describe("MemberMetadata", () => {
+    test("encode", () => {
       const buffer = MemberMetadata.encode({
         version: 1,
-        topics: ['topic-test'],
-      })
+        topics: ["topic-test"],
+      });
 
-      expect(buffer).toEqual(FIXTURE_ROUND_ROBIN_METADATA)
-    })
+      expect(buffer).toEqual(FIXTURE_ROUND_ROBIN_METADATA);
+    });
 
-    test('decode', () => {
+    test("decode", () => {
       expect(MemberMetadata.decode(FIXTURE_ROUND_ROBIN_METADATA)).toEqual({
         version: 1,
-        topics: ['topic-test'],
+        topics: ["topic-test"],
         userData: Buffer.alloc(0),
-      })
-    })
-  })
+      });
+    });
+  });
 
-  describe('MemberAssignment', () => {
-    test('encode', () => {
+  describe("MemberAssignment", () => {
+    test("encode", () => {
       const buffer = MemberAssignment.encode({
         version: 1,
-        assignment: { 'topic-test': [2, 5, 4, 1, 3, 0] },
-      })
+        assignment: { "topic-test": [2, 5, 4, 1, 3, 0] },
+      });
 
-      expect(buffer).toEqual(FIXTURE_ROUND_ROBIN_ASSIGNER)
-    })
+      expect(buffer).toEqual(FIXTURE_ROUND_ROBIN_ASSIGNER);
+    });
 
-    test('decode', () => {
+    test("decode", () => {
       expect(MemberAssignment.decode(FIXTURE_ROUND_ROBIN_ASSIGNER)).toEqual({
         version: 1,
-        assignment: { 'topic-test': [2, 5, 4, 1, 3, 0] },
+        assignment: { "topic-test": [2, 5, 4, 1, 3, 0] },
         userData: Buffer.alloc(0),
-      })
-    })
+      });
+    });
 
-    test('decode empty assignment', () => {
-      expect(MemberAssignment.decode(Buffer.from([]))).toBe(null)
-    })
-  })
-})
+    test("decode empty assignment", () => {
+      expect(MemberAssignment.decode(Buffer.from([]))).toBe(null);
+    });
+  });
+});

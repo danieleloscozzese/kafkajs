@@ -1,4 +1,4 @@
-const { parse, decode } = require('../v0/response')
+const { parse, decode } = require("../v0/response");
 
 /**
  * OffsetCommit Response (Version: 1) => [responses]
@@ -12,4 +12,4 @@ const { parse, decode } = require('../v0/response')
 module.exports = {
   decode,
   parse,
-}
+};

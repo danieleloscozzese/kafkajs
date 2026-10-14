@@ -1,5 +1,5 @@
-const ISOLATION_LEVEL = require('../../../isolationLevel')
-const requestV7 = require('../v7/request')
+const ISOLATION_LEVEL = require("../../../isolationLevel");
+const requestV7 = require("../v7/request");
 
 /**
  * Quota violation brokers send out responses before throttling.
@@ -50,5 +50,5 @@ module.exports = ({
       sessionEpoch,
       forgottenTopics,
     }),
-    { apiVersion: 8 }
-  )
+    { apiVersion: 8 },
+  );

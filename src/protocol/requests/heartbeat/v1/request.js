@@ -1,4 +1,4 @@
-const requestV0 = require('../v0/request')
+const requestV0 = require("../v0/request");
 
 /**
  * Heartbeat Request (Version: 1) => group_id generation_id member_id
@@ -8,4 +8,4 @@ const requestV0 = require('../v0/request')
  */
 
 module.exports = ({ groupId, groupGenerationId, memberId }) =>
-  Object.assign(requestV0({ groupId, groupGenerationId, memberId }), { apiVersion: 1 })
+  Object.assign(requestV0({ groupId, groupGenerationId, memberId }), { apiVersion: 1 });

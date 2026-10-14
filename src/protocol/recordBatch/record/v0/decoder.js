@@ -1,6 +1,6 @@
-const Long = require('../../../../utils/long')
-const HeaderDecoder = require('../../header/v0/decoder')
-const TimestampTypes = require('../../../timestampTypes')
+const Long = require("../../../../utils/long");
+const HeaderDecoder = require("../../header/v0/decoder");
+const TimestampTypes = require("../../../timestampTypes");
 
 /**
  * v0
@@ -24,24 +24,20 @@ module.exports = (decoder, batchContext = {}) => {
     isControlBatch = false,
     timestampType,
     maxTimestamp,
-  } = batchContext
-  const attributes = decoder.readInt8()
+  } = batchContext;
+  const attributes = decoder.readInt8();
 
-  const timestampDelta = decoder.readVarLong()
+  const timestampDelta = decoder.readVarLong();
   const timestamp =
     timestampType === TimestampTypes.LOG_APPEND_TIME && maxTimestamp
       ? maxTimestamp
-      : Long.fromValue(firstTimestamp)
-          .add(timestampDelta)
-          .toString()
+      : Long.fromValue(firstTimestamp).add(timestampDelta).toString();
 
-  const offsetDelta = decoder.readVarInt()
-  const offset = Long.fromValue(firstOffset)
-    .add(offsetDelta)
-    .toString()
+  const offsetDelta = decoder.readVarInt();
+  const offset = Long.fromValue(firstOffset).add(offsetDelta).toString();
 
-  const key = decoder.readVarIntBytes()
-  const value = decoder.readVarIntBytes()
+  const key = decoder.readVarIntBytes();
+  const value = decoder.readVarIntBytes();
   const headers = decoder.readVarIntArray(HeaderDecoder).reduce(
     (obj, { key, value }) => ({
       ...obj,
@@ -49,11 +45,11 @@ module.exports = (decoder, batchContext = {}) => {
         obj[key] === undefined
           ? value
           : Array.isArray(obj[key])
-          ? obj[key].concat([value])
-          : [obj[key], value],
+            ? obj[key].concat([value])
+            : [obj[key], value],
     }),
-    {}
-  )
+    {},
+  );
 
   return {
     magicByte,
@@ -65,5 +61,5 @@ module.exports = (decoder, batchContext = {}) => {
     headers,
     isControlRecord: isControlBatch,
     batchContext,
-  }
-}
+  };
+};

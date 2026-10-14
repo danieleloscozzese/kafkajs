@@ -1,19 +1,19 @@
-const createRetry = require('../retry')
-const { CONNECTION_STATUS } = require('../network/connectionStatus')
-const { DefaultPartitioner } = require('./partitioners/')
-const InstrumentationEventEmitter = require('../instrumentation/emitter')
-const createEosManager = require('./eosManager')
-const createMessageProducer = require('./messageProducer')
-const { events, wrap: wrapEvent, unwrap: unwrapEvent } = require('./instrumentationEvents')
-const { KafkaJSNonRetriableError } = require('../errors')
+const createRetry = require("../retry");
+const { CONNECTION_STATUS } = require("../network/connectionStatus");
+const { DefaultPartitioner } = require("./partitioners/");
+const InstrumentationEventEmitter = require("../instrumentation/emitter");
+const createEosManager = require("./eosManager");
+const createMessageProducer = require("./messageProducer");
+const { events, wrap: wrapEvent, unwrap: unwrapEvent } = require("./instrumentationEvents");
+const { KafkaJSNonRetriableError } = require("../errors");
 
-const { values, keys } = Object
-const eventNames = values(events)
+const { values, keys } = Object;
+const eventNames = values(events);
 const eventKeys = keys(events)
-  .map(key => `producer.events.${key}`)
-  .join(', ')
+  .map((key) => `producer.events.${key}`)
+  .join(", ");
 
-const { CONNECT, DISCONNECT } = events
+const { CONNECT, DISCONNECT } = events;
 
 /**
  *
@@ -39,31 +39,31 @@ module.exports = ({
   transactionTimeout,
   instrumentationEmitter: rootInstrumentationEmitter,
 }) => {
-  let connectionStatus = CONNECTION_STATUS.DISCONNECTED
-  retry = retry || { retries: idempotent ? Number.MAX_SAFE_INTEGER : 5 }
+  let connectionStatus = CONNECTION_STATUS.DISCONNECTED;
+  retry = retry || { retries: idempotent ? Number.MAX_SAFE_INTEGER : 5 };
 
   if (idempotent && retry.retries < 1) {
     throw new KafkaJSNonRetriableError(
-      'Idempotent producer must allow retries to protect against transient errors'
-    )
+      "Idempotent producer must allow retries to protect against transient errors",
+    );
   }
 
-  const logger = rootLogger.namespace('Producer')
+  const logger = rootLogger.namespace("Producer");
 
   if (idempotent && retry.retries < Number.MAX_SAFE_INTEGER) {
-    logger.warn('Limiting retries for the idempotent producer may invalidate EoS guarantees')
+    logger.warn("Limiting retries for the idempotent producer may invalidate EoS guarantees");
   }
 
-  const partitioner = createPartitioner()
-  const retrier = createRetry(Object.assign({}, cluster.retry, retry))
-  const instrumentationEmitter = rootInstrumentationEmitter || new InstrumentationEventEmitter()
+  const partitioner = createPartitioner();
+  const retrier = createRetry(Object.assign({}, cluster.retry, retry));
+  const instrumentationEmitter = rootInstrumentationEmitter || new InstrumentationEventEmitter();
   const idempotentEosManager = createEosManager({
     logger,
     cluster,
     transactionTimeout,
     transactional: false,
     transactionalId,
-  })
+  });
 
   const { send, sendBatch } = createMessageProducer({
     logger,
@@ -73,26 +73,26 @@ module.exports = ({
     idempotent,
     retrier,
     getConnectionStatus: () => connectionStatus,
-  })
+  });
 
-  let transactionalEosManager
+  let transactionalEosManager;
 
   /** @type {import("../../types").Producer["on"]} */
   const on = (eventName, listener) => {
     if (!eventNames.includes(eventName)) {
-      throw new KafkaJSNonRetriableError(`Event name should be one of ${eventKeys}`)
+      throw new KafkaJSNonRetriableError(`Event name should be one of ${eventKeys}`);
     }
 
-    return instrumentationEmitter.addListener(unwrapEvent(eventName), event => {
-      event.type = wrapEvent(event.type)
-      Promise.resolve(listener(event)).catch(e => {
+    return instrumentationEmitter.addListener(unwrapEvent(eventName), (event) => {
+      event.type = wrapEvent(event.type);
+      Promise.resolve(listener(event)).catch((e) => {
         logger.error(`Failed to execute listener: ${e.message}`, {
           eventName,
           stack: e.stack,
-        })
-      })
-    })
-  }
+        });
+      });
+    });
+  };
 
   /**
    * Begin a transaction. The returned object contains methods to send messages
@@ -113,10 +113,12 @@ module.exports = ({
    */
   const transaction = async () => {
     if (!transactionalId) {
-      throw new KafkaJSNonRetriableError('Must provide transactional id for transactional producer')
+      throw new KafkaJSNonRetriableError(
+        "Must provide transactional id for transactional producer",
+      );
     }
 
-    let transactionDidEnd = false
+    let transactionDidEnd = false;
     transactionalEosManager =
       transactionalEosManager ||
       createEosManager({
@@ -125,19 +127,19 @@ module.exports = ({
         transactionTimeout,
         transactional: true,
         transactionalId,
-      })
+      });
 
     if (transactionalEosManager.isInTransaction()) {
       throw new KafkaJSNonRetriableError(
-        'There is already an ongoing transaction for this producer. Please end the transaction before beginning another.'
-      )
+        "There is already an ongoing transaction for this producer. Please end the transaction before beginning another.",
+      );
     }
 
     // We only initialize the producer id once
     if (!transactionalEosManager.isInitialized()) {
-      await transactionalEosManager.initProducerId()
+      await transactionalEosManager.initProducerId();
     }
-    transactionalEosManager.beginTransaction()
+    transactionalEosManager.beginTransaction();
 
     const { send: sendTxn, sendBatch: sendBatchTxn } = createMessageProducer({
       logger,
@@ -147,19 +149,21 @@ module.exports = ({
       eosManager: transactionalEosManager,
       idempotent: true,
       getConnectionStatus: () => connectionStatus,
-    })
+    });
 
-    const isActive = () => transactionalEosManager.isInTransaction() && !transactionDidEnd
+    const isActive = () => transactionalEosManager.isInTransaction() && !transactionDidEnd;
 
-    const transactionGuard = fn => (...args) => {
-      if (!isActive()) {
-        return Promise.reject(
-          new KafkaJSNonRetriableError('Cannot continue to use transaction once ended')
-        )
-      }
+    const transactionGuard =
+      (fn) =>
+      (...args) => {
+        if (!isActive()) {
+          return Promise.reject(
+            new KafkaJSNonRetriableError("Cannot continue to use transaction once ended"),
+          );
+        }
 
-      return fn(...args)
-    }
+        return fn(...args);
+      };
 
     return {
       sendBatch: transactionGuard(sendBatchTxn),
@@ -170,8 +174,8 @@ module.exports = ({
        * @throws {KafkaJSNonRetriableError} If transaction has ended
        */
       abort: transactionGuard(async () => {
-        await transactionalEosManager.abort()
-        transactionDidEnd = true
+        await transactionalEosManager.abort();
+        transactionDidEnd = true;
       }),
       /**
        * Commit the ongoing transaction.
@@ -179,8 +183,8 @@ module.exports = ({
        * @throws {KafkaJSNonRetriableError} If transaction has ended
        */
       commit: transactionGuard(async () => {
-        await transactionalEosManager.commit()
-        transactionDidEnd = true
+        await transactionalEosManager.commit();
+        transactionDidEnd = true;
       }),
       /**
        * Sends a list of specified offsets to the consumer group coordinator, and also marks those offsets as part of the current transaction.
@@ -188,53 +192,53 @@ module.exports = ({
        * @throws {KafkaJSNonRetriableError} If transaction has ended
        */
       sendOffsets: transactionGuard(async ({ consumerGroupId, topics }) => {
-        await transactionalEosManager.sendOffsets({ consumerGroupId, topics })
+        await transactionalEosManager.sendOffsets({ consumerGroupId, topics });
 
         for (const topicOffsets of topics) {
-          const { topic, partitions } = topicOffsets
+          const { topic, partitions } = topicOffsets;
           for (const { partition, offset } of partitions) {
             cluster.markOffsetAsCommitted({
               groupId: consumerGroupId,
               topic,
               partition,
               offset,
-            })
+            });
           }
         }
       }),
       isActive,
-    }
-  }
+    };
+  };
 
   /**
    * @returns {Object} logger
    */
-  const getLogger = () => logger
+  const getLogger = () => logger;
 
   return {
     /**
      * @returns {Promise}
      */
     connect: async () => {
-      await cluster.connect()
-      connectionStatus = CONNECTION_STATUS.CONNECTED
-      instrumentationEmitter.emit(CONNECT)
+      await cluster.connect();
+      connectionStatus = CONNECTION_STATUS.CONNECTED;
+      instrumentationEmitter.emit(CONNECT);
 
       if (idempotent && !idempotentEosManager.isInitialized()) {
-        await idempotentEosManager.initProducerId()
+        await idempotentEosManager.initProducerId();
       }
     },
     /**
      * @return {Promise}
      */
     disconnect: async () => {
-      connectionStatus = CONNECTION_STATUS.DISCONNECTING
-      await cluster.disconnect()
-      connectionStatus = CONNECTION_STATUS.DISCONNECTED
-      instrumentationEmitter.emit(DISCONNECT)
+      connectionStatus = CONNECTION_STATUS.DISCONNECTING;
+      await cluster.disconnect();
+      connectionStatus = CONNECTION_STATUS.DISCONNECTED;
+      instrumentationEmitter.emit(DISCONNECT);
     },
     isIdempotent: () => {
-      return idempotent
+      return idempotent;
     },
     events,
     on,
@@ -242,5 +246,5 @@ module.exports = ({
     sendBatch,
     transaction,
     logger: getLogger,
-  }
-}
+  };
+};

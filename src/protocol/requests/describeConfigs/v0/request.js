@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { DescribeConfigs: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { DescribeConfigs: apiKey } = require("../../apiKeys");
 
 /**
  * DescribeConfigs Request (Version: 0) => [resources]
@@ -15,15 +15,12 @@ const { DescribeConfigs: apiKey } = require('../../apiKeys')
 module.exports = ({ resources }) => ({
   apiKey,
   apiVersion: 0,
-  apiName: 'DescribeConfigs',
+  apiName: "DescribeConfigs",
   encode: async () => {
-    return new Encoder().writeArray(resources.map(encodeResource))
+    return new Encoder().writeArray(resources.map(encodeResource));
   },
-})
+});
 
 const encodeResource = ({ type, name, configNames = [] }) => {
-  return new Encoder()
-    .writeInt8(type)
-    .writeString(name)
-    .writeNullableArray(configNames)
-}
+  return new Encoder().writeInt8(type).writeString(name).writeNullableArray(configNames);
+};

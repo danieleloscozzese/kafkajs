@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { LeaveGroup: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { LeaveGroup: apiKey } = require("../../apiKeys");
 
 /**
  * LeaveGroup Request (Version: 0) => group_id member_id
@@ -10,8 +10,8 @@ const { LeaveGroup: apiKey } = require('../../apiKeys')
 module.exports = ({ groupId, memberId }) => ({
   apiKey,
   apiVersion: 0,
-  apiName: 'LeaveGroup',
+  apiName: "LeaveGroup",
   encode: async () => {
-    return new Encoder().writeString(groupId).writeString(memberId)
+    return new Encoder().writeString(groupId).writeString(memberId);
   },
-})
+});

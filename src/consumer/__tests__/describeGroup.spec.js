@@ -1,5 +1,5 @@
-const createProducer = require('../../producer')
-const createConsumer = require('../index')
+const createProducer = require("../../producer");
+const createConsumer = require("../index");
 
 const {
   secureRandom,
@@ -8,23 +8,23 @@ const {
   createModPartitioner,
   newLogger,
   waitForConsumerToJoinGroup,
-} = require('testHelpers')
+} = require("testHelpers");
 
-describe('Consumer', () => {
-  let topicName, groupId, cluster, producer, consumer
+describe("Consumer", () => {
+  let topicName, groupId, cluster, producer, consumer;
 
   beforeEach(async () => {
-    topicName = `test-topic-${secureRandom()}`
-    groupId = `consumer-group-id-${secureRandom()}`
+    topicName = `test-topic-${secureRandom()}`;
+    groupId = `consumer-group-id-${secureRandom()}`;
 
-    await createTopic({ topic: topicName })
+    await createTopic({ topic: topicName });
 
-    cluster = createCluster()
+    cluster = createCluster();
     producer = createProducer({
       cluster,
       createPartitioner: createModPartitioner,
       logger: newLogger(),
-    })
+    });
 
     consumer = createConsumer({
       cluster,
@@ -32,21 +32,21 @@ describe('Consumer', () => {
       maxWaitTimeInMs: 1,
       maxBytesPerPartition: 180,
       logger: newLogger(),
-    })
-  })
+    });
+  });
 
   afterEach(async () => {
-    consumer && (await consumer.disconnect())
-    producer && (await producer.disconnect())
-  })
+    consumer && (await consumer.disconnect());
+    producer && (await producer.disconnect());
+  });
 
-  describe('describe group', () => {
-    it('returns the group description', async () => {
-      await consumer.connect()
-      await consumer.subscribe({ topic: topicName, fromBeginning: true })
+  describe("describe group", () => {
+    it("returns the group description", async () => {
+      await consumer.connect();
+      await consumer.subscribe({ topic: topicName, fromBeginning: true });
 
-      consumer.run({ eachMessage: jest.fn() })
-      await waitForConsumerToJoinGroup(consumer)
+      consumer.run({ eachMessage: jest.fn() });
+      await waitForConsumerToJoinGroup(consumer);
 
       await expect(consumer.describeGroup()).resolves.toEqual({
         errorCode: 0,
@@ -60,10 +60,10 @@ describe('Consumer', () => {
             memberMetadata: expect.anything(),
           },
         ],
-        protocol: 'RoundRobinAssigner',
-        protocolType: 'consumer',
-        state: 'Stable',
-      })
-    })
-  })
-})
+        protocol: "RoundRobinAssigner",
+        protocolType: "consumer",
+        state: "Stable",
+      });
+    });
+  });
+});

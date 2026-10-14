@@ -1,4 +1,4 @@
-const { parse, decode: decodeV2 } = require('../v2/response')
+const { parse, decode: decodeV2 } = require("../v2/response");
 
 /**
  * Starting in version 3, on quota violation, brokers send out responses
@@ -16,17 +16,17 @@ const { parse, decode: decodeV2 } = require('../v2/response')
  *     member_id => STRING
  *     member_metadata => BYTES
  */
-const decode = async rawData => {
-  const decoded = await decodeV2(rawData)
+const decode = async (rawData) => {
+  const decoded = await decodeV2(rawData);
 
   return {
     ...decoded,
     throttleTime: 0,
     clientSideThrottleTime: decoded.throttleTime,
-  }
-}
+  };
+};
 
 module.exports = {
   decode,
   parse,
-}
+};

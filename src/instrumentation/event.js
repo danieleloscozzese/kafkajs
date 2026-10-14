@@ -1,11 +1,11 @@
-let id = 0
+let id = 0;
 const nextId = () => {
   if (id === Number.MAX_VALUE) {
-    id = 0
+    id = 0;
   }
 
-  return id++
-}
+  return id++;
+};
 
 class InstrumentationEvent {
   /**
@@ -13,11 +13,11 @@ class InstrumentationEvent {
    * @param {Object} payload
    */
   constructor(type, payload) {
-    this.id = nextId()
-    this.type = type
-    this.timestamp = Date.now()
-    this.payload = payload
+    this.id = nextId();
+    this.type = type;
+    this.timestamp = Date.now();
+    this.payload = payload;
   }
 }
 
-module.exports = InstrumentationEvent
+module.exports = InstrumentationEvent;

@@ -1,5 +1,5 @@
-const Decoder = require('../../../decoder')
-const { failure, createErrorFromCode, failIfVersionNotSupported } = require('../../../error')
+const Decoder = require("../../../decoder");
+const { failure, createErrorFromCode, failIfVersionNotSupported } = require("../../../error");
 
 /**
  * JoinGroup Response (Version: 0) => error_code generation_id group_protocol leader_id member_id [members]
@@ -13,11 +13,11 @@ const { failure, createErrorFromCode, failIfVersionNotSupported } = require('../
  *     member_metadata => BYTES
  */
 
-const decode = async rawData => {
-  const decoder = new Decoder(rawData)
-  const errorCode = decoder.readInt16()
+const decode = async (rawData) => {
+  const decoder = new Decoder(rawData);
+  const errorCode = decoder.readInt16();
 
-  failIfVersionNotSupported(errorCode)
+  failIfVersionNotSupported(errorCode);
 
   return {
     errorCode,
@@ -25,22 +25,22 @@ const decode = async rawData => {
     groupProtocol: decoder.readString(),
     leaderId: decoder.readString(),
     memberId: decoder.readString(),
-    members: decoder.readArray(decoder => ({
+    members: decoder.readArray((decoder) => ({
       memberId: decoder.readString(),
       memberMetadata: decoder.readBytes(),
     })),
-  }
-}
+  };
+};
 
-const parse = async data => {
+const parse = async (data) => {
   if (failure(data.errorCode)) {
-    throw createErrorFromCode(data.errorCode)
+    throw createErrorFromCode(data.errorCode);
   }
 
-  return data
-}
+  return data;
+};
 
 module.exports = {
   decode,
   parse,
-}
+};

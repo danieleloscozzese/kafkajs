@@ -1,5 +1,5 @@
-const Decoder = require('../../../decoder')
-const { failure, createErrorFromCode } = require('../../../error')
+const Decoder = require("../../../decoder");
+const { failure, createErrorFromCode } = require("../../../error");
 
 /**
  * DescribeAcls Response (Version: 0) => throttle_time_ms error_code error_message [resources]
@@ -16,43 +16,43 @@ const { failure, createErrorFromCode } = require('../../../error')
  *       permission_type => INT8
  */
 
-const decodeAcls = decoder => ({
+const decodeAcls = (decoder) => ({
   principal: decoder.readString(),
   host: decoder.readString(),
   operation: decoder.readInt8(),
   permissionType: decoder.readInt8(),
-})
+});
 
-const decodeResources = decoder => ({
+const decodeResources = (decoder) => ({
   resourceType: decoder.readInt8(),
   resourceName: decoder.readString(),
   acls: decoder.readArray(decodeAcls),
-})
+});
 
-const decode = async rawData => {
-  const decoder = new Decoder(rawData)
-  const throttleTime = decoder.readInt32()
-  const errorCode = decoder.readInt16()
-  const errorMessage = decoder.readString()
-  const resources = decoder.readArray(decodeResources)
+const decode = async (rawData) => {
+  const decoder = new Decoder(rawData);
+  const throttleTime = decoder.readInt32();
+  const errorCode = decoder.readInt16();
+  const errorMessage = decoder.readString();
+  const resources = decoder.readArray(decodeResources);
 
   return {
     throttleTime,
     errorCode,
     errorMessage,
     resources,
-  }
-}
+  };
+};
 
-const parse = async data => {
+const parse = async (data) => {
   if (failure(data.errorCode)) {
-    throw createErrorFromCode(data.errorCode)
+    throw createErrorFromCode(data.errorCode);
   }
 
-  return data
-}
+  return data;
+};
 
 module.exports = {
   decode,
   parse,
-}
+};

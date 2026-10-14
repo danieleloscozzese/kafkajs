@@ -1,4 +1,4 @@
-const requestV1 = require('../v1/request')
+const requestV1 = require("../v1/request");
 
 /**
  * OffsetFetch Request (Version: 2) => group_id [topics]
@@ -10,4 +10,4 @@ const requestV1 = require('../v1/request')
  */
 
 module.exports = ({ groupId, topics }) =>
-  Object.assign(requestV1({ groupId, topics }), { apiVersion: 2 })
+  Object.assign(requestV1({ groupId, topics }), { apiVersion: 2 });

@@ -1,4 +1,4 @@
-const requestV2 = require('../v2/request')
+const requestV2 = require("../v2/request");
 
 /**
  * CreateTopics Request (Version: 3) => [create_topic_requests] timeout validate_only
@@ -17,4 +17,4 @@ const requestV2 = require('../v2/request')
  */
 
 module.exports = ({ topics, validateOnly, timeout }) =>
-  Object.assign(requestV2({ topics, validateOnly, timeout }), { apiVersion: 3 })
+  Object.assign(requestV2({ topics, validateOnly, timeout }), { apiVersion: 3 });

@@ -1,4 +1,4 @@
-const requestV5 = require('../v5/request')
+const requestV5 = require("../v5/request");
 
 /**
  * Metadata Request (Version: 6) => [topics] allow_auto_topic_creation
@@ -7,4 +7,4 @@ const requestV5 = require('../v5/request')
  */
 
 module.exports = ({ topics, allowAutoTopicCreation = true }) =>
-  Object.assign(requestV5({ topics, allowAutoTopicCreation }), { apiVersion: 6 })
+  Object.assign(requestV5({ topics, allowAutoTopicCreation }), { apiVersion: 6 });

@@ -1,9 +1,9 @@
-const { unsupportedVersionResponse } = require('testHelpers')
-const { decode, parse } = require('./response')
+const { unsupportedVersionResponse } = require("testHelpers");
+const { decode, parse } = require("./response");
 
-describe('Protocol > Requests > ApiVersions > v0', () => {
-  test('response', async () => {
-    const data = await decode(Buffer.from(require('../fixtures/v0_response.json')))
+describe("Protocol > Requests > ApiVersions > v0", () => {
+  test("response", async () => {
+    const data = await decode(Buffer.from(require("../fixtures/v0_response.json")));
     expect(data).toEqual({
       errorCode: 0,
       apiVersions: [
@@ -29,14 +29,14 @@ describe('Protocol > Requests > ApiVersions > v0', () => {
         { apiKey: 19, minVersion: 0, maxVersion: 1 },
         { apiKey: 20, minVersion: 0, maxVersion: 0 },
       ],
-    })
+    });
 
-    await expect(parse(data)).resolves.toBeTruthy()
-  })
+    await expect(parse(data)).resolves.toBeTruthy();
+  });
 
-  test('throws KafkaJSProtocolError if the api is not supported', async () => {
+  test("throws KafkaJSProtocolError if the api is not supported", async () => {
     await expect(decode(unsupportedVersionResponse())).rejects.toThrow(
-      /The version of API is not supported/
-    )
-  })
-})
+      /The version of API is not supported/,
+    );
+  });
+});

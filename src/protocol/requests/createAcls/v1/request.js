@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { CreateAcls: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { CreateAcls: apiKey } = require("../../apiKeys");
 
 /**
  * CreateAcls Request (Version: 1) => [creations]
@@ -29,14 +29,14 @@ const encodeCreations = ({
     .writeString(principal)
     .writeString(host)
     .writeInt8(operation)
-    .writeInt8(permissionType)
-}
+    .writeInt8(permissionType);
+};
 
 module.exports = ({ creations }) => ({
   apiKey,
   apiVersion: 1,
-  apiName: 'CreateAcls',
+  apiName: "CreateAcls",
   encode: async () => {
-    return new Encoder().writeArray(creations.map(encodeCreations))
+    return new Encoder().writeArray(creations.map(encodeCreations));
   },
-})
+});

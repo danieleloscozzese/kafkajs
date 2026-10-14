@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { Metadata: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { Metadata: apiKey } = require("../../apiKeys");
 
 /**
  * Metadata Request (Version: 1) => [topics]
@@ -9,8 +9,8 @@ const { Metadata: apiKey } = require('../../apiKeys')
 module.exports = ({ topics }) => ({
   apiKey,
   apiVersion: 1,
-  apiName: 'Metadata',
+  apiName: "Metadata",
   encode: async () => {
-    return new Encoder().writeNullableArray(topics)
+    return new Encoder().writeNullableArray(topics);
   },
-})
+});

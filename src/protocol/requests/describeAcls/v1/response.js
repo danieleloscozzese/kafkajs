@@ -1,5 +1,5 @@
-const { parse } = require('../v0/response')
-const Decoder = require('../../../decoder')
+const { parse } = require("../v0/response");
+const Decoder = require("../../../decoder");
 
 /**
  * Starting in version 1, on quota violation, brokers send out responses before throttling.
@@ -21,26 +21,26 @@ const Decoder = require('../../../decoder')
  *       operation => INT8
  *       permission_type => INT8
  */
-const decodeAcls = decoder => ({
+const decodeAcls = (decoder) => ({
   principal: decoder.readString(),
   host: decoder.readString(),
   operation: decoder.readInt8(),
   permissionType: decoder.readInt8(),
-})
+});
 
-const decodeResources = decoder => ({
+const decodeResources = (decoder) => ({
   resourceType: decoder.readInt8(),
   resourceName: decoder.readString(),
   resourcePatternType: decoder.readInt8(),
   acls: decoder.readArray(decodeAcls),
-})
+});
 
-const decode = async rawData => {
-  const decoder = new Decoder(rawData)
-  const throttleTime = decoder.readInt32()
-  const errorCode = decoder.readInt16()
-  const errorMessage = decoder.readString()
-  const resources = decoder.readArray(decodeResources)
+const decode = async (rawData) => {
+  const decoder = new Decoder(rawData);
+  const throttleTime = decoder.readInt32();
+  const errorCode = decoder.readInt16();
+  const errorMessage = decoder.readString();
+  const resources = decoder.readArray(decodeResources);
 
   return {
     throttleTime: 0,
@@ -48,10 +48,10 @@ const decode = async rawData => {
     errorCode,
     errorMessage,
     resources,
-  }
-}
+  };
+};
 
 module.exports = {
   decode,
   parse,
-}
+};

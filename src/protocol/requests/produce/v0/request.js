@@ -1,6 +1,6 @@
-const Encoder = require('../../../encoder')
-const { Produce: apiKey } = require('../../apiKeys')
-const MessageSet = require('../../../messageSet')
+const Encoder = require("../../../encoder");
+const { Produce: apiKey } = require("../../apiKeys");
+const MessageSet = require("../../../messageSet");
 
 /**
  * Produce Request (Version: 0) => acks timeout [topic_data]
@@ -63,24 +63,21 @@ const MessageSet = require('../../../messageSet')
 module.exports = ({ acks, timeout, topicData }) => ({
   apiKey,
   apiVersion: 0,
-  apiName: 'Produce',
+  apiName: "Produce",
   expectResponse: () => acks !== 0,
   encode: async () => {
     return new Encoder()
       .writeInt16(acks)
       .writeInt32(timeout)
-      .writeArray(topicData.map(encodeTopic))
+      .writeArray(topicData.map(encodeTopic));
   },
-})
+});
 
 const encodeTopic = ({ topic, partitions }) => {
-  return new Encoder().writeString(topic).writeArray(partitions.map(encodePartitions))
-}
+  return new Encoder().writeString(topic).writeArray(partitions.map(encodePartitions));
+};
 
 const encodePartitions = ({ partition, messages }) => {
-  const messageSet = MessageSet({ messageVersion: 0, entries: messages })
-  return new Encoder()
-    .writeInt32(partition)
-    .writeInt32(messageSet.size())
-    .writeEncoder(messageSet)
-}
+  const messageSet = MessageSet({ messageVersion: 0, entries: messages });
+  return new Encoder().writeInt32(partition).writeInt32(messageSet.size()).writeEncoder(messageSet);
+};

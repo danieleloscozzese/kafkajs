@@ -1,4 +1,4 @@
-const { parse: parseV3, decode: decodeV3 } = require('../v3/response')
+const { parse: parseV3, decode: decodeV3 } = require("../v3/response");
 
 /**
  * Metadata Response (Version: 4) => throttle_time_ms [brokers] cluster_id controller_id [topic_metadata]
@@ -25,4 +25,4 @@ const { parse: parseV3, decode: decodeV3 } = require('../v3/response')
 module.exports = {
   parse: parseV3,
   decode: decodeV3,
-}
+};

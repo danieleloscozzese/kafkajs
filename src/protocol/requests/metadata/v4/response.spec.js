@@ -1,36 +1,36 @@
-const { decode, parse } = require('./response')
+const { decode, parse } = require("./response");
 
-describe('Protocol > Requests > Metadata > v4', () => {
-  test('response', async () => {
-    const data = await decode(Buffer.from(require('../fixtures/v4_response.json')))
+describe("Protocol > Requests > Metadata > v4", () => {
+  test("response", async () => {
+    const data = await decode(Buffer.from(require("../fixtures/v4_response.json")));
     expect(data).toEqual({
       throttleTime: 0,
       brokers: [
         {
           nodeId: 2,
-          host: '192.168.1.173',
+          host: "192.168.1.173",
           port: 9098,
           rack: null,
         },
         {
           nodeId: 1,
-          host: '192.168.1.173',
+          host: "192.168.1.173",
           port: 9095,
           rack: null,
         },
         {
           nodeId: 0,
-          host: '192.168.1.173',
+          host: "192.168.1.173",
           port: 9092,
           rack: null,
         },
       ],
-      clusterId: 'Q0WO3u_TTAeslFDJWiiGvA',
+      clusterId: "Q0WO3u_TTAeslFDJWiiGvA",
       controllerId: 1,
       topicMetadata: [
         {
           topicErrorCode: 0,
-          topic: 'test-topic-66d1df55ec27e033d726',
+          topic: "test-topic-66d1df55ec27e033d726",
           isInternal: false,
           partitionMetadata: [
             {
@@ -43,8 +43,8 @@ describe('Protocol > Requests > Metadata > v4', () => {
           ],
         },
       ],
-    })
+    });
 
-    await expect(parse(data)).resolves.toBeTruthy()
-  })
-})
+    await expect(parse(data)).resolves.toBeTruthy();
+  });
+});

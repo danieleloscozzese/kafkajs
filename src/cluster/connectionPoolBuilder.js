@@ -1,5 +1,5 @@
-const { KafkaJSConnectionError, KafkaJSNonRetriableError } = require('../errors')
-const ConnectionPool = require('../network/connectionPool')
+const { KafkaJSConnectionError, KafkaJSNonRetriableError } = require("../errors");
+const ConnectionPool = require("../network/connectionPool");
 
 /**
  * @typedef {Object} ConnectionPoolBuilder
@@ -37,63 +37,63 @@ module.exports = ({
   instrumentationEmitter = null,
   reauthenticationThreshold,
 }) => {
-  let index = 0
+  let index = 0;
 
-  const isValidBroker = broker => {
-    return broker && typeof broker === 'string' && broker.length > 0
-  }
+  const isValidBroker = (broker) => {
+    return broker && typeof broker === "string" && broker.length > 0;
+  };
 
-  const validateBrokers = brokers => {
+  const validateBrokers = (brokers) => {
     if (!brokers) {
-      throw new KafkaJSNonRetriableError(`Failed to connect: brokers should not be null`)
+      throw new KafkaJSNonRetriableError(`Failed to connect: brokers should not be null`);
     }
 
     if (Array.isArray(brokers)) {
       if (!brokers.length) {
-        throw new KafkaJSNonRetriableError(`Failed to connect: brokers array is empty`)
+        throw new KafkaJSNonRetriableError(`Failed to connect: brokers array is empty`);
       }
 
       brokers.forEach((broker, index) => {
         if (!isValidBroker(broker)) {
           throw new KafkaJSNonRetriableError(
-            `Failed to connect: broker at index ${index} is invalid "${typeof broker}"`
-          )
+            `Failed to connect: broker at index ${index} is invalid "${typeof broker}"`,
+          );
         }
-      })
+      });
     }
-  }
+  };
 
   const getBrokers = async () => {
-    let list
+    let list;
 
-    if (typeof brokers === 'function') {
+    if (typeof brokers === "function") {
       try {
-        list = await brokers()
+        list = await brokers();
       } catch (e) {
         const wrappedError = new KafkaJSConnectionError(
-          `Failed to connect: "config.brokers" threw: ${e.message}`
-        )
-        wrappedError.stack = `${wrappedError.name}\n  Caused by: ${e.stack}`
-        throw wrappedError
+          `Failed to connect: "config.brokers" threw: ${e.message}`,
+        );
+        wrappedError.stack = `${wrappedError.name}\n  Caused by: ${e.stack}`;
+        throw wrappedError;
       }
     } else {
-      list = brokers
+      list = brokers;
     }
 
-    validateBrokers(list)
+    validateBrokers(list);
 
-    return list
-  }
+    return list;
+  };
 
   return {
     build: async ({ host, port, rack } = {}) => {
       if (!host) {
-        const list = await getBrokers()
+        const list = await getBrokers();
 
-        const randomBroker = list[index++ % list.length]
+        const randomBroker = list[index++ % list.length];
 
-        host = randomBroker.split(':')[0]
-        port = Number(randomBroker.split(':')[1])
+        host = randomBroker.split(":")[0];
+        port = Number(randomBroker.split(":")[1]);
       }
 
       return new ConnectionPool({
@@ -111,7 +111,7 @@ module.exports = ({
         instrumentationEmitter,
         logger,
         reauthenticationThreshold,
-      })
+      });
     },
-  }
-}
+  };
+};

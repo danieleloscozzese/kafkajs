@@ -1,5 +1,5 @@
-const Decoder = require('../../../decoder')
-const { failure, createErrorFromCode } = require('../../../error')
+const Decoder = require("../../../decoder");
+const { failure, createErrorFromCode } = require("../../../error");
 
 /**
  * Produce Response (Version: 3) => [responses] throttle_time_ms
@@ -13,42 +13,42 @@ const { failure, createErrorFromCode } = require('../../../error')
  *   throttle_time_ms => INT32
  */
 
-const partition = decoder => ({
+const partition = (decoder) => ({
   partition: decoder.readInt32(),
   errorCode: decoder.readInt16(),
   baseOffset: decoder.readInt64().toString(),
   logAppendTime: decoder.readInt64().toString(),
-})
+});
 
-const decode = async rawData => {
-  const decoder = new Decoder(rawData)
-  const topics = decoder.readArray(decoder => ({
+const decode = async (rawData) => {
+  const decoder = new Decoder(rawData);
+  const topics = decoder.readArray((decoder) => ({
     topicName: decoder.readString(),
     partitions: decoder.readArray(partition),
-  }))
+  }));
 
-  const throttleTime = decoder.readInt32()
+  const throttleTime = decoder.readInt32();
 
   return {
     topics,
     throttleTime,
-  }
-}
+  };
+};
 
-const parse = async data => {
-  const errors = data.topics.flatMap(response => {
-    return response.partitions.filter(partition => failure(partition.errorCode))
-  })
+const parse = async (data) => {
+  const errors = data.topics.flatMap((response) => {
+    return response.partitions.filter((partition) => failure(partition.errorCode));
+  });
 
   if (errors.length > 0) {
-    const { errorCode } = errors[0]
-    throw createErrorFromCode(errorCode)
+    const { errorCode } = errors[0];
+    throw createErrorFromCode(errorCode);
   }
 
-  return data
-}
+  return data;
+};
 
 module.exports = {
   decode,
   parse,
-}
+};

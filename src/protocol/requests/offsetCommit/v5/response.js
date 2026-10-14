@@ -1,4 +1,4 @@
-const { parse, decode } = require('../v4/response')
+const { parse, decode } = require("../v4/response");
 
 /**
  * OffsetCommit Response (Version: 5) => throttle_time_ms [responses]
@@ -12,4 +12,4 @@ const { parse, decode } = require('../v4/response')
 module.exports = {
   decode,
   parse,
-}
+};

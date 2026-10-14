@@ -1,4 +1,4 @@
-const { parse, decode } = require('../v2/response')
+const { parse, decode } = require("../v2/response");
 
 /**
  * Heartbeat Response (Version: 3) => throttle_time_ms error_code
@@ -8,4 +8,4 @@ const { parse, decode } = require('../v2/response')
 module.exports = {
   decode,
   parse,
-}
+};

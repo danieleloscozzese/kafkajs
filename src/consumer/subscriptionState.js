@@ -1,14 +1,14 @@
-const createState = topic => ({
+const createState = (topic) => ({
   topic,
   paused: new Set(),
   pauseAll: false,
   resumed: new Set(),
-})
+});
 
 module.exports = class SubscriptionState {
   constructor() {
-    this.assignedPartitionsByTopic = {}
-    this.subscriptionStatesByTopic = {}
+    this.assignedPartitionsByTopic = {};
+    this.subscriptionStatesByTopic = {};
   }
 
   /**
@@ -19,10 +19,10 @@ module.exports = class SubscriptionState {
   assign(topicPartitions = []) {
     this.assignedPartitionsByTopic = topicPartitions.reduce(
       (assigned, { topic, partitions = [] }) => {
-        return { ...assigned, [topic]: { topic, partitions } }
+        return { ...assigned, [topic]: { topic, partitions } };
       },
-      {}
-    )
+      {},
+    );
   }
 
   /**
@@ -30,22 +30,22 @@ module.exports = class SubscriptionState {
    */
   pause(topicPartitions = []) {
     topicPartitions.forEach(({ topic, partitions }) => {
-      const state = this.subscriptionStatesByTopic[topic] || createState(topic)
+      const state = this.subscriptionStatesByTopic[topic] || createState(topic);
 
-      if (typeof partitions === 'undefined') {
-        state.paused.clear()
-        state.resumed.clear()
-        state.pauseAll = true
+      if (typeof partitions === "undefined") {
+        state.paused.clear();
+        state.resumed.clear();
+        state.pauseAll = true;
       } else if (Array.isArray(partitions)) {
-        partitions.forEach(partition => {
-          state.paused.add(partition)
-          state.resumed.delete(partition)
-        })
-        state.pauseAll = false
+        partitions.forEach((partition) => {
+          state.paused.add(partition);
+          state.resumed.delete(partition);
+        });
+        state.pauseAll = false;
       }
 
-      this.subscriptionStatesByTopic[topic] = state
-    })
+      this.subscriptionStatesByTopic[topic] = state;
+    });
   }
 
   /**
@@ -53,24 +53,24 @@ module.exports = class SubscriptionState {
    */
   resume(topicPartitions = []) {
     topicPartitions.forEach(({ topic, partitions }) => {
-      const state = this.subscriptionStatesByTopic[topic] || createState(topic)
+      const state = this.subscriptionStatesByTopic[topic] || createState(topic);
 
-      if (typeof partitions === 'undefined') {
-        state.paused.clear()
-        state.resumed.clear()
-        state.pauseAll = false
+      if (typeof partitions === "undefined") {
+        state.paused.clear();
+        state.resumed.clear();
+        state.pauseAll = false;
       } else if (Array.isArray(partitions)) {
-        partitions.forEach(partition => {
-          state.paused.delete(partition)
+        partitions.forEach((partition) => {
+          state.paused.delete(partition);
 
           if (state.pauseAll) {
-            state.resumed.add(partition)
+            state.resumed.add(partition);
           }
-        })
+        });
       }
 
-      this.subscriptionStatesByTopic[topic] = state
-    })
+      this.subscriptionStatesByTopic[topic] = state;
+    });
   }
 
   /**
@@ -81,7 +81,7 @@ module.exports = class SubscriptionState {
     return Object.values(this.assignedPartitionsByTopic).map(({ topic, partitions }) => ({
       topic,
       partitions: partitions.sort(),
-    }))
+    }));
   }
 
   /**
@@ -91,8 +91,8 @@ module.exports = class SubscriptionState {
   active() {
     return Object.values(this.assignedPartitionsByTopic).map(({ topic, partitions }) => ({
       topic,
-      partitions: partitions.filter(partition => !this.isPaused(topic, partition)).sort(),
-    }))
+      partitions: partitions.filter((partition) => !this.isPaused(topic, partition)).sort(),
+    }));
   }
 
   /**
@@ -103,21 +103,21 @@ module.exports = class SubscriptionState {
     return Object.values(this.assignedPartitionsByTopic)
       .map(({ topic, partitions }) => ({
         topic,
-        partitions: partitions.filter(partition => this.isPaused(topic, partition)).sort(),
+        partitions: partitions.filter((partition) => this.isPaused(topic, partition)).sort(),
       }))
-      .filter(({ partitions }) => partitions.length !== 0)
+      .filter(({ partitions }) => partitions.length !== 0);
   }
 
   isPaused(topic, partition) {
-    const state = this.subscriptionStatesByTopic[topic]
+    const state = this.subscriptionStatesByTopic[topic];
 
     if (!state) {
-      return false
+      return false;
     }
 
-    const partitionResumed = state.resumed.has(partition)
-    const partitionPaused = state.paused.has(partition)
+    const partitionResumed = state.resumed.has(partition);
+    const partitionPaused = state.paused.has(partition);
 
-    return (state.pauseAll && !partitionResumed) || partitionPaused
+    return (state.pauseAll && !partitionResumed) || partitionPaused;
   }
-}
+};

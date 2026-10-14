@@ -1,14 +1,14 @@
-const { createCluster, secureRandom } = require('testHelpers')
+const { createCluster, secureRandom } = require("testHelpers");
 
-describe('Cluster > findLeaderForPartitions', () => {
-  let cluster, topic
+describe("Cluster > findLeaderForPartitions", () => {
+  let cluster, topic;
 
   beforeEach(() => {
-    topic = `test-topic-${secureRandom()}`
-    cluster = createCluster()
-  })
+    topic = `test-topic-${secureRandom()}`;
+    cluster = createCluster();
+  });
 
-  test('returns the partition metadata of a topic', async () => {
+  test("returns the partition metadata of a topic", async () => {
     cluster.brokerPool.metadata = {
       topicMetadata: [
         {
@@ -59,13 +59,13 @@ describe('Cluster > findLeaderForPartitions', () => {
           ],
         },
       ],
-    }
+    };
 
-    const partitions = [0, 5]
-    expect(cluster.findLeaderForPartitions(topic, partitions)).toEqual({ '0': [0], '2': [5] })
-  })
+    const partitions = [0, 5];
+    expect(cluster.findLeaderForPartitions(topic, partitions)).toEqual({ 0: [0], 2: [5] });
+  });
 
-  it('does not include leaders for topics without metadata', () => {
+  it("does not include leaders for topics without metadata", () => {
     cluster.brokerPool.metadata = {
       topicMetadata: [
         {
@@ -81,10 +81,10 @@ describe('Cluster > findLeaderForPartitions', () => {
           ],
         },
       ],
-    }
+    };
 
-    const anotherTopic = `test-topic-${secureRandom()}`
-    const partitions = [0]
-    expect(cluster.findLeaderForPartitions(anotherTopic, partitions)).toEqual({})
-  })
-})
+    const anotherTopic = `test-topic-${secureRandom()}`;
+    const partitions = [0];
+    expect(cluster.findLeaderForPartitions(anotherTopic, partitions)).toEqual({});
+  });
+});

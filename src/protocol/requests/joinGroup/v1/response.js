@@ -1,4 +1,4 @@
-const { parse, decode } = require('../v0/response')
+const { parse, decode } = require("../v0/response");
 
 /**
  * JoinGroup Response (Version: 1) => error_code generation_id group_protocol leader_id member_id [members]
@@ -15,4 +15,4 @@ const { parse, decode } = require('../v0/response')
 module.exports = {
   decode,
   parse,
-}
+};

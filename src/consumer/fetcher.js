@@ -1,4 +1,4 @@
-const EventEmitter = require('events')
+const EventEmitter = require("events");
 
 /**
  * Fetches data from all assigned nodes, waits for workerQueue to drain and repeats.
@@ -18,69 +18,69 @@ const createFetcher = ({
   fetch,
   logger: rootLogger,
 }) => {
-  const logger = rootLogger.namespace(`Fetcher ${nodeId}`)
-  const emitter = new EventEmitter()
-  let isRunning = false
+  const logger = rootLogger.namespace(`Fetcher ${nodeId}`);
+  const emitter = new EventEmitter();
+  let isRunning = false;
 
-  const getWorkerQueue = () => workerQueue
-  const assignmentKey = ({ topic, partition }) => `${topic}|${partition}`
-  const getAssignedFetcher = batch => partitionAssignments.get(assignmentKey(batch))
-  const assignTopicPartition = batch => partitionAssignments.set(assignmentKey(batch), nodeId)
-  const unassignTopicPartition = batch => partitionAssignments.delete(assignmentKey(batch))
-  const filterUnassignedBatches = batches =>
-    batches.filter(batch => {
-      const assignedFetcher = getAssignedFetcher(batch)
+  const getWorkerQueue = () => workerQueue;
+  const assignmentKey = ({ topic, partition }) => `${topic}|${partition}`;
+  const getAssignedFetcher = (batch) => partitionAssignments.get(assignmentKey(batch));
+  const assignTopicPartition = (batch) => partitionAssignments.set(assignmentKey(batch), nodeId);
+  const unassignTopicPartition = (batch) => partitionAssignments.delete(assignmentKey(batch));
+  const filterUnassignedBatches = (batches) =>
+    batches.filter((batch) => {
+      const assignedFetcher = getAssignedFetcher(batch);
       if (assignedFetcher != null && assignedFetcher !== nodeId) {
         logger.info(
-          'Filtering out batch due to partition already being processed by another fetcher',
+          "Filtering out batch due to partition already being processed by another fetcher",
           {
             topic: batch.topic,
             partition: batch.partition,
             assignedFetcher: assignedFetcher,
             fetcher: nodeId,
-          }
-        )
-        return false
+          },
+        );
+        return false;
       }
 
-      return true
-    })
+      return true;
+    });
 
   const start = async () => {
-    if (isRunning) return
-    isRunning = true
+    if (isRunning) return;
+    isRunning = true;
 
     while (isRunning) {
       try {
-        const batches = await fetch(nodeId)
+        const batches = await fetch(nodeId);
         if (isRunning) {
-          const availableBatches = filterUnassignedBatches(batches)
+          const availableBatches = filterUnassignedBatches(batches);
 
           if (availableBatches.length > 0) {
-            availableBatches.forEach(assignTopicPartition)
+            availableBatches.forEach(assignTopicPartition);
             try {
-              await workerQueue.push(...availableBatches)
+              await workerQueue.push(...availableBatches);
             } finally {
-              availableBatches.forEach(unassignTopicPartition)
+              availableBatches.forEach(unassignTopicPartition);
             }
           }
         }
       } catch (error) {
-        isRunning = false
-        emitter.emit('end')
-        throw error
+        isRunning = false;
+        emitter.emit("end");
+        throw error;
       }
     }
-    emitter.emit('end')
-  }
+    emitter.emit("end");
+  };
 
   const stop = async () => {
-    if (!isRunning) return
-    isRunning = false
-    await new Promise(resolve => emitter.once('end', () => resolve()))
-  }
+    if (!isRunning) return;
+    isRunning = false;
+    await new Promise((resolve) => emitter.once("end", () => resolve()));
+  };
 
-  return { start, stop, getWorkerQueue }
-}
+  return { start, stop, getWorkerQueue };
+};
 
-module.exports = createFetcher
+module.exports = createFetcher;

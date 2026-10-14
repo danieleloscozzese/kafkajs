@@ -26,4 +26,4 @@ module.exports = {
    * Grants access.
    */
   ALLOW: 3,
-}
+};

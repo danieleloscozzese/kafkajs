@@ -1,5 +1,5 @@
-const ISOLATION_LEVEL = require('../../../isolationLevel')
-const requestV5 = require('../v5/request')
+const ISOLATION_LEVEL = require("../../../isolationLevel");
+const requestV5 = require("../v5/request");
 
 /**
  * Fetch Request (Version: 6) => replica_id max_wait_time min_bytes max_bytes isolation_level [topics]
@@ -34,5 +34,5 @@ module.exports = ({
       topics,
       isolationLevel,
     }),
-    { apiVersion: 6 }
-  )
+    { apiVersion: 6 },
+  );

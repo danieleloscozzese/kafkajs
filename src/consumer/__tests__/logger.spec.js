@@ -1,15 +1,15 @@
-const createConsumer = require('../index')
+const createConsumer = require("../index");
 
-const { createCluster, newLogger } = require('testHelpers')
+const { createCluster, newLogger } = require("testHelpers");
 
-describe('Consumer', () => {
-  it('gives access to its logger', () => {
+describe("Consumer", () => {
+  it("gives access to its logger", () => {
     expect(
       createConsumer({
         cluster: createCluster(),
-        groupId: 'test-consumer',
+        groupId: "test-consumer",
         logger: newLogger(),
-      }).logger()
-    ).toMatchSnapshot()
-  })
-})
+      }).logger(),
+    ).toMatchSnapshot();
+  });
+});

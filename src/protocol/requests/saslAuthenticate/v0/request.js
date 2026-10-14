@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { SaslAuthenticate: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { SaslAuthenticate: apiKey } = require("../../apiKeys");
 
 /**
  * SaslAuthenticate Request (Version: 0) => sasl_auth_bytes
@@ -12,8 +12,8 @@ const { SaslAuthenticate: apiKey } = require('../../apiKeys')
 module.exports = ({ authBytes }) => ({
   apiKey,
   apiVersion: 0,
-  apiName: 'SaslAuthenticate',
+  apiName: "SaslAuthenticate",
   encode: async () => {
-    return new Encoder().writeBuffer(authBytes)
+    return new Encoder().writeBuffer(authBytes);
   },
-})
+});

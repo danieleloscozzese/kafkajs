@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { ListPartitionReassignments: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { ListPartitionReassignments: apiKey } = require("../../apiKeys");
 
 /**
  * ListPartitionReassignments Request (Version: 0) => timeout_ms [topics] TAG_BUFFER
@@ -12,23 +12,23 @@ const { ListPartitionReassignments: apiKey } = require('../../apiKeys')
 module.exports = ({ topics = null, timeout = 5000 }) => ({
   apiKey,
   apiVersion: 0,
-  apiName: 'ListPartitionReassignments',
+  apiName: "ListPartitionReassignments",
   encode: async () => {
     return new Encoder()
       .writeUVarIntBytes()
       .writeInt32(timeout)
       .writeUVarIntArray(topics === null ? topics : topics.map(encodeTopics))
-      .writeUVarIntBytes()
+      .writeUVarIntBytes();
   },
-})
+});
 
 const encodeTopics = ({ topic, partitions }) => {
   return new Encoder()
     .writeUVarIntString(topic)
     .writeUVarIntArray(partitions.map(encodePartitions))
-    .writeUVarIntBytes()
-}
+    .writeUVarIntBytes();
+};
 
-const encodePartitions = partition => {
-  return new Encoder().writeInt32(partition)
-}
+const encodePartitions = (partition) => {
+  return new Encoder().writeInt32(partition);
+};

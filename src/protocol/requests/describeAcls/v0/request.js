@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { DescribeAcls: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { DescribeAcls: apiKey } = require("../../apiKeys");
 
 /**
  * DescribeAcls Request (Version: 0) => resource_type resource_name principal host operation permission_type
@@ -14,7 +14,7 @@ const { DescribeAcls: apiKey } = require('../../apiKeys')
 module.exports = ({ resourceType, resourceName, principal, host, operation, permissionType }) => ({
   apiKey,
   apiVersion: 0,
-  apiName: 'DescribeAcls',
+  apiName: "DescribeAcls",
   encode: async () => {
     return new Encoder()
       .writeInt8(resourceType)
@@ -22,6 +22,6 @@ module.exports = ({ resourceType, resourceName, principal, host, operation, perm
       .writeString(principal)
       .writeString(host)
       .writeInt8(operation)
-      .writeInt8(permissionType)
+      .writeInt8(permissionType);
   },
-})
+});

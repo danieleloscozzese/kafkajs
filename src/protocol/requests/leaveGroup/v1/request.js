@@ -1,4 +1,4 @@
-const requestV0 = require('../v0/request')
+const requestV0 = require("../v0/request");
 
 /**
  * LeaveGroup Request (Version: 1) => group_id member_id
@@ -7,4 +7,4 @@ const requestV0 = require('../v0/request')
  */
 
 module.exports = ({ groupId, memberId }) =>
-  Object.assign(requestV0({ groupId, memberId }), { apiVersion: 1 })
+  Object.assign(requestV0({ groupId, memberId }), { apiVersion: 1 });

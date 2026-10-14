@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { DescribeConfigs: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { DescribeConfigs: apiKey } = require("../../apiKeys");
 
 /**
  * DescribeConfigs Request (Version: 1) => [resources] include_synonyms
@@ -17,15 +17,12 @@ const { DescribeConfigs: apiKey } = require('../../apiKeys')
 module.exports = ({ resources, includeSynonyms = false }) => ({
   apiKey,
   apiVersion: 1,
-  apiName: 'DescribeConfigs',
+  apiName: "DescribeConfigs",
   encode: async () => {
-    return new Encoder().writeArray(resources.map(encodeResource)).writeBoolean(includeSynonyms)
+    return new Encoder().writeArray(resources.map(encodeResource)).writeBoolean(includeSynonyms);
   },
-})
+});
 
 const encodeResource = ({ type, name, configNames = [] }) => {
-  return new Encoder()
-    .writeInt8(type)
-    .writeString(name)
-    .writeNullableArray(configNames)
-}
+  return new Encoder().writeInt8(type).writeString(name).writeNullableArray(configNames);
+};

@@ -1,33 +1,33 @@
-const Decoder = require('../../../decoder')
-const { failure, createErrorFromCode, failIfVersionNotSupported } = require('../../../error')
+const Decoder = require("../../../decoder");
+const { failure, createErrorFromCode, failIfVersionNotSupported } = require("../../../error");
 
 /**
  * AddOffsetsToTxn Response (Version: 0) => throttle_time_ms error_code
  *   throttle_time_ms => INT32
  *   error_code => INT16
  */
-const decode = async rawData => {
-  const decoder = new Decoder(rawData)
-  const throttleTime = decoder.readInt32()
-  const errorCode = decoder.readInt16()
+const decode = async (rawData) => {
+  const decoder = new Decoder(rawData);
+  const throttleTime = decoder.readInt32();
+  const errorCode = decoder.readInt16();
 
-  failIfVersionNotSupported(errorCode)
+  failIfVersionNotSupported(errorCode);
 
   return {
     throttleTime,
     errorCode,
-  }
-}
+  };
+};
 
-const parse = async data => {
+const parse = async (data) => {
   if (failure(data.errorCode)) {
-    throw createErrorFromCode(data.errorCode)
+    throw createErrorFromCode(data.errorCode);
   }
 
-  return data
-}
+  return data;
+};
 
 module.exports = {
   decode,
   parse,
-}
+};

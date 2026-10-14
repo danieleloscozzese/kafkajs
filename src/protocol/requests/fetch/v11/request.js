@@ -1,6 +1,6 @@
-const Encoder = require('../../../encoder')
-const { Fetch: apiKey } = require('../../apiKeys')
-const ISOLATION_LEVEL = require('../../../isolationLevel')
+const Encoder = require("../../../encoder");
+const { Fetch: apiKey } = require("../../apiKeys");
+const ISOLATION_LEVEL = require("../../../isolationLevel");
 
 /**
  * Allow consumers to fetch from closest replica
@@ -36,7 +36,7 @@ module.exports = ({
   minBytes,
   maxBytes,
   topics,
-  rackId = '',
+  rackId = "",
   isolationLevel = ISOLATION_LEVEL.READ_COMMITTED,
   sessionId = 0,
   sessionEpoch = -1,
@@ -44,7 +44,7 @@ module.exports = ({
 }) => ({
   apiKey,
   apiVersion: 11,
-  apiName: 'Fetch',
+  apiName: "Fetch",
   encode: async () => {
     return new Encoder()
       .writeInt32(replicaId)
@@ -56,17 +56,17 @@ module.exports = ({
       .writeInt32(sessionEpoch)
       .writeArray(topics.map(encodeTopic))
       .writeArray(forgottenTopics.map(encodeForgottenTopics))
-      .writeString(rackId)
+      .writeString(rackId);
   },
-})
+});
 
 const encodeForgottenTopics = ({ topic, partitions }) => {
-  return new Encoder().writeString(topic).writeArray(partitions)
-}
+  return new Encoder().writeString(topic).writeArray(partitions);
+};
 
 const encodeTopic = ({ topic, partitions }) => {
-  return new Encoder().writeString(topic).writeArray(partitions.map(encodePartition))
-}
+  return new Encoder().writeString(topic).writeArray(partitions.map(encodePartition));
+};
 
 const encodePartition = ({
   partition,
@@ -80,5 +80,5 @@ const encodePartition = ({
     .writeInt32(currentLeaderEpoch)
     .writeInt64(fetchOffset)
     .writeInt64(logStartOffset)
-    .writeInt32(maxBytes)
-}
+    .writeInt32(maxBytes);
+};

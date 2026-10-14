@@ -1,4 +1,4 @@
-const { decode, parse } = require('../v9/response')
+const { decode, parse } = require("../v9/response");
 
 /**
  * Fetch Response (Version: 10) => throttle_time_ms error_code session_id [responses]
@@ -23,4 +23,4 @@ const { decode, parse } = require('../v9/response')
 module.exports = {
   decode,
   parse,
-}
+};

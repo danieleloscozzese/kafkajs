@@ -5,16 +5,16 @@
  * also known as CRC32 Castagnoli
  * based on: https://github.com/ashi009/node-fast-crc32c/blob/master/impls/js_crc32c.js
  */
-const crc32C = buffer => {
-  let crc = 0 ^ -1
+const crc32C = (buffer) => {
+  let crc = 0 ^ -1;
   for (let i = 0; i < buffer.length; i++) {
-    crc = T[(crc ^ buffer[i]) & 0xff] ^ (crc >>> 8)
+    crc = T[(crc ^ buffer[i]) & 0xff] ^ (crc >>> 8);
   }
 
-  return (crc ^ -1) >>> 0
-}
+  return (crc ^ -1) >>> 0;
+};
 
-module.exports = crc32C
+module.exports = crc32C;
 
 // prettier-ignore
 var T = new Int32Array([

@@ -1,4 +1,4 @@
-const requestV0 = require('../v0/request')
+const requestV0 = require("../v0/request");
 
 /**
  * InitProducerId Request (Version: 1) => transactional_id transaction_timeout_ms
@@ -7,4 +7,4 @@ const requestV0 = require('../v0/request')
  */
 
 module.exports = ({ transactionalId, transactionTimeout }) =>
-  Object.assign(requestV0({ transactionalId, transactionTimeout }), { apiVersion: 1 })
+  Object.assign(requestV0({ transactionalId, transactionTimeout }), { apiVersion: 1 });

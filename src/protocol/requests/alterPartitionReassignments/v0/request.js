@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { AlterPartitionReassignments: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { AlterPartitionReassignments: apiKey } = require("../../apiKeys");
 
 /**
  * AlterPartitionReassignments Request (Version: 0) => timeout_ms [topics] TAG_BUFFER
@@ -14,30 +14,30 @@ const { AlterPartitionReassignments: apiKey } = require('../../apiKeys')
 module.exports = ({ topics, timeout = 5000 }) => ({
   apiKey,
   apiVersion: 0,
-  apiName: 'AlterPartitionReassignments',
+  apiName: "AlterPartitionReassignments",
   encode: async () => {
     return new Encoder()
       .writeUVarIntBytes()
       .writeInt32(timeout)
       .writeUVarIntArray(topics.map(encodeTopics))
-      .writeUVarIntBytes()
+      .writeUVarIntBytes();
   },
-})
+});
 
 const encodeTopics = ({ topic, partitionAssignment }) => {
   return new Encoder()
     .writeUVarIntString(topic)
     .writeUVarIntArray(partitionAssignment.map(encodePartitionAssignment))
-    .writeUVarIntBytes()
-}
+    .writeUVarIntBytes();
+};
 
 const encodePartitionAssignment = ({ partition, replicas }) => {
   return new Encoder()
     .writeInt32(partition)
     .writeUVarIntArray(replicas.map(encodeReplicas))
-    .writeUVarIntBytes()
-}
+    .writeUVarIntBytes();
+};
 
-const encodeReplicas = replica => {
-  return new Encoder().writeInt32(replica)
-}
+const encodeReplicas = (replica) => {
+  return new Encoder().writeInt32(replica);
+};

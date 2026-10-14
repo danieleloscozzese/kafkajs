@@ -1,8 +1,8 @@
-const { promisify } = require('util')
-const zlib = require('zlib')
+const { promisify } = require("util");
+const zlib = require("zlib");
 
-const gzip = promisify(zlib.gzip)
-const unzip = promisify(zlib.unzip)
+const gzip = promisify(zlib.gzip);
+const unzip = promisify(zlib.unzip);
 
 module.exports = {
   /**
@@ -10,7 +10,7 @@ module.exports = {
    * @returns {Promise}
    */
   async compress(encoder) {
-    return await gzip(encoder.buffer)
+    return await gzip(encoder.buffer);
   },
 
   /**
@@ -18,6 +18,6 @@ module.exports = {
    * @returns {Promise}
    */
   async decompress(buffer) {
-    return await unzip(buffer)
+    return await unzip(buffer);
   },
-}
+};

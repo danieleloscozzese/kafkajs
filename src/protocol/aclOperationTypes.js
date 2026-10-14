@@ -62,4 +62,4 @@ module.exports = {
    * IDEMPOTENT_WRITE operation.
    */
   IDEMPOTENT_WRITE: 12,
-}
+};

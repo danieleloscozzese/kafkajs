@@ -1,5 +1,5 @@
-const Decoder = require('../../../decoder')
-const { parse: parseV0 } = require('../v0/response')
+const Decoder = require("../../../decoder");
+const { parse: parseV0 } = require("../v0/response");
 
 /**
  * DescribeGroups Response (Version: 1) => throttle_time_ms [groups]
@@ -18,35 +18,35 @@ const { parse: parseV0 } = require('../v0/response')
  *       member_assignment => BYTES
  */
 
-const decoderMember = decoder => ({
+const decoderMember = (decoder) => ({
   memberId: decoder.readString(),
   clientId: decoder.readString(),
   clientHost: decoder.readString(),
   memberMetadata: decoder.readBytes(),
   memberAssignment: decoder.readBytes(),
-})
+});
 
-const decodeGroup = decoder => ({
+const decodeGroup = (decoder) => ({
   errorCode: decoder.readInt16(),
   groupId: decoder.readString(),
   state: decoder.readString(),
   protocolType: decoder.readString(),
   protocol: decoder.readString(),
   members: decoder.readArray(decoderMember),
-})
+});
 
-const decode = async rawData => {
-  const decoder = new Decoder(rawData)
-  const throttleTime = decoder.readInt32()
-  const groups = decoder.readArray(decodeGroup)
+const decode = async (rawData) => {
+  const decoder = new Decoder(rawData);
+  const throttleTime = decoder.readInt32();
+  const groups = decoder.readArray(decodeGroup);
 
   return {
     throttleTime,
     groups,
-  }
-}
+  };
+};
 
 module.exports = {
   decode,
   parse: parseV0,
-}
+};

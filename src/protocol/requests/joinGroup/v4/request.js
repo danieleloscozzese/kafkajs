@@ -1,4 +1,4 @@
-const requestV3 = require('../v3/request')
+const requestV3 = require("../v3/request");
 
 /**
  * Starting in version 4, the client needs to issue a second request to join group
@@ -32,5 +32,5 @@ module.exports = ({
       protocolType,
       groupProtocols,
     }),
-    { apiVersion: 4 }
-  )
+    { apiVersion: 4 },
+  );

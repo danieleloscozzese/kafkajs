@@ -43,4 +43,4 @@ module.exports = {
    * A prefixed name defines a prefix for a resource, e.g. topics with names that start with 'foo'.
    */
   PREFIXED: 4,
-}
+};

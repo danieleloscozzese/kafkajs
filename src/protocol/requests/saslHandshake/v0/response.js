@@ -1,5 +1,5 @@
-const Decoder = require('../../../decoder')
-const { failure, createErrorFromCode, failIfVersionNotSupported } = require('../../../error')
+const Decoder = require("../../../decoder");
+const { failure, createErrorFromCode, failIfVersionNotSupported } = require("../../../error");
 
 /**
  * SaslHandshake Response (Version: 0) => error_code [enabled_mechanisms]
@@ -7,27 +7,27 @@ const { failure, createErrorFromCode, failIfVersionNotSupported } = require('../
  *    enabled_mechanisms => STRING
  */
 
-const decode = async rawData => {
-  const decoder = new Decoder(rawData)
-  const errorCode = decoder.readInt16()
+const decode = async (rawData) => {
+  const decoder = new Decoder(rawData);
+  const errorCode = decoder.readInt16();
 
-  failIfVersionNotSupported(errorCode)
+  failIfVersionNotSupported(errorCode);
 
   return {
     errorCode,
-    enabledMechanisms: decoder.readArray(decoder => decoder.readString()),
-  }
-}
+    enabledMechanisms: decoder.readArray((decoder) => decoder.readString()),
+  };
+};
 
-const parse = async data => {
+const parse = async (data) => {
   if (failure(data.errorCode)) {
-    throw createErrorFromCode(data.errorCode)
+    throw createErrorFromCode(data.errorCode);
   }
 
-  return data
-}
+  return data;
+};
 
 module.exports = {
   decode,
   parse,
-}
+};

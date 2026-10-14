@@ -1,11 +1,11 @@
-const Decoder = require('../../../decoder')
-const { KafkaJSMemberIdRequired } = require('../../../../errors')
+const Decoder = require("../../../decoder");
+const { KafkaJSMemberIdRequired } = require("../../../../errors");
 const {
   failure,
   createErrorFromCode,
   errorCodes,
   failIfVersionNotSupported,
-} = require('../../../error')
+} = require("../../../error");
 
 /**
  * JoinGroup Response (Version: 5) => throttle_time_ms error_code generation_id group_protocol leader_id member_id [members]
@@ -21,29 +21,29 @@ const {
  *     member_metadata => BYTES
  */
 const { code: MEMBER_ID_REQUIRED_ERROR_CODE } = errorCodes.find(
-  e => e.type === 'MEMBER_ID_REQUIRED'
-)
+  (e) => e.type === "MEMBER_ID_REQUIRED",
+);
 
-const parse = async data => {
+const parse = async (data) => {
   if (failure(data.errorCode)) {
     if (data.errorCode === MEMBER_ID_REQUIRED_ERROR_CODE) {
       throw new KafkaJSMemberIdRequired(createErrorFromCode(data.errorCode), {
         memberId: data.memberId,
-      })
+      });
     }
 
-    throw createErrorFromCode(data.errorCode)
+    throw createErrorFromCode(data.errorCode);
   }
 
-  return data
-}
+  return data;
+};
 
-const decode = async rawData => {
-  const decoder = new Decoder(rawData)
-  const throttleTime = decoder.readInt32()
-  const errorCode = decoder.readInt16()
+const decode = async (rawData) => {
+  const decoder = new Decoder(rawData);
+  const throttleTime = decoder.readInt32();
+  const errorCode = decoder.readInt16();
 
-  failIfVersionNotSupported(errorCode)
+  failIfVersionNotSupported(errorCode);
 
   return {
     throttleTime: 0,
@@ -53,15 +53,15 @@ const decode = async rawData => {
     groupProtocol: decoder.readString(),
     leaderId: decoder.readString(),
     memberId: decoder.readString(),
-    members: decoder.readArray(decoder => ({
+    members: decoder.readArray((decoder) => ({
       memberId: decoder.readString(),
       groupInstanceId: decoder.readString(),
       memberMetadata: decoder.readBytes(),
     })),
-  }
-}
+  };
+};
 
 module.exports = {
   decode,
   parse,
-}
+};

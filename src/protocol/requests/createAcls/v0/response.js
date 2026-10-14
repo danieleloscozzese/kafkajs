@@ -1,5 +1,5 @@
-const Decoder = require('../../../decoder')
-const { failure, createErrorFromCode } = require('../../../error')
+const Decoder = require("../../../decoder");
+const { failure, createErrorFromCode } = require("../../../error");
 
 /**
  * CreateAcls Response (Version: 0) => throttle_time_ms [creation_responses]
@@ -9,35 +9,35 @@ const { failure, createErrorFromCode } = require('../../../error')
  *     error_message => NULLABLE_STRING
  */
 
-const decodeCreationResponse = decoder => ({
+const decodeCreationResponse = (decoder) => ({
   errorCode: decoder.readInt16(),
   errorMessage: decoder.readString(),
-})
+});
 
-const decode = async rawData => {
-  const decoder = new Decoder(rawData)
-  const throttleTime = decoder.readInt32()
-  const creationResponses = decoder.readArray(decodeCreationResponse)
+const decode = async (rawData) => {
+  const decoder = new Decoder(rawData);
+  const throttleTime = decoder.readInt32();
+  const creationResponses = decoder.readArray(decodeCreationResponse);
 
   return {
     throttleTime,
     creationResponses,
-  }
-}
+  };
+};
 
-const parse = async data => {
+const parse = async (data) => {
   const creationResponsesWithError = data.creationResponses.filter(({ errorCode }) =>
-    failure(errorCode)
-  )
+    failure(errorCode),
+  );
 
   if (creationResponsesWithError.length > 0) {
-    throw createErrorFromCode(creationResponsesWithError[0].errorCode)
+    throw createErrorFromCode(creationResponsesWithError[0].errorCode);
   }
 
-  return data
-}
+  return data;
+};
 
 module.exports = {
   decode,
   parse,
-}
+};

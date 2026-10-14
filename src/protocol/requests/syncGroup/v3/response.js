@@ -1,4 +1,4 @@
-const { decode, parse } = require('../v2/response')
+const { decode, parse } = require("../v2/response");
 
 /**
  * SyncGroup Response (Version: 2) => throttle_time_ms error_code member_assignment
@@ -9,4 +9,4 @@ const { decode, parse } = require('../v2/response')
 module.exports = {
   decode,
   parse,
-}
+};

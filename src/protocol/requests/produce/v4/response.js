@@ -1,4 +1,4 @@
-const { decode, parse } = require('../v3/response')
+const { decode, parse } = require("../v3/response");
 
 /**
  * Produce Response (Version: 4) => [responses] throttle_time_ms
@@ -15,4 +15,4 @@ const { decode, parse } = require('../v3/response')
 module.exports = {
   decode,
   parse,
-}
+};

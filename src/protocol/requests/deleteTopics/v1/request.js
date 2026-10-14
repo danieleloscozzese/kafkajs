@@ -1,4 +1,4 @@
-const requestV0 = require('../v0/request')
+const requestV0 = require("../v0/request");
 
 /**
  * DeleteTopics Request (Version: 1) => [topics] timeout
@@ -7,4 +7,4 @@ const requestV0 = require('../v0/request')
  */
 
 module.exports = ({ topics, timeout }) =>
-  Object.assign(requestV0({ topics, timeout }), { apiVersion: 1 })
+  Object.assign(requestV0({ topics, timeout }), { apiVersion: 1 });

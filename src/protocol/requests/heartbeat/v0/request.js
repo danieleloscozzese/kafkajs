@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { Heartbeat: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { Heartbeat: apiKey } = require("../../apiKeys");
 
 /**
  * Heartbeat Request (Version: 0) => group_id group_generation_id member_id
@@ -11,11 +11,8 @@ const { Heartbeat: apiKey } = require('../../apiKeys')
 module.exports = ({ groupId, groupGenerationId, memberId }) => ({
   apiKey,
   apiVersion: 0,
-  apiName: 'Heartbeat',
+  apiName: "Heartbeat",
   encode: async () => {
-    return new Encoder()
-      .writeString(groupId)
-      .writeInt32(groupGenerationId)
-      .writeString(memberId)
+    return new Encoder().writeString(groupId).writeInt32(groupGenerationId).writeString(memberId);
   },
-})
+});

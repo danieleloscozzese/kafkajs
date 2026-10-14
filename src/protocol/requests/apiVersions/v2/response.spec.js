@@ -1,9 +1,9 @@
-const { unsupportedVersionResponse } = require('testHelpers')
-const { decode, parse } = require('./response')
+const { unsupportedVersionResponse } = require("testHelpers");
+const { decode, parse } = require("./response");
 
-describe('Protocol > Requests > ApiVersions > v2', () => {
-  test('response', async () => {
-    const data = await decode(Buffer.from(require('../fixtures/v1_response.json')))
+describe("Protocol > Requests > ApiVersions > v2", () => {
+  test("response", async () => {
+    const data = await decode(Buffer.from(require("../fixtures/v1_response.json")));
     expect(data).toEqual({
       apiVersions: [
         { apiKey: 0, maxVersion: 3, minVersion: 0 },
@@ -44,16 +44,16 @@ describe('Protocol > Requests > ApiVersions > v2', () => {
       errorCode: 0,
       clientSideThrottleTime: 0,
       throttleTime: 0,
-    })
+    });
 
-    await expect(parse(data)).resolves.toBeTruthy()
-  })
+    await expect(parse(data)).resolves.toBeTruthy();
+  });
 
   // https://github.com/tulios/kafkajs/issues/491
-  test('defaults throttle_time_ms if it is not provided in the response', async () => {
+  test("defaults throttle_time_ms if it is not provided in the response", async () => {
     const data = await decode(
-      Buffer.from(require('../fixtures/v1_response_missing_throttle_time.json'))
-    )
+      Buffer.from(require("../fixtures/v1_response_missing_throttle_time.json")),
+    );
     expect(data).toEqual({
       apiVersions: [
         { apiKey: 0, maxVersion: 3, minVersion: 0 },
@@ -94,12 +94,12 @@ describe('Protocol > Requests > ApiVersions > v2', () => {
       errorCode: 0,
       clientSideThrottleTime: 0,
       throttleTime: 0,
-    })
-  })
+    });
+  });
 
-  test('throws KafkaJSProtocolError if the api is not supported', async () => {
+  test("throws KafkaJSProtocolError if the api is not supported", async () => {
     await expect(decode(unsupportedVersionResponse())).rejects.toThrow(
-      /The version of API is not supported/
-    )
-  })
-})
+      /The version of API is not supported/,
+    );
+  });
+});

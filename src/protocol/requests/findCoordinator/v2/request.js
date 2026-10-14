@@ -1,4 +1,4 @@
-const requestV1 = require('../v1/request')
+const requestV1 = require("../v1/request");
 
 /**
  * FindCoordinator Request (Version: 2) => coordinator_key coordinator_type
@@ -7,4 +7,4 @@ const requestV1 = require('../v1/request')
  */
 
 module.exports = ({ coordinatorKey, coordinatorType }) =>
-  Object.assign(requestV1({ coordinatorKey, coordinatorType }), { apiVersion: 2 })
+  Object.assign(requestV1({ coordinatorKey, coordinatorType }), { apiVersion: 2 });

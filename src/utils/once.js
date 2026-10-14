@@ -1,10 +1,10 @@
-module.exports = fn => {
-  let called = false
+module.exports = (fn) => {
+  let called = false;
 
   return (...args) => {
     if (!called) {
-      called = true
-      return fn(...args)
+      called = true;
+      return fn(...args);
     }
-  }
-}
+  };
+};

@@ -1,8 +1,8 @@
-const seq = require('../utils/seq')
-const createFetcher = require('./fetcher')
-const createWorker = require('./worker')
-const createWorkerQueue = require('./workerQueue')
-const { KafkaJSFetcherRebalanceError, KafkaJSNoBrokerAvailableError } = require('../errors')
+const seq = require("../utils/seq");
+const createFetcher = require("./fetcher");
+const createWorker = require("./worker");
+const createWorkerQueue = require("./workerQueue");
+const { KafkaJSFetcherRebalanceError, KafkaJSNoBrokerAvailableError } = require("../errors");
 
 /** @typedef {ReturnType<typeof createFetchManager>} FetchManager */
 
@@ -22,78 +22,78 @@ const createFetchManager = ({
   handler,
   concurrency = 1,
 }) => {
-  const logger = rootLogger.namespace('FetchManager')
-  const workers = seq(concurrency, workerId => createWorker({ handler, workerId }))
-  const workerQueue = createWorkerQueue({ workers })
+  const logger = rootLogger.namespace("FetchManager");
+  const workers = seq(concurrency, (workerId) => createWorker({ handler, workerId }));
+  const workerQueue = createWorkerQueue({ workers });
 
-  let fetchers = []
+  let fetchers = [];
 
-  const getFetchers = () => fetchers
+  const getFetchers = () => fetchers;
 
   const createFetchers = () => {
-    const nodeIds = getNodeIds()
-    const partitionAssignments = new Map()
+    const nodeIds = getNodeIds();
+    const partitionAssignments = new Map();
 
     if (nodeIds.length === 0) {
-      throw new KafkaJSNoBrokerAvailableError()
+      throw new KafkaJSNoBrokerAvailableError();
     }
 
     const validateShouldRebalance = () => {
-      const current = getNodeIds()
+      const current = getNodeIds();
       const hasChanged =
-        nodeIds.length !== current.length || nodeIds.some(nodeId => !current.includes(nodeId))
+        nodeIds.length !== current.length || nodeIds.some((nodeId) => !current.includes(nodeId));
       if (hasChanged && current.length !== 0) {
-        throw new KafkaJSFetcherRebalanceError()
+        throw new KafkaJSFetcherRebalanceError();
       }
-    }
+    };
 
-    const fetchers = nodeIds.map(nodeId =>
+    const fetchers = nodeIds.map((nodeId) =>
       createFetcher({
         nodeId,
         workerQueue,
         partitionAssignments,
-        fetch: async nodeId => {
-          validateShouldRebalance()
-          return fetch(nodeId)
+        fetch: async (nodeId) => {
+          validateShouldRebalance();
+          return fetch(nodeId);
         },
         logger,
-      })
-    )
+      }),
+    );
 
-    logger.debug(`Created ${fetchers.length} fetchers`, { nodeIds, concurrency })
-    return fetchers
-  }
+    logger.debug(`Created ${fetchers.length} fetchers`, { nodeIds, concurrency });
+    return fetchers;
+  };
 
   const start = async () => {
-    logger.debug('Starting...')
+    logger.debug("Starting...");
 
     while (true) {
-      fetchers = createFetchers()
+      fetchers = createFetchers();
 
       try {
-        await Promise.all(fetchers.map(fetcher => fetcher.start()))
+        await Promise.all(fetchers.map((fetcher) => fetcher.start()));
       } catch (error) {
-        await stop()
+        await stop();
 
         if (error instanceof KafkaJSFetcherRebalanceError) {
-          logger.debug('Rebalancing fetchers...')
-          continue
+          logger.debug("Rebalancing fetchers...");
+          continue;
         }
 
-        throw error
+        throw error;
       }
 
-      break
+      break;
     }
-  }
+  };
 
   const stop = async () => {
-    logger.debug('Stopping fetchers...')
-    await Promise.all(fetchers.map(fetcher => fetcher.stop()))
-    logger.debug('Stopped fetchers')
-  }
+    logger.debug("Stopping fetchers...");
+    await Promise.all(fetchers.map((fetcher) => fetcher.stop()));
+    logger.debug("Stopped fetchers");
+  };
 
-  return { start, stop, getFetchers }
-}
+  return { start, stop, getFetchers };
+};
 
-module.exports = createFetchManager
+module.exports = createFetchManager;

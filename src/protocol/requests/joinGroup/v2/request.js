@@ -1,4 +1,4 @@
-const requestV1 = require('../v1/request')
+const requestV1 = require("../v1/request");
 
 /**
  * JoinGroup Request (Version: 2) => group_id session_timeout rebalance_timeout member_id protocol_type [group_protocols]
@@ -29,5 +29,5 @@ module.exports = ({
       protocolType,
       groupProtocols,
     }),
-    { apiVersion: 2 }
-  )
+    { apiVersion: 2 },
+  );

@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { SyncGroup: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { SyncGroup: apiKey } = require("../../apiKeys");
 
 /**
  * Version 3 adds group_instance_id to indicate member identity across restarts.
@@ -24,17 +24,17 @@ module.exports = ({
 }) => ({
   apiKey,
   apiVersion: 3,
-  apiName: 'SyncGroup',
+  apiName: "SyncGroup",
   encode: async () => {
     return new Encoder()
       .writeString(groupId)
       .writeInt32(generationId)
       .writeString(memberId)
       .writeString(groupInstanceId)
-      .writeArray(groupAssignment.map(encodeGroupAssignment))
+      .writeArray(groupAssignment.map(encodeGroupAssignment));
   },
-})
+});
 
 const encodeGroupAssignment = ({ memberId, memberAssignment }) => {
-  return new Encoder().writeString(memberId).writeBytes(memberAssignment)
-}
+  return new Encoder().writeString(memberId).writeBytes(memberAssignment);
+};

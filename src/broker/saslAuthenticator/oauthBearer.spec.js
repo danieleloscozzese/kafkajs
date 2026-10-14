@@ -1,26 +1,26 @@
-const { newLogger } = require('testHelpers')
-const oauthBearerAuthenticatorProvider = require('./oauthBearer')
+const { newLogger } = require("testHelpers");
+const oauthBearerAuthenticatorProvider = require("./oauthBearer");
 
-describe('Broker > SASL Authenticator > OAUTHBEARER', () => {
-  it('throws KafkaJSSASLAuthenticationError for missing oauthBearerProvider', async () => {
+describe("Broker > SASL Authenticator > OAUTHBEARER", () => {
+  it("throws KafkaJSSASLAuthenticationError for missing oauthBearerProvider", async () => {
     const oauthBearer = oauthBearerAuthenticatorProvider({})({
-      host: '',
+      host: "",
       port: 0,
       logger: newLogger(),
-    })
-    await expect(oauthBearer.authenticate()).rejects.toThrow('Missing OAuth bearer token provider')
-  })
+    });
+    await expect(oauthBearer.authenticate()).rejects.toThrow("Missing OAuth bearer token provider");
+  });
 
-  it('throws KafkaJSSASLAuthenticationError for invalid OAuth bearer token', async () => {
+  it("throws KafkaJSSASLAuthenticationError for invalid OAuth bearer token", async () => {
     async function oauthBearerProvider() {
-      return {}
+      return {};
     }
 
     const oauthBearer = oauthBearerAuthenticatorProvider({ oauthBearerProvider })({
-      host: '',
+      host: "",
       port: 0,
       logger: newLogger(),
-    })
-    await expect(oauthBearer.authenticate()).rejects.toThrow('Invalid OAuth bearer token')
-  })
-})
+    });
+    await expect(oauthBearer.authenticate()).rejects.toThrow("Invalid OAuth bearer token");
+  });
+});

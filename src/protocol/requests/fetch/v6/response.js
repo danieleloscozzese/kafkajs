@@ -1,4 +1,4 @@
-const { decode, parse } = require('../v5/response')
+const { decode, parse } = require("../v5/response");
 
 /**
  * Fetch Response (Version: 6) => throttle_time_ms [responses]
@@ -21,4 +21,4 @@ const { decode, parse } = require('../v5/response')
 module.exports = {
   decode,
   parse,
-}
+};

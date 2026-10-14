@@ -1,5 +1,5 @@
-const Decoder = require('../../../decoder')
-const { failure, createErrorFromCode } = require('../../../error')
+const Decoder = require("../../../decoder");
+const { failure, createErrorFromCode } = require("../../../error");
 
 /**
  * DeleteAcls Response (Version: 0) => throttle_time_ms [filter_responses]
@@ -18,7 +18,7 @@ const { failure, createErrorFromCode } = require('../../../error')
  *       permission_type => INT8
  */
 
-const decodeMatchingAcls = decoder => ({
+const decodeMatchingAcls = (decoder) => ({
   errorCode: decoder.readInt16(),
   errorMessage: decoder.readString(),
   resourceType: decoder.readInt8(),
@@ -27,49 +27,49 @@ const decodeMatchingAcls = decoder => ({
   host: decoder.readString(),
   operation: decoder.readInt8(),
   permissionType: decoder.readInt8(),
-})
+});
 
-const decodeFilterResponse = decoder => ({
+const decodeFilterResponse = (decoder) => ({
   errorCode: decoder.readInt16(),
   errorMessage: decoder.readString(),
   matchingAcls: decoder.readArray(decodeMatchingAcls),
-})
+});
 
-const decode = async rawData => {
-  const decoder = new Decoder(rawData)
-  const throttleTime = decoder.readInt32()
-  const filterResponses = decoder.readArray(decodeFilterResponse)
+const decode = async (rawData) => {
+  const decoder = new Decoder(rawData);
+  const throttleTime = decoder.readInt32();
+  const filterResponses = decoder.readArray(decodeFilterResponse);
 
   return {
     throttleTime,
     filterResponses,
-  }
-}
+  };
+};
 
-const parse = async data => {
+const parse = async (data) => {
   const filterResponsesWithError = data.filterResponses.filter(({ errorCode }) =>
-    failure(errorCode)
-  )
+    failure(errorCode),
+  );
 
   if (filterResponsesWithError.length > 0) {
-    throw createErrorFromCode(filterResponsesWithError[0].errorCode)
+    throw createErrorFromCode(filterResponsesWithError[0].errorCode);
   }
 
   for (const filterResponse of data.filterResponses) {
-    const matchingAcls = filterResponse.matchingAcls
-    const matchingAclsWithError = matchingAcls.filter(({ errorCode }) => failure(errorCode))
+    const matchingAcls = filterResponse.matchingAcls;
+    const matchingAclsWithError = matchingAcls.filter(({ errorCode }) => failure(errorCode));
 
     if (matchingAclsWithError.length > 0) {
-      throw createErrorFromCode(matchingAclsWithError[0].errorCode)
+      throw createErrorFromCode(matchingAclsWithError[0].errorCode);
     }
   }
 
-  return data
-}
+  return data;
+};
 
 module.exports = {
   decodeMatchingAcls,
   decodeFilterResponse,
   decode,
   parse,
-}
+};

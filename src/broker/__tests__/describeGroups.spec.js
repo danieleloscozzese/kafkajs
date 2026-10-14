@@ -1,58 +1,58 @@
-const Broker = require('../index')
+const Broker = require("../index");
 const {
   secureRandom,
   createConnectionPool,
   newLogger,
   retryProtocol,
   createCluster,
-} = require('testHelpers')
-const createConsumer = require('../../consumer')
+} = require("testHelpers");
+const createConsumer = require("../../consumer");
 
-describe('Broker > DescribeGroups', () => {
-  let groupId, topicName, seedBroker, broker, cluster, consumer
+describe("Broker > DescribeGroups", () => {
+  let groupId, topicName, seedBroker, broker, cluster, consumer;
 
   beforeEach(async () => {
-    groupId = `consumer-group-id-${secureRandom()}`
-    topicName = `test-topic-${secureRandom()}`
+    groupId = `consumer-group-id-${secureRandom()}`;
+    topicName = `test-topic-${secureRandom()}`;
     seedBroker = new Broker({
       connectionPool: createConnectionPool(),
       logger: newLogger(),
-    })
-    await seedBroker.connect()
+    });
+    await seedBroker.connect();
 
     const {
       coordinator: { host, port },
     } = await retryProtocol(
-      'GROUP_COORDINATOR_NOT_AVAILABLE',
-      async () => await seedBroker.findGroupCoordinator({ groupId })
-    )
+      "GROUP_COORDINATOR_NOT_AVAILABLE",
+      async () => await seedBroker.findGroupCoordinator({ groupId }),
+    );
 
     broker = new Broker({
       connectionPool: createConnectionPool({ host, port }),
       logger: newLogger(),
-    })
-    await broker.connect()
+    });
+    await broker.connect();
 
-    cluster = createCluster()
+    cluster = createCluster();
     consumer = createConsumer({
       cluster,
       groupId,
       maxWaitTimeInMs: 1,
       logger: newLogger(),
-    })
-  })
+    });
+  });
 
   afterEach(async () => {
-    consumer && (await consumer.disconnect())
-    seedBroker && (await seedBroker.disconnect())
-    broker && (await broker.disconnect())
-  })
+    consumer && (await consumer.disconnect());
+    seedBroker && (await seedBroker.disconnect());
+    broker && (await broker.disconnect());
+  });
 
-  test('request', async () => {
-    await consumer.connect()
-    await consumer.subscribe({ topic: topicName, fromBeginning: true })
-    await consumer.run({ eachMessage: jest.fn() })
-    const response = await broker.describeGroups({ groupIds: [groupId] })
+  test("request", async () => {
+    await consumer.connect();
+    await consumer.subscribe({ topic: topicName, fromBeginning: true });
+    await consumer.run({ eachMessage: jest.fn() });
+    const response = await broker.describeGroups({ groupIds: [groupId] });
 
     expect(response).toEqual({
       clientSideThrottleTime: expect.optional(0),
@@ -70,11 +70,11 @@ describe('Broker > DescribeGroups', () => {
               memberMetadata: expect.anything(),
             },
           ],
-          protocol: 'RoundRobinAssigner',
-          protocolType: 'consumer',
-          state: 'Stable',
+          protocol: "RoundRobinAssigner",
+          protocolType: "consumer",
+          state: "Stable",
         },
       ],
-    })
-  })
-})
+    });
+  });
+});

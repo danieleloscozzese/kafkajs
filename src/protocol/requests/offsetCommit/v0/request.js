@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { OffsetCommit: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { OffsetCommit: apiKey } = require("../../apiKeys");
 
 /**
  * OffsetCommit Request (Version: 0) => group_id [topics]
@@ -15,19 +15,16 @@ const { OffsetCommit: apiKey } = require('../../apiKeys')
 module.exports = ({ groupId, topics }) => ({
   apiKey,
   apiVersion: 0,
-  apiName: 'OffsetCommit',
+  apiName: "OffsetCommit",
   encode: async () => {
-    return new Encoder().writeString(groupId).writeArray(topics.map(encodeTopic))
+    return new Encoder().writeString(groupId).writeArray(topics.map(encodeTopic));
   },
-})
+});
 
 const encodeTopic = ({ topic, partitions }) => {
-  return new Encoder().writeString(topic).writeArray(partitions.map(encodePartition))
-}
+  return new Encoder().writeString(topic).writeArray(partitions.map(encodePartition));
+};
 
 const encodePartition = ({ partition, offset, metadata = null }) => {
-  return new Encoder()
-    .writeInt32(partition)
-    .writeInt64(offset)
-    .writeString(metadata)
-}
+  return new Encoder().writeInt32(partition).writeInt64(offset).writeString(metadata);
+};

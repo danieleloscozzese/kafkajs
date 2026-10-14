@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { GroupCoordinator: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { GroupCoordinator: apiKey } = require("../../apiKeys");
 
 /**
  * FindCoordinator Request (Version: 0) => group_id
@@ -9,8 +9,8 @@ const { GroupCoordinator: apiKey } = require('../../apiKeys')
 module.exports = ({ groupId }) => ({
   apiKey,
   apiVersion: 0,
-  apiName: 'GroupCoordinator',
+  apiName: "GroupCoordinator",
   encode: async () => {
-    return new Encoder().writeString(groupId)
+    return new Encoder().writeString(groupId);
   },
-})
+});

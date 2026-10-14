@@ -6,4 +6,4 @@ module.exports = {
   TOPIC: 2,
   BROKER: 4,
   BROKER_LOGGER: 8,
-}
+};

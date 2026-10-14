@@ -1,4 +1,4 @@
-const requestV3 = require('../v3/request')
+const requestV3 = require("../v3/request");
 
 /**
  * Produce Request (Version: 4) => transactional_id acks timeout [topic_data]
@@ -31,5 +31,5 @@ module.exports = ({
       compression,
       topicData,
     }),
-    { apiVersion: 4 }
-  )
+    { apiVersion: 4 },
+  );

@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { DeleteTopics: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { DeleteTopics: apiKey } = require("../../apiKeys");
 
 /**
  * DeleteTopics Request (Version: 0) => [topics] timeout
@@ -9,8 +9,8 @@ const { DeleteTopics: apiKey } = require('../../apiKeys')
 module.exports = ({ topics, timeout = 5000 }) => ({
   apiKey,
   apiVersion: 0,
-  apiName: 'DeleteTopics',
+  apiName: "DeleteTopics",
   encode: async () => {
-    return new Encoder().writeArray(topics).writeInt32(timeout)
+    return new Encoder().writeArray(topics).writeInt32(timeout);
   },
-})
+});

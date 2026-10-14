@@ -1,21 +1,21 @@
-const { decode, parse } = require('./response')
-const { unsupportedVersionResponseWithTimeout } = require('testHelpers')
+const { decode, parse } = require("./response");
+const { unsupportedVersionResponseWithTimeout } = require("testHelpers");
 
-describe('Protocol > Requests > EndTxn > v1', () => {
-  test('response', async () => {
-    const data = await decode(Buffer.from(require('../fixtures/v0_response.json')))
+describe("Protocol > Requests > EndTxn > v1", () => {
+  test("response", async () => {
+    const data = await decode(Buffer.from(require("../fixtures/v0_response.json")));
     expect(data).toEqual({
       clientSideThrottleTime: 0,
       throttleTime: 0,
       errorCode: 0,
-    })
+    });
 
-    await expect(parse(data)).resolves.toBeTruthy()
-  })
+    await expect(parse(data)).resolves.toBeTruthy();
+  });
 
-  test('throws KafkaJSProtocolError if the api is not supported', async () => {
+  test("throws KafkaJSProtocolError if the api is not supported", async () => {
     await expect(decode(unsupportedVersionResponseWithTimeout())).rejects.toThrow(
-      /The version of API is not supported/
-    )
-  })
-})
+      /The version of API is not supported/,
+    );
+  });
+});

@@ -1,18 +1,18 @@
-const Lock = require('../utils/lock')
-const { Types: Compression } = require('../protocol/message/compression')
-const { requests, lookup } = require('../protocol/requests')
-const { KafkaJSNonRetriableError } = require('../errors')
-const apiKeys = require('../protocol/requests/apiKeys')
-const shuffle = require('../utils/shuffle')
+const Lock = require("../utils/lock");
+const { Types: Compression } = require("../protocol/message/compression");
+const { requests, lookup } = require("../protocol/requests");
+const { KafkaJSNonRetriableError } = require("../errors");
+const apiKeys = require("../protocol/requests/apiKeys");
+const shuffle = require("../utils/shuffle");
 
 const PRIVATE = {
-  SEND_REQUEST: Symbol('private:Broker:sendRequest'),
-}
+  SEND_REQUEST: Symbol("private:Broker:sendRequest"),
+};
 
 /** @type {import("../protocol/requests").Lookup} */
 const notInitializedLookup = () => {
-  throw new Error('Broker not connected')
-}
+  throw new Error("Broker not connected");
+};
 
 /**
  * Each node in a Kafka cluster is called broker. This class contains
@@ -41,25 +41,25 @@ module.exports = class Broker {
     authenticationTimeout = 10000,
     allowAutoTopicCreation = true,
   }) {
-    this.connectionPool = connectionPool
-    this.nodeId = nodeId
-    this.rootLogger = logger
-    this.logger = logger.namespace('Broker')
-    this.versions = versions
-    this.authenticationTimeout = authenticationTimeout
-    this.allowAutoTopicCreation = allowAutoTopicCreation
+    this.connectionPool = connectionPool;
+    this.nodeId = nodeId;
+    this.rootLogger = logger;
+    this.logger = logger.namespace("Broker");
+    this.versions = versions;
+    this.authenticationTimeout = authenticationTimeout;
+    this.allowAutoTopicCreation = allowAutoTopicCreation;
 
     // The lock timeout has twice the connectionTimeout because the same timeout is used
     // for the first apiVersions call
-    const lockTimeout = 2 * this.connectionPool.connectionTimeout + this.authenticationTimeout
-    this.brokerAddress = `${this.connectionPool.host}:${this.connectionPool.port}`
+    const lockTimeout = 2 * this.connectionPool.connectionTimeout + this.authenticationTimeout;
+    this.brokerAddress = `${this.connectionPool.host}:${this.connectionPool.port}`;
 
     this.lock = new Lock({
       timeout: lockTimeout,
       description: `connect to broker ${this.brokerAddress}`,
-    })
+    });
 
-    this.lookupRequest = notInitializedLookup
+    this.lookupRequest = notInitializedLookup;
   }
 
   /**
@@ -69,7 +69,7 @@ module.exports = class Broker {
   isConnected() {
     return this.connectionPool.sasl
       ? this.connectionPool.isConnected() && this.connectionPool.isAuthenticated()
-      : this.connectionPool.isConnected()
+      : this.connectionPool.isConnected();
   }
 
   /**
@@ -77,40 +77,40 @@ module.exports = class Broker {
    * @returns {Promise}
    */
   async connect() {
-    await this.lock.acquire()
+    await this.lock.acquire();
     try {
       if (this.isConnected()) {
-        return
+        return;
       }
 
-      const connection = await this.connectionPool.getConnection()
+      const connection = await this.connectionPool.getConnection();
 
       if (!this.versions) {
-        this.versions = await this.apiVersions()
+        this.versions = await this.apiVersions();
       }
-      this.connectionPool.setVersions(this.versions)
+      this.connectionPool.setVersions(this.versions);
 
-      this.lookupRequest = lookup(this.versions)
+      this.lookupRequest = lookup(this.versions);
 
       if (connection.getSupportAuthenticationProtocol() === null) {
-        let supportAuthenticationProtocol = false
+        let supportAuthenticationProtocol = false;
         try {
-          this.lookupRequest(apiKeys.SaslAuthenticate, requests.SaslAuthenticate)
-          supportAuthenticationProtocol = true
+          this.lookupRequest(apiKeys.SaslAuthenticate, requests.SaslAuthenticate);
+          supportAuthenticationProtocol = true;
         } catch (_) {
-          supportAuthenticationProtocol = false
+          supportAuthenticationProtocol = false;
         }
-        this.connectionPool.setSupportAuthenticationProtocol(supportAuthenticationProtocol)
+        this.connectionPool.setSupportAuthenticationProtocol(supportAuthenticationProtocol);
 
         this.logger.debug(`Verified support for SaslAuthenticate`, {
           broker: this.brokerAddress,
           supportAuthenticationProtocol,
-        })
+        });
       }
 
-      await connection.authenticate()
+      await connection.authenticate();
     } finally {
-      await this.lock.release()
+      await this.lock.release();
     }
   }
 
@@ -119,7 +119,7 @@ module.exports = class Broker {
    * @returns {Promise}
    */
   async disconnect() {
-    await this.connectionPool.destroy()
+    await this.connectionPool.destroy();
   }
 
   /**
@@ -127,30 +127,27 @@ module.exports = class Broker {
    * @returns {Promise<import("../../types").ApiVersions>}
    */
   async apiVersions() {
-    let response
-    const availableVersions = requests.ApiVersions.versions
-      .map(Number)
-      .sort()
-      .reverse()
+    let response;
+    const availableVersions = requests.ApiVersions.versions.map(Number).sort().reverse();
 
     // Find the best version implemented by the server
     for (const candidateVersion of availableVersions) {
       try {
-        const apiVersions = requests.ApiVersions.protocol({ version: candidateVersion })
+        const apiVersions = requests.ApiVersions.protocol({ version: candidateVersion });
         response = await this[PRIVATE.SEND_REQUEST]({
           ...apiVersions(),
           requestTimeout: this.connectionPool.connectionTimeout,
-        })
-        break
+        });
+        break;
       } catch (e) {
-        if (e.type !== 'UNSUPPORTED_VERSION') {
-          throw e
+        if (e.type !== "UNSUPPORTED_VERSION") {
+          throw e;
         }
       }
     }
 
     if (!response) {
-      throw new KafkaJSNonRetriableError('API Versions not supported')
+      throw new KafkaJSNonRetriableError("API Versions not supported");
     }
 
     return response.apiVersions.reduce(
@@ -161,8 +158,8 @@ module.exports = class Broker {
             maxVersion: version.maxVersion,
           },
         }),
-      {}
-    )
+      {},
+    );
   }
 
   /**
@@ -172,11 +169,11 @@ module.exports = class Broker {
    *                            If no topics are specified fetch metadata for all topics
    */
   async metadata(topics = []) {
-    const metadata = this.lookupRequest(apiKeys.Metadata, requests.Metadata)
-    const shuffledTopics = shuffle(topics)
+    const metadata = this.lookupRequest(apiKeys.Metadata, requests.Metadata);
+    const shuffledTopics = shuffle(topics);
     return await this[PRIVATE.SEND_REQUEST](
-      metadata({ topics: shuffledTopics, allowAutoTopicCreation: this.allowAutoTopicCreation })
-    )
+      metadata({ topics: shuffledTopics, allowAutoTopicCreation: this.allowAutoTopicCreation }),
+    );
   }
 
   /**
@@ -237,7 +234,7 @@ module.exports = class Broker {
     timeout = 30000,
     compression = Compression.None,
   }) {
-    const produce = this.lookupRequest(apiKeys.Produce, requests.Produce)
+    const produce = this.lookupRequest(apiKeys.Produce, requests.Produce);
     return await this[PRIVATE.SEND_REQUEST](
       produce({
         acks,
@@ -247,8 +244,8 @@ module.exports = class Broker {
         transactionalId,
         producerId,
         producerEpoch,
-      })
-    )
+      }),
+    );
   }
 
   /**
@@ -286,36 +283,36 @@ module.exports = class Broker {
     minBytes = 1,
     maxBytes = 10485760,
     topics,
-    rackId = '',
+    rackId = "",
   }) {
     // TODO: validate topics not null/empty
-    const fetch = this.lookupRequest(apiKeys.Fetch, requests.Fetch)
+    const fetch = this.lookupRequest(apiKeys.Fetch, requests.Fetch);
 
     // Shuffle topic-partitions to ensure fair response allocation across partitions (KIP-74)
     const flattenedTopicPartitions = topics.reduce((topicPartitions, { topic, partitions }) => {
-      partitions.forEach(partition => {
-        topicPartitions.push({ topic, partition })
-      })
-      return topicPartitions
-    }, [])
+      partitions.forEach((partition) => {
+        topicPartitions.push({ topic, partition });
+      });
+      return topicPartitions;
+    }, []);
 
-    const shuffledTopicPartitions = shuffle(flattenedTopicPartitions)
+    const shuffledTopicPartitions = shuffle(flattenedTopicPartitions);
 
     // Consecutive partitions for the same topic can be combined into a single `topic` entry
     const consolidatedTopicPartitions = shuffledTopicPartitions.reduce(
       (topicPartitions, { topic, partition }) => {
-        const last = topicPartitions[topicPartitions.length - 1]
+        const last = topicPartitions[topicPartitions.length - 1];
 
         if (last != null && last.topic === topic) {
-          topicPartitions[topicPartitions.length - 1].partitions.push(partition)
+          topicPartitions[topicPartitions.length - 1].partitions.push(partition);
         } else {
-          topicPartitions.push({ topic, partitions: [partition] })
+          topicPartitions.push({ topic, partitions: [partition] });
         }
 
-        return topicPartitions
+        return topicPartitions;
       },
-      []
-    )
+      [],
+    );
 
     return await this[PRIVATE.SEND_REQUEST](
       fetch({
@@ -326,8 +323,8 @@ module.exports = class Broker {
         maxBytes,
         topics: consolidatedTopicPartitions,
         rackId,
-      })
-    )
+      }),
+    );
   }
 
   /**
@@ -339,8 +336,8 @@ module.exports = class Broker {
    * @returns {Promise}
    */
   async heartbeat({ groupId, groupGenerationId, memberId }) {
-    const heartbeat = this.lookupRequest(apiKeys.Heartbeat, requests.Heartbeat)
-    return await this[PRIVATE.SEND_REQUEST](heartbeat({ groupId, groupGenerationId, memberId }))
+    const heartbeat = this.lookupRequest(apiKeys.Heartbeat, requests.Heartbeat);
+    return await this[PRIVATE.SEND_REQUEST](heartbeat({ groupId, groupGenerationId, memberId }));
   }
 
   /**
@@ -352,8 +349,8 @@ module.exports = class Broker {
    */
   async findGroupCoordinator({ groupId, coordinatorType }) {
     // TODO: validate groupId, mandatory
-    const findCoordinator = this.lookupRequest(apiKeys.GroupCoordinator, requests.GroupCoordinator)
-    return await this[PRIVATE.SEND_REQUEST](findCoordinator({ groupId, coordinatorType }))
+    const findCoordinator = this.lookupRequest(apiKeys.GroupCoordinator, requests.GroupCoordinator);
+    return await this[PRIVATE.SEND_REQUEST](findCoordinator({ groupId, coordinatorType }));
   }
 
   /**
@@ -374,11 +371,11 @@ module.exports = class Broker {
     groupId,
     sessionTimeout,
     rebalanceTimeout,
-    memberId = '',
-    protocolType = 'consumer',
+    memberId = "",
+    protocolType = "consumer",
     groupProtocols,
   }) {
-    const joinGroup = this.lookupRequest(apiKeys.JoinGroup, requests.JoinGroup)
+    const joinGroup = this.lookupRequest(apiKeys.JoinGroup, requests.JoinGroup);
     const makeRequest = (assignedMemberId = memberId) =>
       this[PRIVATE.SEND_REQUEST](
         joinGroup({
@@ -388,17 +385,17 @@ module.exports = class Broker {
           memberId: assignedMemberId,
           protocolType,
           groupProtocols,
-        })
-      )
+        }),
+      );
 
     try {
-      return await makeRequest()
+      return await makeRequest();
     } catch (error) {
-      if (error.name === 'KafkaJSMemberIdRequired') {
-        return makeRequest(error.memberId)
+      if (error.name === "KafkaJSMemberIdRequired") {
+        return makeRequest(error.memberId);
       }
 
-      throw error
+      throw error;
     }
   }
 
@@ -410,8 +407,8 @@ module.exports = class Broker {
    * @returns {Promise}
    */
   async leaveGroup({ groupId, memberId }) {
-    const leaveGroup = this.lookupRequest(apiKeys.LeaveGroup, requests.LeaveGroup)
-    return await this[PRIVATE.SEND_REQUEST](leaveGroup({ groupId, memberId }))
+    const leaveGroup = this.lookupRequest(apiKeys.LeaveGroup, requests.LeaveGroup);
+    return await this[PRIVATE.SEND_REQUEST](leaveGroup({ groupId, memberId }));
   }
 
   /**
@@ -424,15 +421,15 @@ module.exports = class Broker {
    * @returns {Promise}
    */
   async syncGroup({ groupId, generationId, memberId, groupAssignment }) {
-    const syncGroup = this.lookupRequest(apiKeys.SyncGroup, requests.SyncGroup)
+    const syncGroup = this.lookupRequest(apiKeys.SyncGroup, requests.SyncGroup);
     return await this[PRIVATE.SEND_REQUEST](
       syncGroup({
         groupId,
         generationId,
         memberId,
         groupAssignment,
-      })
-    )
+      }),
+    );
   }
 
   /**
@@ -454,20 +451,20 @@ module.exports = class Broker {
    * @returns {Promise}
    */
   async listOffsets({ replicaId, isolationLevel, topics }) {
-    const listOffsets = this.lookupRequest(apiKeys.ListOffsets, requests.ListOffsets)
+    const listOffsets = this.lookupRequest(apiKeys.ListOffsets, requests.ListOffsets);
     const result = await this[PRIVATE.SEND_REQUEST](
-      listOffsets({ replicaId, isolationLevel, topics })
-    )
+      listOffsets({ replicaId, isolationLevel, topics }),
+    );
 
     // ListOffsets >= v1 will return a single `offset` rather than an array of `offsets` (ListOffsets V0).
     // Normalize to just return `offset`.
     for (const response of result.responses) {
       response.partitions = response.partitions.map(({ offsets, ...partitionData }) => {
-        return offsets ? { ...partitionData, offset: offsets.pop() } : partitionData
-      })
+        return offsets ? { ...partitionData, offset: offsets.pop() } : partitionData;
+      });
     }
 
-    return result
+    return result;
   }
 
   /**
@@ -490,7 +487,7 @@ module.exports = class Broker {
    * @returns {Promise}
    */
   async offsetCommit({ groupId, groupGenerationId, memberId, retentionTime, topics }) {
-    const offsetCommit = this.lookupRequest(apiKeys.OffsetCommit, requests.OffsetCommit)
+    const offsetCommit = this.lookupRequest(apiKeys.OffsetCommit, requests.OffsetCommit);
     return await this[PRIVATE.SEND_REQUEST](
       offsetCommit({
         groupId,
@@ -498,8 +495,8 @@ module.exports = class Broker {
         memberId,
         retentionTime,
         topics,
-      })
-    )
+      }),
+    );
   }
 
   /**
@@ -518,8 +515,8 @@ module.exports = class Broker {
    * @returns {Promise}
    */
   async offsetFetch({ groupId, topics }) {
-    const offsetFetch = this.lookupRequest(apiKeys.OffsetFetch, requests.OffsetFetch)
-    return await this[PRIVATE.SEND_REQUEST](offsetFetch({ groupId, topics }))
+    const offsetFetch = this.lookupRequest(apiKeys.OffsetFetch, requests.OffsetFetch);
+    return await this[PRIVATE.SEND_REQUEST](offsetFetch({ groupId, topics }));
   }
 
   /**
@@ -529,8 +526,8 @@ module.exports = class Broker {
    * @returns {Promise}
    */
   async describeGroups({ groupIds }) {
-    const describeGroups = this.lookupRequest(apiKeys.DescribeGroups, requests.DescribeGroups)
-    return await this[PRIVATE.SEND_REQUEST](describeGroups({ groupIds }))
+    const describeGroups = this.lookupRequest(apiKeys.DescribeGroups, requests.DescribeGroups);
+    return await this[PRIVATE.SEND_REQUEST](describeGroups({ groupIds }));
   }
 
   /**
@@ -551,8 +548,8 @@ module.exports = class Broker {
    * @returns {Promise}
    */
   async createTopics({ topics, validateOnly = false, timeout = 5000 }) {
-    const createTopics = this.lookupRequest(apiKeys.CreateTopics, requests.CreateTopics)
-    return await this[PRIVATE.SEND_REQUEST](createTopics({ topics, validateOnly, timeout }))
+    const createTopics = this.lookupRequest(apiKeys.CreateTopics, requests.CreateTopics);
+    return await this[PRIVATE.SEND_REQUEST](createTopics({ topics, validateOnly, timeout }));
   }
 
   /**
@@ -573,10 +570,13 @@ module.exports = class Broker {
    * @returns {Promise<void>}
    */
   async createPartitions({ topicPartitions, validateOnly = false, timeout = 5000 }) {
-    const createPartitions = this.lookupRequest(apiKeys.CreatePartitions, requests.CreatePartitions)
+    const createPartitions = this.lookupRequest(
+      apiKeys.CreatePartitions,
+      requests.CreatePartitions,
+    );
     return await this[PRIVATE.SEND_REQUEST](
-      createPartitions({ topicPartitions, validateOnly, timeout })
-    )
+      createPartitions({ topicPartitions, validateOnly, timeout }),
+    );
   }
 
   /**
@@ -588,8 +588,8 @@ module.exports = class Broker {
    * @returns {Promise}
    */
   async deleteTopics({ topics, timeout = 5000 }) {
-    const deleteTopics = this.lookupRequest(apiKeys.DeleteTopics, requests.DeleteTopics)
-    return await this[PRIVATE.SEND_REQUEST](deleteTopics({ topics, timeout }))
+    const deleteTopics = this.lookupRequest(apiKeys.DeleteTopics, requests.DeleteTopics);
+    return await this[PRIVATE.SEND_REQUEST](deleteTopics({ topics, timeout }));
   }
 
   /**
@@ -605,8 +605,8 @@ module.exports = class Broker {
    * @returns {Promise}
    */
   async describeConfigs({ resources, includeSynonyms = false }) {
-    const describeConfigs = this.lookupRequest(apiKeys.DescribeConfigs, requests.DescribeConfigs)
-    return await this[PRIVATE.SEND_REQUEST](describeConfigs({ resources, includeSynonyms }))
+    const describeConfigs = this.lookupRequest(apiKeys.DescribeConfigs, requests.DescribeConfigs);
+    return await this[PRIVATE.SEND_REQUEST](describeConfigs({ resources, includeSynonyms }));
   }
 
   /**
@@ -627,8 +627,8 @@ module.exports = class Broker {
    * @returns {Promise}
    */
   async alterConfigs({ resources, validateOnly = false }) {
-    const alterConfigs = this.lookupRequest(apiKeys.AlterConfigs, requests.AlterConfigs)
-    return await this[PRIVATE.SEND_REQUEST](alterConfigs({ resources, validateOnly }))
+    const alterConfigs = this.lookupRequest(apiKeys.AlterConfigs, requests.AlterConfigs);
+    return await this[PRIVATE.SEND_REQUEST](alterConfigs({ resources, validateOnly }));
   }
 
   /**
@@ -642,8 +642,10 @@ module.exports = class Broker {
    * @returns {Promise}
    */
   async initProducerId({ transactionalId, transactionTimeout }) {
-    const initProducerId = this.lookupRequest(apiKeys.InitProducerId, requests.InitProducerId)
-    return await this[PRIVATE.SEND_REQUEST](initProducerId({ transactionalId, transactionTimeout }))
+    const initProducerId = this.lookupRequest(apiKeys.InitProducerId, requests.InitProducerId);
+    return await this[PRIVATE.SEND_REQUEST](
+      initProducerId({ transactionalId, transactionTimeout }),
+    );
   }
 
   /**
@@ -667,11 +669,11 @@ module.exports = class Broker {
   async addPartitionsToTxn({ transactionalId, producerId, producerEpoch, topics }) {
     const addPartitionsToTxn = this.lookupRequest(
       apiKeys.AddPartitionsToTxn,
-      requests.AddPartitionsToTxn
-    )
+      requests.AddPartitionsToTxn,
+    );
     return await this[PRIVATE.SEND_REQUEST](
-      addPartitionsToTxn({ transactionalId, producerId, producerEpoch, topics })
-    )
+      addPartitionsToTxn({ transactionalId, producerId, producerEpoch, topics }),
+    );
   }
 
   /**
@@ -687,10 +689,10 @@ module.exports = class Broker {
    * @returns {Promise}
    */
   async addOffsetsToTxn({ transactionalId, producerId, producerEpoch, groupId }) {
-    const addOffsetsToTxn = this.lookupRequest(apiKeys.AddOffsetsToTxn, requests.AddOffsetsToTxn)
+    const addOffsetsToTxn = this.lookupRequest(apiKeys.AddOffsetsToTxn, requests.AddOffsetsToTxn);
     return await this[PRIVATE.SEND_REQUEST](
-      addOffsetsToTxn({ transactionalId, producerId, producerEpoch, groupId })
-    )
+      addOffsetsToTxn({ transactionalId, producerId, producerEpoch, groupId }),
+    );
   }
 
   /**
@@ -718,10 +720,10 @@ module.exports = class Broker {
    * @returns {Promise}
    */
   async txnOffsetCommit({ transactionalId, groupId, producerId, producerEpoch, topics }) {
-    const txnOffsetCommit = this.lookupRequest(apiKeys.TxnOffsetCommit, requests.TxnOffsetCommit)
+    const txnOffsetCommit = this.lookupRequest(apiKeys.TxnOffsetCommit, requests.TxnOffsetCommit);
     return await this[PRIVATE.SEND_REQUEST](
-      txnOffsetCommit({ transactionalId, groupId, producerId, producerEpoch, topics })
-    )
+      txnOffsetCommit({ transactionalId, groupId, producerId, producerEpoch, topics }),
+    );
   }
 
   /**
@@ -737,10 +739,10 @@ module.exports = class Broker {
    * @returns {Promise}
    */
   async endTxn({ transactionalId, producerId, producerEpoch, transactionResult }) {
-    const endTxn = this.lookupRequest(apiKeys.EndTxn, requests.EndTxn)
+    const endTxn = this.lookupRequest(apiKeys.EndTxn, requests.EndTxn);
     return await this[PRIVATE.SEND_REQUEST](
-      endTxn({ transactionalId, producerId, producerEpoch, transactionResult })
-    )
+      endTxn({ transactionalId, producerId, producerEpoch, transactionResult }),
+    );
   }
 
   /**
@@ -749,8 +751,8 @@ module.exports = class Broker {
    * @returns {Promise}
    */
   async listGroups() {
-    const listGroups = this.lookupRequest(apiKeys.ListGroups, requests.ListGroups)
-    return await this[PRIVATE.SEND_REQUEST](listGroups())
+    const listGroups = this.lookupRequest(apiKeys.ListGroups, requests.ListGroups);
+    return await this[PRIVATE.SEND_REQUEST](listGroups());
   }
 
   /**
@@ -760,8 +762,8 @@ module.exports = class Broker {
    * @returns {Promise}
    */
   async deleteGroups(groupIds) {
-    const deleteGroups = this.lookupRequest(apiKeys.DeleteGroups, requests.DeleteGroups)
-    return await this[PRIVATE.SEND_REQUEST](deleteGroups(groupIds))
+    const deleteGroups = this.lookupRequest(apiKeys.DeleteGroups, requests.DeleteGroups);
+    return await this[PRIVATE.SEND_REQUEST](deleteGroups(groupIds));
   }
 
   /**
@@ -801,8 +803,8 @@ module.exports = class Broker {
    * @property {number} offset
    */
   async deleteRecords({ topics }) {
-    const deleteRecords = this.lookupRequest(apiKeys.DeleteRecords, requests.DeleteRecords)
-    return await this[PRIVATE.SEND_REQUEST](deleteRecords({ topics }))
+    const deleteRecords = this.lookupRequest(apiKeys.DeleteRecords, requests.DeleteRecords);
+    return await this[PRIVATE.SEND_REQUEST](deleteRecords({ topics }));
   }
 
   /**
@@ -823,8 +825,8 @@ module.exports = class Broker {
    * @returns {Promise<void>}
    */
   async createAcls({ acl }) {
-    const createAcls = this.lookupRequest(apiKeys.CreateAcls, requests.CreateAcls)
-    return await this[PRIVATE.SEND_REQUEST](createAcls({ creations: acl }))
+    const createAcls = this.lookupRequest(apiKeys.CreateAcls, requests.CreateAcls);
+    return await this[PRIVATE.SEND_REQUEST](createAcls({ creations: acl }));
   }
 
   /**
@@ -841,7 +843,7 @@ module.exports = class Broker {
     operation,
     permissionType,
   }) {
-    const describeAcls = this.lookupRequest(apiKeys.DescribeAcls, requests.DescribeAcls)
+    const describeAcls = this.lookupRequest(apiKeys.DescribeAcls, requests.DescribeAcls);
     return await this[PRIVATE.SEND_REQUEST](
       describeAcls({
         resourceType,
@@ -851,8 +853,8 @@ module.exports = class Broker {
         host,
         operation,
         permissionType,
-      })
-    )
+      }),
+    );
   }
 
   /**
@@ -862,8 +864,8 @@ module.exports = class Broker {
    * @returns {Promise<void>}
    */
   async deleteAcls({ filters }) {
-    const deleteAcls = this.lookupRequest(apiKeys.DeleteAcls, requests.DeleteAcls)
-    return await this[PRIVATE.SEND_REQUEST](deleteAcls({ filters }))
+    const deleteAcls = this.lookupRequest(apiKeys.DeleteAcls, requests.DeleteAcls);
+    return await this[PRIVATE.SEND_REQUEST](deleteAcls({ filters }));
   }
 
   /**
@@ -876,9 +878,9 @@ module.exports = class Broker {
   async alterPartitionReassignments({ topics, timeout }) {
     const alterPartitionReassignments = this.lookupRequest(
       apiKeys.AlterPartitionReassignments,
-      requests.AlterPartitionReassignments
-    )
-    return await this[PRIVATE.SEND_REQUEST](alterPartitionReassignments({ topics, timeout }))
+      requests.AlterPartitionReassignments,
+    );
+    return await this[PRIVATE.SEND_REQUEST](alterPartitionReassignments({ topics, timeout }));
   }
 
   /**
@@ -891,9 +893,9 @@ module.exports = class Broker {
   async listPartitionReassignments({ topics = null, timeout }) {
     const listPartitionReassignments = this.lookupRequest(
       apiKeys.ListPartitionReassignments,
-      requests.ListPartitionReassignments
-    )
-    return await this[PRIVATE.SEND_REQUEST](listPartitionReassignments({ topics, timeout }))
+      requests.ListPartitionReassignments,
+    );
+    return await this[PRIVATE.SEND_REQUEST](listPartitionReassignments({ topics, timeout }));
   }
 
   /**
@@ -901,13 +903,13 @@ module.exports = class Broker {
    */
   async [PRIVATE.SEND_REQUEST](protocolRequest) {
     try {
-      return await this.connectionPool.send(protocolRequest)
+      return await this.connectionPool.send(protocolRequest);
     } catch (e) {
-      if (e.name === 'KafkaJSConnectionClosedError') {
-        await this.disconnect()
+      if (e.name === "KafkaJSConnectionClosedError") {
+        await this.disconnect();
       }
 
-      throw e
+      throw e;
     }
   }
-}
+};

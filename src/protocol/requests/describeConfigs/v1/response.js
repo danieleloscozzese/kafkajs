@@ -1,6 +1,6 @@
-const Decoder = require('../../../decoder')
-const { parse: parseV0 } = require('../v0/response')
-const { DEFAULT_CONFIG } = require('../../../configSource')
+const Decoder = require("../../../decoder");
+const { parse: parseV0 } = require("../v0/response");
+const { DEFAULT_CONFIG } = require("../../../configSource");
 
 /**
  * DescribeConfigs Response (Version: 1) => throttle_time_ms [resources]
@@ -22,19 +22,19 @@ const { DEFAULT_CONFIG } = require('../../../configSource')
  *         config_source => INT8
  */
 
-const decodeSynonyms = decoder => ({
+const decodeSynonyms = (decoder) => ({
   configName: decoder.readString(),
   configValue: decoder.readString(),
   configSource: decoder.readInt8(),
-})
+});
 
-const decodeConfigEntries = decoder => {
-  const configName = decoder.readString()
-  const configValue = decoder.readString()
-  const readOnly = decoder.readBoolean()
-  const configSource = decoder.readInt8()
-  const isSensitive = decoder.readBoolean()
-  const configSynonyms = decoder.readArray(decodeSynonyms)
+const decodeConfigEntries = (decoder) => {
+  const configName = decoder.readString();
+  const configValue = decoder.readString();
+  const readOnly = decoder.readBoolean();
+  const configSource = decoder.readInt8();
+  const isSensitive = decoder.readBoolean();
+  const configSynonyms = decoder.readArray(decodeSynonyms);
 
   return {
     configName,
@@ -44,29 +44,29 @@ const decodeConfigEntries = decoder => {
     configSource,
     isSensitive,
     configSynonyms,
-  }
-}
+  };
+};
 
-const decodeResources = decoder => ({
+const decodeResources = (decoder) => ({
   errorCode: decoder.readInt16(),
   errorMessage: decoder.readString(),
   resourceType: decoder.readInt8(),
   resourceName: decoder.readString(),
   configEntries: decoder.readArray(decodeConfigEntries),
-})
+});
 
-const decode = async rawData => {
-  const decoder = new Decoder(rawData)
-  const throttleTime = decoder.readInt32()
-  const resources = decoder.readArray(decodeResources)
+const decode = async (rawData) => {
+  const decoder = new Decoder(rawData);
+  const throttleTime = decoder.readInt32();
+  const resources = decoder.readArray(decodeResources);
 
   return {
     throttleTime,
     resources,
-  }
-}
+  };
+};
 
 module.exports = {
   decode,
   parse: parseV0,
-}
+};

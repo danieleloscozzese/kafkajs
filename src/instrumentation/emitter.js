@@ -1,10 +1,10 @@
-const { EventEmitter } = require('events')
-const InstrumentationEvent = require('./event')
-const { KafkaJSError } = require('../errors')
+const { EventEmitter } = require("events");
+const InstrumentationEvent = require("./event");
+const { KafkaJSError } = require("../errors");
 
 module.exports = class InstrumentationEventEmitter {
   constructor() {
-    this.emitter = new EventEmitter()
+    this.emitter = new EventEmitter();
   }
 
   /**
@@ -13,12 +13,12 @@ module.exports = class InstrumentationEventEmitter {
    */
   emit(eventName, payload) {
     if (!eventName) {
-      throw new KafkaJSError('Invalid event name', { retriable: false })
+      throw new KafkaJSError("Invalid event name", { retriable: false });
     }
 
     if (this.emitter.listenerCount(eventName) > 0) {
-      const event = new InstrumentationEvent(eventName, payload)
-      this.emitter.emit(eventName, event)
+      const event = new InstrumentationEvent(eventName, payload);
+      this.emitter.emit(eventName, event);
     }
   }
 
@@ -28,7 +28,7 @@ module.exports = class InstrumentationEventEmitter {
    * @returns {import("../../types").RemoveInstrumentationEventListener<string>} removeListener
    */
   addListener(eventName, listener) {
-    this.emitter.addListener(eventName, listener)
-    return () => this.emitter.removeListener(eventName, listener)
+    this.emitter.addListener(eventName, listener);
+    return () => this.emitter.removeListener(eventName, listener);
   }
-}
+};

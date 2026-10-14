@@ -9,4 +9,4 @@ module.exports = {
   STATIC_BROKER_CONFIG: 4,
   DEFAULT_CONFIG: 5,
   DYNAMIC_BROKER_LOGGER_CONFIG: 6,
-}
+};

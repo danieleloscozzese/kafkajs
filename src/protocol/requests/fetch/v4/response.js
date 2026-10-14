@@ -1,6 +1,6 @@
-const Decoder = require('../../../decoder')
-const { parse: parseV1 } = require('../v1/response')
-const decodeMessages = require('./decodeMessages')
+const Decoder = require("../../../decoder");
+const { parse: parseV1 } = require("../v1/response");
+const decodeMessages = require("./decodeMessages");
 
 /**
  * Fetch Response (Version: 4) => throttle_time_ms [responses]
@@ -19,37 +19,37 @@ const decodeMessages = require('./decodeMessages')
  *       record_set => RECORDS
  */
 
-const decodeAbortedTransactions = decoder => ({
+const decodeAbortedTransactions = (decoder) => ({
   producerId: decoder.readInt64().toString(),
   firstOffset: decoder.readInt64().toString(),
-})
+});
 
-const decodePartition = async decoder => ({
+const decodePartition = async (decoder) => ({
   partition: decoder.readInt32(),
   errorCode: decoder.readInt16(),
   highWatermark: decoder.readInt64().toString(),
   lastStableOffset: decoder.readInt64().toString(),
   abortedTransactions: decoder.readArray(decodeAbortedTransactions),
   messages: await decodeMessages(decoder),
-})
+});
 
-const decodeResponse = async decoder => ({
+const decodeResponse = async (decoder) => ({
   topicName: decoder.readString(),
   partitions: await decoder.readArrayAsync(decodePartition),
-})
+});
 
-const decode = async rawData => {
-  const decoder = new Decoder(rawData)
-  const throttleTime = decoder.readInt32()
-  const responses = await decoder.readArrayAsync(decodeResponse)
+const decode = async (rawData) => {
+  const decoder = new Decoder(rawData);
+  const throttleTime = decoder.readInt32();
+  const responses = await decoder.readArrayAsync(decodeResponse);
 
   return {
     throttleTime,
     responses,
-  }
-}
+  };
+};
 
 module.exports = {
   decode,
   parse: parseV1,
-}
+};

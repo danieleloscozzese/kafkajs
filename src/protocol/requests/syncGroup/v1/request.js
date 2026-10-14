@@ -1,4 +1,4 @@
-const requestV0 = require('../v0/request')
+const requestV0 = require("../v0/request");
 
 /**
  * SyncGroup Request (Version: 1) => group_id generation_id member_id [group_assignment]
@@ -11,4 +11,4 @@ const requestV0 = require('../v0/request')
  */
 
 module.exports = ({ groupId, generationId, memberId, groupAssignment }) =>
-  Object.assign(requestV0({ groupId, generationId, memberId, groupAssignment }), { apiVersion: 1 })
+  Object.assign(requestV0({ groupId, generationId, memberId, groupAssignment }), { apiVersion: 1 });

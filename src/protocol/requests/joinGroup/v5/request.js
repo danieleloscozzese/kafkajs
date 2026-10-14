@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { JoinGroup: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { JoinGroup: apiKey } = require("../../apiKeys");
 
 /**
  * Version 5 adds group_instance_id to identify members across restarts.
@@ -28,7 +28,7 @@ module.exports = ({
 }) => ({
   apiKey,
   apiVersion: 5,
-  apiName: 'JoinGroup',
+  apiName: "JoinGroup",
   encode: async () => {
     return new Encoder()
       .writeString(groupId)
@@ -37,10 +37,10 @@ module.exports = ({
       .writeString(memberId)
       .writeString(groupInstanceId)
       .writeString(protocolType)
-      .writeArray(groupProtocols.map(encodeGroupProtocols))
+      .writeArray(groupProtocols.map(encodeGroupProtocols));
   },
-})
+});
 
 const encodeGroupProtocols = ({ name, metadata = Buffer.alloc(0) }) => {
-  return new Encoder().writeString(name).writeBytes(metadata)
-}
+  return new Encoder().writeString(name).writeBytes(metadata);
+};

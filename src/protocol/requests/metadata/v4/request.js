@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { Metadata: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { Metadata: apiKey } = require("../../apiKeys");
 
 /**
  * Metadata Request (Version: 4) => [topics] allow_auto_topic_creation
@@ -10,8 +10,8 @@ const { Metadata: apiKey } = require('../../apiKeys')
 module.exports = ({ topics, allowAutoTopicCreation = true }) => ({
   apiKey,
   apiVersion: 4,
-  apiName: 'Metadata',
+  apiName: "Metadata",
   encode: async () => {
-    return new Encoder().writeNullableArray(topics).writeBoolean(allowAutoTopicCreation)
+    return new Encoder().writeNullableArray(topics).writeBoolean(allowAutoTopicCreation);
   },
-})
+});

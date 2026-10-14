@@ -9,4 +9,4 @@
 module.exports = {
   GROUP: 0,
   TRANSACTION: 1,
-}
+};

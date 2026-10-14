@@ -1,5 +1,5 @@
-const Decoder = require('../../../decoder')
-const { failure, createErrorFromCode } = require('../../../error')
+const Decoder = require("../../../decoder");
+const { failure, createErrorFromCode } = require("../../../error");
 
 /*
  * CreatePartitions Response (Version: 0) => throttle_time_ms [topic_errors]
@@ -10,33 +10,33 @@ const { failure, createErrorFromCode } = require('../../../error')
  *     error_message => NULLABLE_STRING
  */
 
-const topicNameComparator = (a, b) => a.topic.localeCompare(b.topic)
+const topicNameComparator = (a, b) => a.topic.localeCompare(b.topic);
 
-const topicErrors = decoder => ({
+const topicErrors = (decoder) => ({
   topic: decoder.readString(),
   errorCode: decoder.readInt16(),
   errorMessage: decoder.readString(),
-})
+});
 
-const decode = async rawData => {
-  const decoder = new Decoder(rawData)
-  const throttleTime = decoder.readInt32()
+const decode = async (rawData) => {
+  const decoder = new Decoder(rawData);
+  const throttleTime = decoder.readInt32();
   return {
     throttleTime,
     topicErrors: decoder.readArray(topicErrors).sort(topicNameComparator),
-  }
-}
+  };
+};
 
-const parse = async data => {
-  const topicsWithError = data.topicErrors.filter(({ errorCode }) => failure(errorCode))
+const parse = async (data) => {
+  const topicsWithError = data.topicErrors.filter(({ errorCode }) => failure(errorCode));
   if (topicsWithError.length > 0) {
-    throw createErrorFromCode(topicsWithError[0].errorCode)
+    throw createErrorFromCode(topicsWithError[0].errorCode);
   }
 
-  return data
-}
+  return data;
+};
 
 module.exports = {
   decode,
   parse,
-}
+};

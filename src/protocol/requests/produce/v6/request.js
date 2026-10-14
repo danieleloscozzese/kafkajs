@@ -1,4 +1,4 @@
-const requestV5 = require('../v5/request')
+const requestV5 = require("../v5/request");
 
 /**
  * The version number is bumped to indicate that on quota violation brokers send out responses before throttling.
@@ -34,5 +34,5 @@ module.exports = ({
       compression,
       topicData,
     }),
-    { apiVersion: 6 }
-  )
+    { apiVersion: 6 },
+  );

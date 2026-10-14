@@ -1,10 +1,10 @@
 module.exports = {
   firstMessage: {
-    request: require('./firstMessage/request'),
-    response: require('./firstMessage/response'),
+    request: require("./firstMessage/request"),
+    response: require("./firstMessage/response"),
   },
   finalMessage: {
-    request: require('./finalMessage/request'),
-    response: require('./finalMessage/response'),
+    request: require("./finalMessage/request"),
+    response: require("./finalMessage/response"),
   },
-}
+};

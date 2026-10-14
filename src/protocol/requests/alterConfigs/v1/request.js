@@ -1,4 +1,4 @@
-const requestV0 = require('../v0/request')
+const requestV0 = require("../v0/request");
 
 /**
  * AlterConfigs Request (Version: 1) => [resources] validate_only
@@ -21,5 +21,5 @@ module.exports = ({ resources, validateOnly }) =>
       resources,
       validateOnly,
     }),
-    { apiVersion: 1 }
-  )
+    { apiVersion: 1 },
+  );

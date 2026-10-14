@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { LeaveGroup: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { LeaveGroup: apiKey } = require("../../apiKeys");
 
 /**
  * Version 3 changes leavegroup to operate on a batch of members
@@ -16,14 +16,14 @@ const { LeaveGroup: apiKey } = require('../../apiKeys')
 module.exports = ({ groupId, members }) => ({
   apiKey,
   apiVersion: 3,
-  apiName: 'LeaveGroup',
+  apiName: "LeaveGroup",
   encode: async () => {
     return new Encoder()
       .writeString(groupId)
-      .writeArray(members.map(member => encodeMember(member)))
+      .writeArray(members.map((member) => encodeMember(member)));
   },
-})
+});
 
 const encodeMember = ({ memberId, groupInstanceId = null }) => {
-  return new Encoder().writeString(memberId).writeString(groupInstanceId)
-}
+  return new Encoder().writeString(memberId).writeString(groupInstanceId);
+};

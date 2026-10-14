@@ -1,6 +1,6 @@
-const Decoder = require('../../../decoder')
-const { failIfVersionNotSupported } = require('../../../error')
-const { parse: parseV0 } = require('../v0/response')
+const Decoder = require("../../../decoder");
+const { failIfVersionNotSupported } = require("../../../error");
+const { parse: parseV0 } = require("../v0/response");
 
 /**
  * JoinGroup Response (Version: 2) => throttle_time_ms error_code generation_id group_protocol leader_id member_id [members]
@@ -15,12 +15,12 @@ const { parse: parseV0 } = require('../v0/response')
  *     member_metadata => BYTES
  */
 
-const decode = async rawData => {
-  const decoder = new Decoder(rawData)
-  const throttleTime = decoder.readInt32()
-  const errorCode = decoder.readInt16()
+const decode = async (rawData) => {
+  const decoder = new Decoder(rawData);
+  const throttleTime = decoder.readInt32();
+  const errorCode = decoder.readInt16();
 
-  failIfVersionNotSupported(errorCode)
+  failIfVersionNotSupported(errorCode);
 
   return {
     throttleTime,
@@ -29,14 +29,14 @@ const decode = async rawData => {
     groupProtocol: decoder.readString(),
     leaderId: decoder.readString(),
     memberId: decoder.readString(),
-    members: decoder.readArray(decoder => ({
+    members: decoder.readArray((decoder) => ({
       memberId: decoder.readString(),
       memberMetadata: decoder.readBytes(),
     })),
-  }
-}
+  };
+};
 
 module.exports = {
   decode,
   parse: parseV0,
-}
+};

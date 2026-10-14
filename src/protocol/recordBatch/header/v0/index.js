@@ -1,4 +1,4 @@
-const Encoder = require('../../../encoder')
+const Encoder = require("../../../encoder");
 
 /**
  * v0
@@ -8,5 +8,5 @@ const Encoder = require('../../../encoder')
  */
 
 module.exports = ({ key, value }) => {
-  return new Encoder().writeVarIntString(key).writeVarIntBytes(value)
-}
+  return new Encoder().writeVarIntString(key).writeVarIntBytes(value);
+};

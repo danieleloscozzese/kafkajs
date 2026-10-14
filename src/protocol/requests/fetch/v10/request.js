@@ -1,5 +1,5 @@
-const ISOLATION_LEVEL = require('../../../isolationLevel')
-const requestV9 = require('../v9/request')
+const ISOLATION_LEVEL = require("../../../isolationLevel");
+const requestV9 = require("../v9/request");
 
 /**
  * ZStd Compression
@@ -51,5 +51,5 @@ module.exports = ({
       sessionEpoch,
       forgottenTopics,
     }),
-    { apiVersion: 10 }
-  )
+    { apiVersion: 10 },
+  );

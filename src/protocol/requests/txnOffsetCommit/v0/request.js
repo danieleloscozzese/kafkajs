@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { TxnOffsetCommit: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { TxnOffsetCommit: apiKey } = require("../../apiKeys");
 
 /**
  * TxnOffsetCommit Request (Version: 0) => transactional_id group_id producer_id producer_epoch [topics]
@@ -18,24 +18,21 @@ const { TxnOffsetCommit: apiKey } = require('../../apiKeys')
 module.exports = ({ transactionalId, groupId, producerId, producerEpoch, topics }) => ({
   apiKey,
   apiVersion: 0,
-  apiName: 'TxnOffsetCommit',
+  apiName: "TxnOffsetCommit",
   encode: async () => {
     return new Encoder()
       .writeString(transactionalId)
       .writeString(groupId)
       .writeInt64(producerId)
       .writeInt16(producerEpoch)
-      .writeArray(topics.map(encodeTopic))
+      .writeArray(topics.map(encodeTopic));
   },
-})
+});
 
 const encodeTopic = ({ topic, partitions }) => {
-  return new Encoder().writeString(topic).writeArray(partitions.map(encodePartition))
-}
+  return new Encoder().writeString(topic).writeArray(partitions.map(encodePartition));
+};
 
 const encodePartition = ({ partition, offset, metadata }) => {
-  return new Encoder()
-    .writeInt32(partition)
-    .writeInt64(offset)
-    .writeString(metadata)
-}
+  return new Encoder().writeInt32(partition).writeInt64(offset).writeString(metadata);
+};

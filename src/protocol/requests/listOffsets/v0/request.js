@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { ListOffsets: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { ListOffsets: apiKey } = require("../../apiKeys");
 
 /**
  * ListOffsets Request (Version: 0) => replica_id [topics]
@@ -28,19 +28,16 @@ const { ListOffsets: apiKey } = require('../../apiKeys')
 module.exports = ({ replicaId, topics }) => ({
   apiKey,
   apiVersion: 0,
-  apiName: 'ListOffsets',
+  apiName: "ListOffsets",
   encode: async () => {
-    return new Encoder().writeInt32(replicaId).writeArray(topics.map(encodeTopic))
+    return new Encoder().writeInt32(replicaId).writeArray(topics.map(encodeTopic));
   },
-})
+});
 
 const encodeTopic = ({ topic, partitions }) => {
-  return new Encoder().writeString(topic).writeArray(partitions.map(encodePartition))
-}
+  return new Encoder().writeString(topic).writeArray(partitions.map(encodePartition));
+};
 
 const encodePartition = ({ partition, timestamp = -1, maxNumOffsets = 1 }) => {
-  return new Encoder()
-    .writeInt32(partition)
-    .writeInt64(timestamp)
-    .writeInt32(maxNumOffsets)
-}
+  return new Encoder().writeInt32(partition).writeInt64(timestamp).writeInt32(maxNumOffsets);
+};

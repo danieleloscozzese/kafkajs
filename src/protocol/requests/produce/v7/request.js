@@ -1,4 +1,4 @@
-const requestV6 = require('../v6/request')
+const requestV6 = require("../v6/request");
 
 /**
  * V7 indicates ZStandard capability (see KIP-110)
@@ -34,5 +34,5 @@ module.exports = ({
       compression,
       topicData,
     }),
-    { apiVersion: 7 }
-  )
+    { apiVersion: 7 },
+  );

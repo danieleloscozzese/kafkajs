@@ -1,4 +1,4 @@
-const requestV0 = require('../v0/request')
+const requestV0 = require("../v0/request");
 
 /**
  * CreatePartitions Request (Version: 1) => [topic_partitions] timeout validate_only
@@ -12,4 +12,4 @@ const requestV0 = require('../v0/request')
  */
 
 module.exports = ({ topicPartitions, validateOnly, timeout }) =>
-  Object.assign(requestV0({ topicPartitions, validateOnly, timeout }), { apiVersion: 1 })
+  Object.assign(requestV0({ topicPartitions, validateOnly, timeout }), { apiVersion: 1 });

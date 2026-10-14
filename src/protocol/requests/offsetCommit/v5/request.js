@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { OffsetCommit: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { OffsetCommit: apiKey } = require("../../apiKeys");
 
 /**
  * Version 5 removes retention_time, as this is controlled by a broker setting
@@ -19,23 +19,20 @@ const { OffsetCommit: apiKey } = require('../../apiKeys')
 module.exports = ({ groupId, groupGenerationId, memberId, topics }) => ({
   apiKey,
   apiVersion: 5,
-  apiName: 'OffsetCommit',
+  apiName: "OffsetCommit",
   encode: async () => {
     return new Encoder()
       .writeString(groupId)
       .writeInt32(groupGenerationId)
       .writeString(memberId)
-      .writeArray(topics.map(encodeTopic))
+      .writeArray(topics.map(encodeTopic));
   },
-})
+});
 
 const encodeTopic = ({ topic, partitions }) => {
-  return new Encoder().writeString(topic).writeArray(partitions.map(encodePartition))
-}
+  return new Encoder().writeString(topic).writeArray(partitions.map(encodePartition));
+};
 
 const encodePartition = ({ partition, offset, metadata = null }) => {
-  return new Encoder()
-    .writeInt32(partition)
-    .writeInt64(offset)
-    .writeString(metadata)
-}
+  return new Encoder().writeInt32(partition).writeInt64(offset).writeString(metadata);
+};

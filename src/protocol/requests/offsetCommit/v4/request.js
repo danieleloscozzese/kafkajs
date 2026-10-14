@@ -1,4 +1,4 @@
-const requestV3 = require('../v3/request')
+const requestV3 = require("../v3/request");
 
 /**
  * OffsetCommit Request (Version: 4) => group_id generation_id member_id retention_time [topics]
@@ -17,4 +17,4 @@ const requestV3 = require('../v3/request')
 module.exports = ({ groupId, groupGenerationId, memberId, retentionTime, topics }) =>
   Object.assign(requestV3({ groupId, groupGenerationId, memberId, retentionTime, topics }), {
     apiVersion: 4,
-  })
+  });

@@ -1,4 +1,4 @@
-const requestV0 = require('../v0/request')
+const requestV0 = require("../v0/request");
 
 /**
  * SaslAuthenticate Request (Version: 1) => sasl_auth_bytes
@@ -8,4 +8,4 @@ const requestV0 = require('../v0/request')
 /**
  * @param {Buffer} authBytes - SASL authentication bytes from client as defined by the SASL mechanism
  */
-module.exports = ({ authBytes }) => Object.assign(requestV0({ authBytes }), { apiVersion: 1 })
+module.exports = ({ authBytes }) => Object.assign(requestV0({ authBytes }), { apiVersion: 1 });

@@ -1,5 +1,5 @@
-const Decoder = require('../../../decoder')
-const { failure, createErrorFromCode } = require('../../../error')
+const Decoder = require("../../../decoder");
+const { failure, createErrorFromCode } = require("../../../error");
 
 /**
  * DescribeGroups Response (Version: 0) => [groups]
@@ -17,42 +17,42 @@ const { failure, createErrorFromCode } = require('../../../error')
  *       member_assignment => BYTES
  */
 
-const decoderMember = decoder => ({
+const decoderMember = (decoder) => ({
   memberId: decoder.readString(),
   clientId: decoder.readString(),
   clientHost: decoder.readString(),
   memberMetadata: decoder.readBytes(),
   memberAssignment: decoder.readBytes(),
-})
+});
 
-const decodeGroup = decoder => ({
+const decodeGroup = (decoder) => ({
   errorCode: decoder.readInt16(),
   groupId: decoder.readString(),
   state: decoder.readString(),
   protocolType: decoder.readString(),
   protocol: decoder.readString(),
   members: decoder.readArray(decoderMember),
-})
+});
 
-const decode = async rawData => {
-  const decoder = new Decoder(rawData)
-  const groups = decoder.readArray(decodeGroup)
+const decode = async (rawData) => {
+  const decoder = new Decoder(rawData);
+  const groups = decoder.readArray(decodeGroup);
 
   return {
     groups,
-  }
-}
+  };
+};
 
-const parse = async data => {
-  const groupsWithError = data.groups.filter(({ errorCode }) => failure(errorCode))
+const parse = async (data) => {
+  const groupsWithError = data.groups.filter(({ errorCode }) => failure(errorCode));
   if (groupsWithError.length > 0) {
-    throw createErrorFromCode(groupsWithError[0].errorCode)
+    throw createErrorFromCode(groupsWithError[0].errorCode);
   }
 
-  return data
-}
+  return data;
+};
 
 module.exports = {
   decode,
   parse,
-}
+};

@@ -1,35 +1,35 @@
-const { createConnectionPool, connectionOpts, secureRandom, newLogger } = require('testHelpers')
+const { createConnectionPool, connectionOpts, secureRandom, newLogger } = require("testHelpers");
 
-const Broker = require('../index')
+const Broker = require("../index");
 
-describe('Broker > alterPartitionReassignments', () => {
-  let seedBroker, broker
+describe("Broker > alterPartitionReassignments", () => {
+  let seedBroker, broker;
 
   beforeEach(async () => {
     seedBroker = new Broker({
       connectionPool: createConnectionPool(connectionOpts()),
       logger: newLogger(),
-    })
-    await seedBroker.connect()
+    });
+    await seedBroker.connect();
 
-    const metadata = await seedBroker.metadata()
-    const newBrokerData = metadata.brokers.find(b => b.nodeId === metadata.controllerId)
+    const metadata = await seedBroker.metadata();
+    const newBrokerData = metadata.brokers.find((b) => b.nodeId === metadata.controllerId);
 
     broker = new Broker({
       connectionPool: createConnectionPool(newBrokerData),
       logger: newLogger(),
       allowAutoTopicCreation: false,
-    })
-  })
+    });
+  });
 
   afterEach(async () => {
-    seedBroker && (await seedBroker.disconnect())
-    broker && (await broker.disconnect())
-  })
+    seedBroker && (await seedBroker.disconnect());
+    broker && (await broker.disconnect());
+  });
 
-  test('request', async () => {
-    await broker.connect()
-    const topicName1 = `test-topic-${secureRandom()}`
+  test("request", async () => {
+    await broker.connect();
+    const topicName1 = `test-topic-${secureRandom()}`;
 
     await broker.createTopics({
       topics: [
@@ -41,7 +41,7 @@ describe('Broker > alterPartitionReassignments', () => {
           ],
         },
       ],
-    })
+    });
 
     const response = await broker.alterPartitionReassignments({
       topics: [
@@ -54,9 +54,9 @@ describe('Broker > alterPartitionReassignments', () => {
         },
       ],
       timeout: 5000,
-    })
+    });
 
-    response.responses[0].partitions.sort((a, b) => b.partition - a.partition)
+    response.responses[0].partitions.sort((a, b) => b.partition - a.partition);
 
     expect(response).toEqual({
       throttleTime: 0,
@@ -70,7 +70,7 @@ describe('Broker > alterPartitionReassignments', () => {
           ],
         },
       ],
-    })
-    await broker.deleteTopics({ topics: [topicName1] })
-  })
-})
+    });
+    await broker.deleteTopics({ topics: [topicName1] });
+  });
+});

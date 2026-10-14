@@ -1,7 +1,7 @@
-const Decoder = require('../../../decoder')
-const { KafkaJSOffsetOutOfRange } = require('../../../../errors')
-const { failure, createErrorFromCode, errorCodes } = require('../../../error')
-const MessageSetDecoder = require('../../../messageSet/decoder')
+const Decoder = require("../../../decoder");
+const { KafkaJSOffsetOutOfRange } = require("../../../../errors");
+const { failure, createErrorFromCode, errorCodes } = require("../../../error");
+const MessageSetDecoder = require("../../../messageSet/decoder");
 
 /**
  * Fetch Response (Version: 0) => [responses]
@@ -15,51 +15,51 @@ const MessageSetDecoder = require('../../../messageSet/decoder')
  *       record_set => RECORDS
  */
 
-const decodePartition = async decoder => ({
+const decodePartition = async (decoder) => ({
   partition: decoder.readInt32(),
   errorCode: decoder.readInt16(),
   highWatermark: decoder.readInt64().toString(),
   messages: await MessageSetDecoder(decoder),
-})
+});
 
-const decodeResponse = async decoder => ({
+const decodeResponse = async (decoder) => ({
   topicName: decoder.readString(),
   partitions: await decoder.readArrayAsync(decodePartition),
-})
+});
 
-const decode = async rawData => {
-  const decoder = new Decoder(rawData)
-  const responses = await decoder.readArrayAsync(decodeResponse)
+const decode = async (rawData) => {
+  const decoder = new Decoder(rawData);
+  const responses = await decoder.readArrayAsync(decodeResponse);
 
   return {
     responses,
-  }
-}
+  };
+};
 
 const { code: OFFSET_OUT_OF_RANGE_ERROR_CODE } = errorCodes.find(
-  e => e.type === 'OFFSET_OUT_OF_RANGE'
-)
+  (e) => e.type === "OFFSET_OUT_OF_RANGE",
+);
 
-const parse = async data => {
+const parse = async (data) => {
   const errors = data.responses.flatMap(({ topicName, partitions }) => {
     return partitions
-      .filter(partition => failure(partition.errorCode))
-      .map(partition => Object.assign({}, partition, { topic: topicName }))
-  })
+      .filter((partition) => failure(partition.errorCode))
+      .map((partition) => Object.assign({}, partition, { topic: topicName }));
+  });
 
   if (errors.length > 0) {
-    const { errorCode, topic, partition } = errors[0]
+    const { errorCode, topic, partition } = errors[0];
     if (errorCode === OFFSET_OUT_OF_RANGE_ERROR_CODE) {
-      throw new KafkaJSOffsetOutOfRange(createErrorFromCode(errorCode), { topic, partition })
+      throw new KafkaJSOffsetOutOfRange(createErrorFromCode(errorCode), { topic, partition });
     }
 
-    throw createErrorFromCode(errorCode)
+    throw createErrorFromCode(errorCode);
   }
 
-  return data
-}
+  return data;
+};
 
 module.exports = {
   decode,
   parse,
-}
+};

@@ -1,6 +1,6 @@
-const Encoder = require('../../encoder')
-const crc32 = require('../../crc32')
-const { Types: Compression, COMPRESSION_CODEC_MASK } = require('../compression')
+const Encoder = require("../../encoder");
+const crc32 = require("../../crc32");
+const { Types: Compression, COMPRESSION_CODEC_MASK } = require("../compression");
 
 /**
  * v1 (supported since 0.10.0)
@@ -19,8 +19,8 @@ module.exports = ({ compression = Compression.None, timestamp = Date.now(), key,
     .writeInt8(compression & COMPRESSION_CODEC_MASK)
     .writeInt64(timestamp)
     .writeBytes(key)
-    .writeBytes(value)
+    .writeBytes(value);
 
-  const crc = crc32(content)
-  return new Encoder().writeInt32(crc).writeEncoder(content)
-}
+  const crc = crc32(content);
+  return new Encoder().writeInt32(crc).writeEncoder(content);
+};

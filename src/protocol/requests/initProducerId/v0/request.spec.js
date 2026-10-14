@@ -1,11 +1,11 @@
-const RequestV0Protocol = require('./request')
+const RequestV0Protocol = require("./request");
 
-describe('Protocol > Requests > InitProducerId > v0', () => {
-  test('request', async () => {
-    const transactionalId = 'initproduceridtransaction'
-    const transactionTimeout = 30000
+describe("Protocol > Requests > InitProducerId > v0", () => {
+  test("request", async () => {
+    const transactionalId = "initproduceridtransaction";
+    const transactionTimeout = 30000;
 
-    const { buffer } = await RequestV0Protocol({ transactionalId, transactionTimeout }).encode()
-    expect(buffer).toEqual(Buffer.from(require('../fixtures/v0_request.json')))
-  })
-})
+    const { buffer } = await RequestV0Protocol({ transactionalId, transactionTimeout }).encode();
+    expect(buffer).toEqual(Buffer.from(require("../fixtures/v0_request.json")));
+  });
+});

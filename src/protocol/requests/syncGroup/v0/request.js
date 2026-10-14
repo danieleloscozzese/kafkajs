@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { SyncGroup: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { SyncGroup: apiKey } = require("../../apiKeys");
 
 /**
  * SyncGroup Request (Version: 0) => group_id generation_id member_id [group_assignment]
@@ -14,16 +14,16 @@ const { SyncGroup: apiKey } = require('../../apiKeys')
 module.exports = ({ groupId, generationId, memberId, groupAssignment }) => ({
   apiKey,
   apiVersion: 0,
-  apiName: 'SyncGroup',
+  apiName: "SyncGroup",
   encode: async () => {
     return new Encoder()
       .writeString(groupId)
       .writeInt32(generationId)
       .writeString(memberId)
-      .writeArray(groupAssignment.map(encodeGroupAssignment))
+      .writeArray(groupAssignment.map(encodeGroupAssignment));
   },
-})
+});
 
 const encodeGroupAssignment = ({ memberId, memberAssignment }) => {
-  return new Encoder().writeString(memberId).writeBytes(memberAssignment)
-}
+  return new Encoder().writeString(memberId).writeBytes(memberAssignment);
+};

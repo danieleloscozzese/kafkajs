@@ -1,5 +1,5 @@
-const Encoder = require('../../../encoder')
-const { CreateTopics: apiKey } = require('../../apiKeys')
+const Encoder = require("../../../encoder");
+const { CreateTopics: apiKey } = require("../../apiKeys");
 
 /**
  *CreateTopics Request (Version: 1) => [create_topic_requests] timeout validate_only
@@ -20,14 +20,14 @@ const { CreateTopics: apiKey } = require('../../apiKeys')
 module.exports = ({ topics, validateOnly = false, timeout = 5000 }) => ({
   apiKey,
   apiVersion: 1,
-  apiName: 'CreateTopics',
+  apiName: "CreateTopics",
   encode: async () => {
     return new Encoder()
       .writeArray(topics.map(encodeTopics))
       .writeInt32(timeout)
-      .writeBoolean(validateOnly)
+      .writeBoolean(validateOnly);
   },
-})
+});
 
 const encodeTopics = ({
   topic,
@@ -41,13 +41,13 @@ const encodeTopics = ({
     .writeInt32(numPartitions)
     .writeInt16(replicationFactor)
     .writeArray(replicaAssignment.map(encodeReplicaAssignment))
-    .writeArray(configEntries.map(encodeConfigEntries))
-}
+    .writeArray(configEntries.map(encodeConfigEntries));
+};
 
 const encodeReplicaAssignment = ({ partition, replicas }) => {
-  return new Encoder().writeInt32(partition).writeArray(replicas)
-}
+  return new Encoder().writeInt32(partition).writeArray(replicas);
+};
 
 const encodeConfigEntries = ({ name, value }) => {
-  return new Encoder().writeString(name).writeString(value)
-}
+  return new Encoder().writeString(name).writeString(value);
+};

@@ -1,4 +1,4 @@
-const { entries } = Object
+const { entries } = Object;
 
 module.exports = (obj, mapper) =>
   entries(obj).reduce(
@@ -6,5 +6,5 @@ module.exports = (obj, mapper) =>
       ...acc,
       [key]: mapper(value, key),
     }),
-    {}
-  )
+    {},
+  );

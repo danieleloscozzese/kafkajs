@@ -1,6 +1,6 @@
-const createSendMessages = require('./sendMessages')
-const { KafkaJSError, KafkaJSNonRetriableError } = require('../errors')
-const { CONNECTION_STATUS } = require('../network/connectionStatus')
+const createSendMessages = require("./sendMessages");
+const { KafkaJSError, KafkaJSNonRetriableError } = require("../errors");
+const { CONNECTION_STATUS } = require("../network/connectionStatus");
 
 module.exports = ({
   logger,
@@ -17,20 +17,20 @@ module.exports = ({
     retrier,
     partitioner,
     eosManager,
-  })
+  });
 
   const validateConnectionStatus = () => {
-    const connectionStatus = getConnectionStatus()
+    const connectionStatus = getConnectionStatus();
 
     switch (connectionStatus) {
       case CONNECTION_STATUS.DISCONNECTING:
         throw new KafkaJSNonRetriableError(
-          `The producer is disconnecting; therefore, it can't safely accept messages anymore`
-        )
+          `The producer is disconnecting; therefore, it can't safely accept messages anymore`,
+        );
       case CONNECTION_STATUS.DISCONNECTED:
-        throw new KafkaJSError('The producer is disconnected')
+        throw new KafkaJSError("The producer is disconnected");
     }
-  }
+  };
 
   /**
    * @typedef {Object} TopicMessages
@@ -53,52 +53,52 @@ module.exports = ({
    */
   const sendBatch = async ({ acks = -1, timeout, compression, topicMessages = [] }) => {
     if (topicMessages.some(({ topic }) => !topic)) {
-      throw new KafkaJSNonRetriableError(`Invalid topic`)
+      throw new KafkaJSNonRetriableError(`Invalid topic`);
     }
 
     if (idempotent && acks !== -1) {
       throw new KafkaJSNonRetriableError(
-        `Not requiring ack for all messages invalidates the idempotent producer's EoS guarantees`
-      )
+        `Not requiring ack for all messages invalidates the idempotent producer's EoS guarantees`,
+      );
     }
 
     for (const { topic, messages } of topicMessages) {
       if (!messages) {
         throw new KafkaJSNonRetriableError(
-          `Invalid messages array [${messages}] for topic "${topic}"`
-        )
+          `Invalid messages array [${messages}] for topic "${topic}"`,
+        );
       }
 
-      const messageWithoutValue = messages.find(message => message.value === undefined)
+      const messageWithoutValue = messages.find((message) => message.value === undefined);
       if (messageWithoutValue) {
         throw new KafkaJSNonRetriableError(
           `Invalid message without value for topic "${topic}": ${JSON.stringify(
-            messageWithoutValue
-          )}`
-        )
+            messageWithoutValue,
+          )}`,
+        );
       }
     }
 
-    validateConnectionStatus()
+    validateConnectionStatus();
     const mergedTopicMessages = topicMessages.reduce((merged, { topic, messages }) => {
-      const index = merged.findIndex(({ topic: mergedTopic }) => topic === mergedTopic)
+      const index = merged.findIndex(({ topic: mergedTopic }) => topic === mergedTopic);
 
       if (index === -1) {
-        merged.push({ topic, messages })
+        merged.push({ topic, messages });
       } else {
-        merged[index].messages = [...merged[index].messages, ...messages]
+        merged[index].messages = [...merged[index].messages, ...messages];
       }
 
-      return merged
-    }, [])
+      return merged;
+    }, []);
 
     return await sendMessages({
       acks,
       timeout,
       compression,
       topicMessages: mergedTopicMessages,
-    })
-  }
+    });
+  };
 
   /**
    * @param {ProduceRequest} ProduceRequest
@@ -116,17 +116,17 @@ module.exports = ({
    * @property {Compression.Types} [compression=Compression.Types.None] Compression codec
    */
   const send = async ({ acks, timeout, compression, topic, messages }) => {
-    const topicMessage = { topic, messages }
+    const topicMessage = { topic, messages };
     return sendBatch({
       acks,
       timeout,
       compression,
       topicMessages: [topicMessage],
-    })
-  }
+    });
+  };
 
   return {
     send,
     sendBatch,
-  }
-}
+  };
+};
