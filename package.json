@@ -1,9 +1,10 @@
 {
   "name": "@dagher/kafkajs",
-  "version": "2.2.6",
+  "version": "2.2.7-0",
   "description": "A modern Apache Kafka client for node.js",
   "author": "Daniel Arthur Gallagher <him@danielarthurgallagher.dev>",
-  "main": "index.js",
+  "module": "index.mjs",
+  "type": "commonjs",
   "types": "types/index.d.ts",
   "license": "MIT",
   "keywords": [
@@ -16,10 +17,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tulios/kafkajs.git"
+    "url": "https://github.com/danieleloscozzese/kafkajs.git"
   },
   "bugs": {
-    "url": "https://github.com/tulios/kafkajs/issues"
+    "url": "https://github.com/danieleloscozzese/kafkajs"
   },
   "homepage": "https://kafka.js.org",
   "scripts": {
