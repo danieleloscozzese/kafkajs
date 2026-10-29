@@ -1,4 +1,4 @@
-const { describe, test, expect, beforeEach } = require("@jest/globals");
+const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
 
 const createAdmin = require("../index");
 
@@ -31,6 +31,10 @@ describe("Admin", () => {
     });
 
     await admin.connect();
+  });
+
+  afterEach(async () => {
+    await admin.disconnect();
   });
 
   describe("deleteAcls", () => {
