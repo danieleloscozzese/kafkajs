@@ -46,6 +46,7 @@ module.exports = async (fetchDecoder) => {
   // the record batch and the legacy message set. It's not used here but
   // it has to be read.
   const magicByte = decoder.readInt8();
+  decoder.readInt32();
 
   const attributes = decoder.readInt16();
   const lastOffsetDelta = decoder.readInt32();
