@@ -1,11 +1,11 @@
-const { expect: jestExpect, jest: jestApi } = require("@jest/globals");
+const { expect, jest } = require("@jest/globals");
 
 const retries = process.env.TEST_RETRIES != null ? parseInt(process.env.TEST_RETRIES, 10) : 0;
-jestApi.retryTimes(retries);
+jest.retryTimes(retries);
 
 require("jest-extended");
 
-jestExpect.extend({
+expect.extend({
   optional(v, value) {
     const pass = typeof v === "undefined" || v === value;
     return {
@@ -19,7 +19,7 @@ jestExpect.extend({
         message: () => `Ok`,
         pass: true,
       };
-    if (jestExpect(received).toEqual(jestExpect.any(argument))) {
+    if (expect(received).toEqual(expect.any(argument))) {
       return {
         message: () => `Ok`,
         pass: true,
