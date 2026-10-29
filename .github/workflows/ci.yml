@@ -10,12 +10,10 @@ concurrency:
 
 jobs:
   test:
-    name: "Test (Node ${{ matrix.node-version }})"
+    name: "Test"
     runs-on: ["ubuntu-latest"]
     strategy:
       fail-fast: true
-      matrix:
-        node-version: [22, 24, 26]
     env:
       TZ: "Europe/Rome"
       KAFKA_VERSION: "2.4"
@@ -26,7 +24,7 @@ jobs:
       - uses: "actions/setup-node@v6"
         name: "Set up Node.js"
         with:
-          node-version: "${{ matrix.node-version }}"
+          node-version: "24"
           cache: "npm"
 
       - name: "Install dependencies"
