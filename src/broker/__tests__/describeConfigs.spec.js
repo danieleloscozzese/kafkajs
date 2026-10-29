@@ -1,6 +1,6 @@
 const { createConnectionPool, connectionOpts, secureRandom, newLogger } = require("testHelpers");
-const CONFIG_RESOURCE_TYPES = require("../../protocol/configResourceTypes");
-const ConfigSource = require("../../protocol/configSource");
+const CONFIG_RESOURCE_TYPES = require("../../protocol/config-resource-types.mjs");
+const ConfigSource = require("../../protocol/config-source.mjs");
 const Broker = require("../index");
 
 const sortByConfigName = (array) => array.sort((a, b) => a.configName.localeCompare(b.configName));

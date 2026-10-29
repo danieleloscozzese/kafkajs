@@ -1,7 +1,7 @@
 const Decoder = require("../../../decoder");
 const { failure, createErrorFromCode } = require("../../../error");
-const ConfigSource = require("../../../configSource");
-const ConfigResourceTypes = require("../../../configResourceTypes");
+const ConfigSource = require("../../../config-source.mjs").default;
+const ConfigResourceTypes = require("../../../config-resource-types.mjs").default;
 
 /**
  * DescribeConfigs Response (Version: 0) => throttle_time_ms [resources]

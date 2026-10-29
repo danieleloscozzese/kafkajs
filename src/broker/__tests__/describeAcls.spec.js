@@ -1,10 +1,10 @@
 const { createConnectionPool, connectionOpts, secureRandom, newLogger } = require("testHelpers");
 
 const Broker = require("../index");
-const ACL_RESOURCE_TYPES = require("../../protocol/aclResourceTypes");
-const ACL_OPERATION_TYPES = require("../../protocol/aclOperationTypes");
-const ACL_PERMISSION_TYPES = require("../../protocol/aclPermissionTypes");
-const RESOURCE_PATTERN_TYPES = require("../../protocol/resourcePatternTypes");
+const ACL_RESOURCE_TYPES = require("../../protocol/acl-resource-types.mjs");
+const ACL_OPERATION_TYPES = require("../../protocol/acl-operation-types.mjs"");
+const ACL_PERMISSION_TYPES = require("../../protocol/acl-permission-types.mjs");
+const RESOURCE_PATTERN_TYPES = require("../../protocol/resource-pattern-types.mjs");
 
 describe("Broker > describeAcls", () => {
   let seedBroker, broker;

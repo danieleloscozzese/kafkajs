@@ -8,7 +8,7 @@
  * @readonly
  * @enum {ACLOperationTypes}
  */
-module.exports = {
+export default {
   /**
    * Represents any AclOperation which this client cannot understand, perhaps because this
    * client is too old.

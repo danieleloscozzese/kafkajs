@@ -1,5 +1,5 @@
 const { decode, parse } = require("./response");
-const ConfigSource = require("../../../configSource");
+const ConfigSource = require("../../../config-source.mjs");
 
 describe("Protocol > Requests > DescribeConfigs > v0", () => {
   test("response", async () => {

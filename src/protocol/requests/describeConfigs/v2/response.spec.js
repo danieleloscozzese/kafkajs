@@ -1,6 +1,6 @@
 const { decode, parse } = require("./response");
-const ConfigResourceTypes = require("../../../configResourceTypes");
-const { DEFAULT_CONFIG } = require("../../../configSource");
+const ConfigResourceTypes = require("../../../config-resource-types.mjs");
+const { DEFAULT_CONFIG } = require("../../../config-source.mjs");
 
 describe("Protocol > Requests > DescribeConfigs > v2", () => {
   test("response", async () => {

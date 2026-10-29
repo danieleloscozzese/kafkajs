@@ -1,5 +1,5 @@
 const RequestV0Protocol = require("./request");
-const CONFIG_RESOURCE_TYPES = require("../../../configResourceTypes");
+const CONFIG_RESOURCE_TYPES = require("../../../config-resource-types.mjs");
 
 describe("Protocol > Requests > AlterConfigs > v0", () => {
   test("request", async () => {

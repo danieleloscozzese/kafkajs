@@ -3,7 +3,7 @@ const { KafkaJSProtocolError } = require("../../errors");
 const { createErrorFromCode } = require("../../protocol/error");
 
 const { secureRandom, createCluster, newLogger, createTopic } = require("testHelpers");
-const CONFIG_RESOURCE_TYPES = require("../../protocol/configResourceTypes");
+const CONFIG_RESOURCE_TYPES = require("../../protocol/config-resource-types.mjs");
 const NOT_CONTROLLER = 41;
 
 describe("Admin", () => {

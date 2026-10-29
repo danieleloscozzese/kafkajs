@@ -1,5 +1,5 @@
 const RequestV2Protocol = require("./request");
-const ConfigResourceTypes = require("../../../configResourceTypes");
+const ConfigResourceTypes = require("../../../config-resource-types.mjs");
 
 describe("Protocol > Requests > DescribeConfigs > v2", () => {
   test("request", async () => {
