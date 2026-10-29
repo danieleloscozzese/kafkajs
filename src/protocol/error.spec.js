@@ -1,3 +1,5 @@
+const { describe, expect, it } = require("@jest/globals");
+
 const { errorCodes, createErrorFromCode } = require("./error");
 
 describe("Protocol > error", () => {

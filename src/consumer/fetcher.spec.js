@@ -1,3 +1,5 @@
+const { jest, expect, beforeEach, it } = require("@jest/globals");
+
 const seq = require("../utils/seq");
 const waitFor = require("../utils/waitFor");
 const sleep = require("../utils/sleep");
@@ -72,12 +74,6 @@ describe("Fetcher", () => {
   });
 
   describe("handles partition reassignment", () => {
-    let fetchers;
-
-    afterEach(async () => {
-      fetchers && (await Promise.all(fetchers.map((f) => f.stop())));
-    });
-
     it("should filter out batches currently processed by another fetcher", async () => {
       const batches = seq(2).map(
         (index) =>
@@ -87,7 +83,7 @@ describe("Fetcher", () => {
             messages: [],
           }),
       );
-      const fetch = jest.fn(async (_) => {
+      const fetch = jest.fn(async () => {
         await sleep(1);
         const batch = batches.pop();
 

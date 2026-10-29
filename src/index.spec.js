@@ -1,3 +1,5 @@
+const { describe, test, expect, jest, it } = require("@jest/globals");
+
 jest.mock("./producer");
 jest.mock("./consumer");
 jest.mock("./admin");

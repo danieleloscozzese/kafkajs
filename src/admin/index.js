@@ -302,7 +302,7 @@ module.exports = ({
 
     const retrier = createRetry(retry);
 
-    return retrier(async (bail, retryCount, retryTime) => {
+    return retrier(async (bail) => {
       try {
         await cluster.addTargetTopic(topic);
         await cluster.refreshMetadataIfNecessary();
@@ -356,7 +356,7 @@ module.exports = ({
 
     const retrier = createRetry(retry);
 
-    return retrier(async (bail, retryCount, retryTime) => {
+    return retrier(async (bail) => {
       try {
         await cluster.addTargetTopic(topic);
         await cluster.refreshMetadataIfNecessary();
@@ -1055,7 +1055,7 @@ module.exports = ({
     );
 
     const retrier = createRetry(retry);
-    return retrier(async (bail) => {
+    return retrier(async () => {
       try {
         const partitionErrors = [];
 

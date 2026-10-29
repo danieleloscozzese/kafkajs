@@ -1,3 +1,5 @@
+const { describe, test, expect, it, jest } = require("@jest/globals");
+
 const { KafkaJSServerDoesNotSupportApiKey } = require("../../errors");
 const apiKeys = require("./apiKeys");
 const { lookup, requests } = require("./index");

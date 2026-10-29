@@ -1,3 +1,5 @@
+const { describe, test, expect } = require("@jest/globals");
+
 const { KafkaJSNonRetriableError } = require("../../../errors");
 const randomBytes = require("./randomBytes");
 

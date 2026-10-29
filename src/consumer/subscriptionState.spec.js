@@ -1,3 +1,5 @@
+const { describe, expect, beforeEach, it } = require("@jest/globals");
+
 const SubscriptionState = require("./subscriptionState");
 
 describe("Consumer > SubscriptionState > pause / resume", () => {

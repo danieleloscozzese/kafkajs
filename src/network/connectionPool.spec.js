@@ -1,3 +1,5 @@
+const { describe, expect, beforeEach, afterEach, it } = require("@jest/globals");
+
 const apiKeys = require("../protocol/requests/apiKeys");
 const { connectionOpts } = require("testHelpers");
 const ConnectionPool = require("./connectionPool");

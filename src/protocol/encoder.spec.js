@@ -1,3 +1,6 @@
+/* eslint-disable no-loss-of-precision */
+const { describe, test, expect, it } = require("@jest/globals");
+
 const Long = require("../utils/long");
 
 const Encoder = require("./encoder");

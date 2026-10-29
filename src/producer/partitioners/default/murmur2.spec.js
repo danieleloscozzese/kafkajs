@@ -1,3 +1,5 @@
+const { describe, test, expect } = require("@jest/globals");
+
 const murmur2 = require("./murmur2");
 
 describe("Producer > Partitioner > Default > murmur2", () => {

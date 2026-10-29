@@ -1,3 +1,5 @@
+const { describe, test, expect } = require("@jest/globals");
+
 const { versions, protocol } = require("./index");
 
 describe("Protocol > Requests > Produce", () => {

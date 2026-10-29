@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach } = require("@jest/globals");
+
 const os = require("os");
 const RequestV2Protocol = require("./request");
 const { Types } = require("../../../message/compression");

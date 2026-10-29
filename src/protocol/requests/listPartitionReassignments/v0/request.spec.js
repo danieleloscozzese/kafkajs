@@ -1,3 +1,5 @@
+const { describe, test, expect } = require("@jest/globals");
+
 const RequestV0Protocol = require("./request");
 
 /* TO-DO: Update the fixtures, data, and errors */

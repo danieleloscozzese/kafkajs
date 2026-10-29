@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
+
 const Broker = require("../index");
 const { MemberMetadata, MemberAssignment } = require("../../consumer/assignerProtocol");
 const {

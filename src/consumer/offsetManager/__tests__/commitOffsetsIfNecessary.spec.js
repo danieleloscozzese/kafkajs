@@ -1,3 +1,5 @@
+const { describe, expect, beforeEach, jest, it } = require("@jest/globals");
+
 const Long = require("../../../utils/long");
 const sleep = require("../../../utils/sleep");
 const OffsetManager = require("../index");

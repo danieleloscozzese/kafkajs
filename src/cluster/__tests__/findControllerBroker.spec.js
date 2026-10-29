@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach, jest } = require("@jest/globals");
+
 const { createCluster } = require("testHelpers");
 const { KafkaJSMetadataNotLoaded, KafkaJSBrokerNotFound } = require("../../errors");
 

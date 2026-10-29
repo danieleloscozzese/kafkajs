@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
+
 const createProducer = require("../../producer");
 const createConsumer = require("../index");
 

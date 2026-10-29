@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach, afterEach, jest } = require("@jest/globals");
+
 const { createConnectionPool, connectionOpts, newLogger } = require("testHelpers");
 const { KafkaJSProtocolError, KafkaJSNonRetriableError } = require("../../errors");
 const { createErrorFromCode } = require("../../protocol/error");

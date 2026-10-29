@@ -1,9 +1,11 @@
+const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
+
 const createAdmin = require("../index");
 
 const { secureRandom, createCluster, newLogger, createTopic } = require("testHelpers");
 
 describe("Admin", () => {
-  let existingTopicName, numPartitions, admin, consumer;
+  let existingTopicName, numPartitions, admin;
 
   beforeEach(async () => {
     existingTopicName = `test-topic-${secureRandom()}`;
@@ -13,8 +15,7 @@ describe("Admin", () => {
   });
 
   afterEach(async () => {
-    admin && (await admin.disconnect());
-    consumer && (await consumer.disconnect());
+    await admin?.disconnect();
   });
 
   describe("fetchTopicMetadata", () => {

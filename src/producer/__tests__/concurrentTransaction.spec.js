@@ -1,3 +1,5 @@
+const { describe, expect, beforeEach, afterEach } = require("@jest/globals");
+
 const {
   secureRandom,
   newLogger,

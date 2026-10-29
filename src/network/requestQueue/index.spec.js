@@ -1,3 +1,5 @@
+const { describe, expect, jest, beforeEach, it } = require("@jest/globals");
+
 jest.setTimeout(3000);
 
 const sleep = require("../../utils/sleep");
@@ -344,7 +346,7 @@ describe("Network > RequestQueue", () => {
   });
 
   describe("instrumentation events", () => {
-    let emitter, removeListener, eventCalled, request, payload, size, requestTimeout;
+    let emitter, eventCalled, request, payload, size, requestTimeout;
 
     beforeEach(() => {
       requestTimeout = 1;
@@ -362,10 +364,6 @@ describe("Network > RequestQueue", () => {
       };
       payload = { ok: true };
       size = 32;
-    });
-
-    afterEach(() => {
-      removeListener && removeListener();
     });
 
     it("does not emit the event if the queue size remains the same", () => {

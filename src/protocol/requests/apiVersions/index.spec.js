@@ -1,3 +1,5 @@
+const { describe, expect, it } = require("@jest/globals");
+
 const ApiVersions = require("./index");
 const ApiVersionsV0 = ApiVersions.protocol({ version: 0 });
 const ApiVersionsV1 = ApiVersions.protocol({ version: 1 });

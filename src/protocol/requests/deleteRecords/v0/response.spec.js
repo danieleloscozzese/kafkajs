@@ -1,3 +1,5 @@
+const { describe, test, expect } = require("@jest/globals");
+
 const response = require("./response");
 
 describe("Protocol > Requests > DeleteRecords > v0", () => {

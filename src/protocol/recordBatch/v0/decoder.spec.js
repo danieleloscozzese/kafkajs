@@ -1,3 +1,5 @@
+const { describe, test, expect } = require("@jest/globals");
+
 const Decoder = require("../../decoder");
 const recordBatchDecoder = require("./decoder");
 

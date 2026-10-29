@@ -1,3 +1,5 @@
+const { describe, expect, beforeEach, jest, afterEach, it } = require("@jest/globals");
+
 const Runner = require("../runner");
 const Batch = require("../batch");
 const InstrumentationEventEmitter = require("../../instrumentation/emitter");

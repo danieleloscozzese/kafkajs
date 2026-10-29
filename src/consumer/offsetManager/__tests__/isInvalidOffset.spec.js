@@ -1,3 +1,5 @@
+const { describe, expect, it } = require("@jest/globals");
+
 const isInvalidOffset = require("../isInvalidOffset");
 
 describe("Consumer > OffsetMananger > isInvalidOffset", () => {

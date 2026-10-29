@@ -1,3 +1,5 @@
+const { describe, test, expect, jest, beforeEach, afterEach, it } = require("@jest/globals");
+
 let initProducerIdSpy;
 let sendOffsetsSpy;
 let retrySpy;

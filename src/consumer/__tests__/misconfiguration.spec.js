@@ -1,3 +1,5 @@
+const { describe, expect, it } = require("@jest/globals");
+
 const createConsumer = require("../index");
 const { KafkaJSNonRetriableError } = require("../../errors");
 

@@ -1,3 +1,5 @@
+const { test, expect, jest } = require("@jest/globals");
+
 const {
   saslOAuthBearerConnectionOpts,
   newLogger,

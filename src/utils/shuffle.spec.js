@@ -1,3 +1,5 @@
+const { describe, expect, it } = require("@jest/globals");
+
 const shuffle = require("./shuffle");
 
 describe("Utils > shuffle", () => {

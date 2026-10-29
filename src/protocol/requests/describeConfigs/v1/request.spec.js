@@ -1,3 +1,5 @@
+const { describe, test, expect } = require("@jest/globals");
+
 const RequestV1Protocol = require("./request");
 const ConfigResourceTypes = require("../../../config-resource-types.mjs");
 

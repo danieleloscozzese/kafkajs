@@ -13,7 +13,7 @@
     "scram"
   ],
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=22.0.0"
   },
   "repository": {
     "type": "git",
@@ -45,20 +45,18 @@
     "test:types": "tsc -p types/"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@eslint/json": "^2.1.1",
+    "@eslint/markdown": "^8.0.3",
     "@types/jest": "^27.4.0",
     "@types/node": "^24",
-    "@typescript-eslint/typescript-estree": "^1.10.2",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.0.0",
-    "eslint-config-standard": "^13.0.1",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jest": "^26.1.0",
-    "eslint-plugin-node": "^11.0.0",
-    "eslint-plugin-prettier": "^3.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.0",
+    "@typescript-eslint/typescript-estree": "^8.72.1",
+    "eslint": "^10.13.0",
+    "eslint-config-prettier": "^10",
+    "eslint-plugin-prettier": "^5.5.7",
     "execa": "^2.0.3",
     "glob": "^7.1.4",
+    "globals": "^17.13.0",
     "ip": "^1.1.5",
     "jest": "^25.1.0",
     "jest-circus": "^25.1.0",
@@ -69,7 +67,7 @@
     "mockdate": "^2.0.5",
     "prettier": "3.9.10",
     "semver": "^6.2.0",
-    "typescript": "^7",
+    "typescript": "^6",
     "uuid": "^3.3.2"
   },
   "lint-staged": {

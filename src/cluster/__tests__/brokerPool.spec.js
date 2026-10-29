@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach, afterEach, it, jest } = require("@jest/globals");
+
 const {
   createConnectionBuilder,
   plainTextBrokers,

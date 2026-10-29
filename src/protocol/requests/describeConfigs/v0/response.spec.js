@@ -1,3 +1,5 @@
+const { describe, test, expect, it } = require("@jest/globals");
+
 const { decode, parse } = require("./response");
 const ConfigSource = require("../../../config-source.mjs");
 

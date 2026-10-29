@@ -1,3 +1,5 @@
+const { describe, expect, beforeEach, it } = require("@jest/globals");
+
 const { createCluster } = require("testHelpers");
 
 describe("Cluster", () => {

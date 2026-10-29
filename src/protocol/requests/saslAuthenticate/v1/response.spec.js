@@ -1,3 +1,5 @@
+const { describe, test, expect, it } = require("@jest/globals");
+
 const { decode, parse } = require("./response");
 
 describe("Protocol > Requests > SaslAuthenticate > v1", () => {

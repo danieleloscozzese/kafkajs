@@ -1,3 +1,5 @@
+const { describe, expect, it } = require("@jest/globals");
+
 const groupBy = require("./groupBy");
 
 describe("Utils > groupBy", () => {

@@ -1,3 +1,5 @@
+const { describe, test, expect } = require("@jest/globals");
+
 const { KafkaJSAggregateError } = require("../../../../errors");
 const { decode, parse } = require("./response");
 

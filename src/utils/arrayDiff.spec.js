@@ -1,3 +1,5 @@
+const { describe, it, expect } = require("@jest/globals");
+
 const arrayDiff = require("./arrayDiff");
 
 describe("Utils > arrayDiff", () => {

@@ -1,3 +1,5 @@
+const { describe, test, expect } = require("@jest/globals");
+
 const { unsupportedVersionResponse } = require("testHelpers");
 const { decode } = require("./response");
 

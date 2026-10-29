@@ -344,7 +344,7 @@ module.exports = ({
         let commitOffset;
         try {
           commitOffset = Long.fromValue(offset);
-        } catch (_) {
+        } catch {
           throw new KafkaJSNonRetriableError(`Invalid offset, expected a long received ${offset}`);
         }
 
@@ -400,7 +400,7 @@ module.exports = ({
     let seekOffset;
     try {
       seekOffset = Long.fromValue(offset);
-    } catch (_) {
+    } catch {
       throw new KafkaJSNonRetriableError(`Invalid offset, expected a long received ${offset}`);
     }
 

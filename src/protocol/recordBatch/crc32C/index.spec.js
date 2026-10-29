@@ -1,3 +1,5 @@
+const { describe, test, expect } = require("@jest/globals");
+
 const crc32C = require("./index");
 
 describe("Protocol > RecordBatch > crc32C", () => {

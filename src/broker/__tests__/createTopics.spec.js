@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach, afterEach, it } = require("@jest/globals");
+
 const {
   createCluster,
   createConnectionPool,

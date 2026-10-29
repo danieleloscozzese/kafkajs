@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach, jest } = require("@jest/globals");
+
 const { newLogger } = require("testHelpers");
 const createEosManager = require(".");
 const { KafkaJSNonRetriableError } = require("../../errors");

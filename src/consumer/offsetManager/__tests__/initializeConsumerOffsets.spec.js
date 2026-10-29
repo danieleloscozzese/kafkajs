@@ -1,3 +1,5 @@
+const { describe, expect, it } = require("@jest/globals");
+
 const initializeConsumerOffsets = require("../initializeConsumerOffsets");
 
 describe("Consumer > OffsetMananger > initializeConsumerOffsets", () => {

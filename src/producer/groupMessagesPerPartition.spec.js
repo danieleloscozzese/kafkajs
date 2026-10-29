@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach } = require("@jest/globals");
+
 const groupMessagesPerPartition = require("./groupMessagesPerPartition");
 const { createModPartitioner } = require("testHelpers");
 

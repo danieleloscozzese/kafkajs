@@ -97,7 +97,7 @@ module.exports = class Broker {
         try {
           this.lookupRequest(apiKeys.SaslAuthenticate, requests.SaslAuthenticate);
           supportAuthenticationProtocol = true;
-        } catch (_) {
+        } catch {
           supportAuthenticationProtocol = false;
         }
         this.connectionPool.setSupportAuthenticationProtocol(supportAuthenticationProtocol);

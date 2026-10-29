@@ -1,3 +1,5 @@
+const { describe, expect, beforeEach, jest, afterEach, it } = require("@jest/globals");
+
 const MockDate = require("mockdate");
 
 const { createLogger, LEVELS } = require("./index");

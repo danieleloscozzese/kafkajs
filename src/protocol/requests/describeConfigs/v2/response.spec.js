@@ -1,3 +1,5 @@
+const { describe, test, expect } = require("@jest/globals");
+
 const { decode, parse } = require("./response");
 const ConfigResourceTypes = require("../../../config-resource-types.mjs");
 const { DEFAULT_CONFIG } = require("../../../config-source.mjs");
