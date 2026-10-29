@@ -9,3 +9,9 @@ into ESM.
 The package manager is npm and not yarn.
 
 Tests must pass at all stages.
+
+## Style
+
+Exports are always at the end of the file.
+`export default` comes before the named exports block.
+Renamed or new files are in `snake-case`.
