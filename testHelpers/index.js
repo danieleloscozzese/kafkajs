@@ -1,4 +1,4 @@
-const { describe, test } = require("@jest/globals");
+const { test } = require("@jest/globals");
 
 // Disabled to allow for higher order test functions where
 // `callback` is parameterized instead of a static function
@@ -7,7 +7,6 @@ const execa = require("execa");
 const uuid = require("uuid/v4");
 const semver = require("semver");
 const crypto = require("crypto");
-const jwt = require("jsonwebtoken");
 const Cluster = require("../src/cluster");
 const waitFor = require("../src/utils/waitFor");
 const connectionBuilder = require("../src/cluster/connectionPoolBuilder");
@@ -115,53 +114,26 @@ const saslSCRAM512WrongConnectionOpts = () =>
     },
   });
 
-const saslOAuthBearerConnectionOpts = () =>
-  Object.assign(sslConnectionOpts(), {
-    port: 9094,
-    sasl: {
-      mechanism: "oauthbearer",
-      oauthBearerProvider: () => {
-        const token = jwt.sign({ sub: "test" }, undefined, { algorithm: "none", expiresIn: "1h" });
-
-        return {
-          value: token,
-        };
-      },
-    },
-  });
-
-/**
- * List of the possible SASL setups.
- * OAUTHBEARER must be enabled as a special case.
- */
-const saslEntries = [];
-if (process.env["OAUTHBEARER_ENABLED"] !== "1") {
-  saslEntries.push({
+const saslEntries = [
+  {
     name: "PLAIN",
     opts: saslConnectionOpts,
     wrongOpts: saslWrongConnectionOpts,
     expectedErr: /SASL PLAIN authentication failed/,
-  });
-
-  saslEntries.push({
+  },
+  {
     name: "SCRAM 256",
     opts: saslSCRAM256ConnectionOpts,
     wrongOpts: saslSCRAM256WrongConnectionOpts,
     expectedErr: /SASL SCRAM SHA256 authentication failed/,
-  });
-
-  saslEntries.push({
+  },
+  {
     name: "SCRAM 512",
     opts: saslSCRAM512ConnectionOpts,
     wrongOpts: saslSCRAM512WrongConnectionOpts,
     expectedErr: /SASL SCRAM SHA512 authentication failed/,
-  });
-} else {
-  saslEntries.push({
-    name: "OAUTHBEARER",
-    opts: saslOAuthBearerConnectionOpts,
-  });
-}
+  },
+];
 
 const createConnectionPool = (opts = {}) =>
   new ConnectionPool(Object.assign(connectionOpts(), opts));
@@ -294,10 +266,8 @@ const testIfKafkaVersion = (version, versionComparator) => {
   return scopedTest;
 };
 
-const testIfKafkaVersionLTE = (version) => testIfKafkaVersion(version, semver.lte);
 const testIfKafkaVersionGTE = (version) => testIfKafkaVersion(version, semver.gte);
 
-const testIfKafkaAtMost_0_10 = testIfKafkaVersionLTE("0.10");
 const testIfKafkaAtLeast_0_11 = testIfKafkaVersionGTE("0.11");
 const testIfKafkaAtLeast_1_1_0 = testIfKafkaVersionGTE("1.1");
 
@@ -305,30 +275,6 @@ const flakyTest = (description, callback, testFn = test) =>
   testFn(`[flaky] ${description}`, callback);
 flakyTest.skip = (description, callback) => flakyTest(description, callback, test.skip);
 flakyTest.only = (description, callback) => flakyTest(description, callback, test.only);
-const describeIfEnv =
-  (key, value) =>
-  (description, callback, describeFn = describe) => {
-    return value === process.env[key]
-      ? describeFn(description, callback)
-      : describe.skip(description, callback);
-  };
-
-const describeIfNotEnv =
-  (key, value) =>
-  (description, callback, describeFn = describe) => {
-    return value !== process.env[key]
-      ? describeFn(description, callback)
-      : describe.skip(description, callback);
-  };
-
-/**
- * Conditional describes for SASL OAUTHBEARER.
- * OAUTHBEARER must be enabled as a special case as current Kafka impl
- * doesn't allow it to be enabled aside of other SASL mechanisms.
- */
-const describeIfOauthbearerEnabled = describeIfEnv("OAUTHBEARER_ENABLED", "1");
-const describeIfOauthbearerDisabled = describeIfNotEnv("OAUTHBEARER_ENABLED", "1");
-
 const unsupportedVersionResponse = () => Buffer.from({ type: "Buffer", data: [0, 35, 0, 0, 0, 0] });
 const unsupportedVersionResponseWithTimeout = () =>
   Buffer.from({ type: "Buffer", data: [0, 0, 0, 0, 0, 35] });
@@ -355,7 +301,6 @@ module.exports = {
   saslConnectionOpts,
   saslSCRAM256ConnectionOpts,
   saslSCRAM512ConnectionOpts,
-  saslOAuthBearerConnectionOpts,
   saslEntries,
   createConnectionPool,
   createConnectionBuilder,
@@ -371,12 +316,9 @@ module.exports = {
   waitForMessages,
   waitForNextEvent,
   waitForConsumerToJoinGroup,
-  testIfKafkaAtMost_0_10,
   testIfKafkaAtLeast_0_11,
   testIfKafkaAtLeast_1_1_0,
   flakyTest,
-  describeIfOauthbearerEnabled,
-  describeIfOauthbearerDisabled,
   addPartitions,
   unsupportedVersionResponse,
   generateMessages,

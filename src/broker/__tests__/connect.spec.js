@@ -7,7 +7,6 @@ const {
   sslConnectionOpts,
   newLogger,
   testIfKafkaAtLeast_1_1_0,
-  describeIfOauthbearerDisabled,
   saslEntries,
 } = require("testHelpers");
 
@@ -60,7 +59,7 @@ describe("Broker > connect", () => {
     );
   });
 
-  describeIfOauthbearerDisabled("when PLAIN is configured", () => {
+  describe("when PLAIN is configured", () => {
     test("user provided authenticator overrides built in ones", async () => {
       broker = new Broker({
         connectionPool: createConnectionPool(
@@ -95,7 +94,7 @@ describe("Broker > connect", () => {
     });
   }
 
-  describeIfOauthbearerDisabled("when SASL SCRAM is configured", () => {
+  describe("when SASL SCRAM is configured", () => {
     test("parallel calls to connect using SCRAM", async () => {
       broker = new Broker({
         connectionPool: createConnectionPool(saslSCRAM256ConnectionOpts()),
@@ -190,7 +189,7 @@ describe("Broker > connect", () => {
       }
     });
 
-    describeIfOauthbearerDisabled("when SASL SCRAM is configured", () => {
+    describe("when SASL SCRAM is configured", () => {
       testIfKafkaAtLeast_1_1_0("parallel calls to connect using SCRAM", async () => {
         broker = new Broker({
           connectionPool: createConnectionPool(saslSCRAM256ConnectionOpts()),

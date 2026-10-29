@@ -17,23 +17,12 @@ For testing KafkaJS we use a multi-broker Kafka cluster as well as Zookeeper for
 ./scripts/createScramCredentials.sh
 ```
 
-This boots the Kafka cluster using the default docker-compose.yml file described in [scripts/dockerComposeUp.sh](https://github.com/tulios/kafkajs/blob/master/scripts/dockerComposeUp.sh). If you want to run a different version of Kafka, specify a different compose file using the `COMPOSE_FILE` environment variable:
+This boots the Kafka cluster using the canonical `docker-compose.yml` file. To inspect the running cluster, run:
 
 ```sh
-COMPOSE_FILE="docker-compose.2_3.yml" ./scripts/dockerComposeUp.sh
-```
-
-If you run `docker compose -f docker-compose.2_3.yml ps` (specify whichever compose file you used in the step above), you should see something like:
-
-```sh
-$ docker compose -f docker-compose.2_3.yml ps
-WARNING: The HOST_IP variable is not set. Defaulting to a blank string.
-      Name                    Command               State                                   Ports
-----------------------------------------------------------------------------------------------------------------------------------
-kafkajs_kafka1_1   start-kafka.sh                   Up      0.0.0.0:9092->9092/tcp, 0.0.0.0:9093->9093/tcp, 0.0.0.0:9094->9094/tcp
-kafkajs_kafka2_1   start-kafka.sh                   Up      0.0.0.0:9095->9095/tcp, 0.0.0.0:9096->9096/tcp, 0.0.0.0:9097->9097/tcp
-kafkajs_kafka3_1   start-kafka.sh                   Up      0.0.0.0:9098->9098/tcp, 0.0.0.0:9099->9099/tcp, 0.0.0.0:9100->9100/tcp
-kafkajs_zk_1       /bin/sh -c /usr/sbin/sshd  ...   Up      0.0.0.0:2181->2181/tcp, 22/tcp, 2888/tcp, 3888/tcp
+$ docker compose -f docker-compose.yml ps
+NAME      COMMAND          STATE   PORTS
+...
 ```
 
 The user credentials are listed in [scripts/createScramCredentials.sh](https://github.com/tulios/kafkajs/blob/master/scripts/createScramCredentials.sh). You can also pass in the `-h` flag to this script for more details and controls. 
