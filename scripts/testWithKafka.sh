@@ -16,11 +16,11 @@ find_container_id() {
 }
 
 quit() {
-  docker-compose -f "${COMPOSE_FILE}" down --remove-orphans
+  docker compose -f "${COMPOSE_FILE}" down --remove-orphans
   exit 1
 }
 
-if [ -z ${DO_NOT_STOP} ]; then
+if [ -z "${DO_NOT_STOP:-}" ]; then
   trap quit ERR
 fi
 
@@ -50,7 +50,7 @@ eval "${testCommand} ${extraArgs}"
 TEST_EXIT=$?
 echo
 
-if [ -z ${DO_NOT_STOP} ]; then
-  docker-compose -f "${COMPOSE_FILE}" down --remove-orphans
+if [ -z "${DO_NOT_STOP:-}" ]; then
+  docker compose -f "${COMPOSE_FILE}" down --remove-orphans
 fi
 exit ${TEST_EXIT}
