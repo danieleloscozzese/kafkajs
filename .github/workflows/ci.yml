@@ -18,6 +18,7 @@ jobs:
         node-version: [22, 24, 26]
     env:
       TZ: "Europe/Rome"
+      KAFKA_VERSION: "2.4"
     steps:
       - uses: "actions/checkout@v5"
         name: "Check out"
