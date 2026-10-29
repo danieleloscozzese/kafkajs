@@ -3,9 +3,9 @@ id: development-environment
 title: Development Environment
 ---
 
-When developing KafkaJS, we run a Kafka cluster in a similar way to what is described in [Running Kafka in Development](DockerLocal.md), using [`docker`](https://docs.docker.com/) and [`docker-compose`](https://docs.docker.com/compose/install/). Before you proceed, make sure that you have both `docker` and `docker-compose` available.
+When developing KafkaJS, we run a Kafka cluster in a similar way to what is described in [Running Kafka in Development](DockerLocal.md), using [`docker`](https://docs.docker.com/) and the [`docker compose`](https://docs.docker.com/compose/install/) plugin. Before you proceed, make sure both are available.
 
-KafkaJS is assuming that [`yarn`](https://yarnpkg.com/) is available globally, so if you haven't installed it yet: `npm install --global yarn`.
+Install the project dependencies with `npm ci` and run the test suite with `npm test`.
 
 ## Running Kafka
 
@@ -23,10 +23,10 @@ This boots the Kafka cluster using the default docker-compose.yml file described
 COMPOSE_FILE="docker-compose.2_3.yml" ./scripts/dockerComposeUp.sh
 ```
 
-If you run `docker-compose -f docker-compose.2_3.yml ps` (specify whichever compose file you used in the step above), you should see something like:
+If you run `docker compose -f docker-compose.2_3.yml ps` (specify whichever compose file you used in the step above), you should see something like:
 
 ```sh
-$ docker-compose -f docker-compose.2_3.yml ps
+$ docker compose -f docker-compose.2_3.yml ps
 WARNING: The HOST_IP variable is not set. Defaulting to a blank string.
       Name                    Command               State                                   Ports
 ----------------------------------------------------------------------------------------------------------------------------------
