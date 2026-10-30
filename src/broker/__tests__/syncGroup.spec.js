@@ -2,7 +2,7 @@ const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals
 
 const Broker = require("../index");
 const { secureRandom, createConnectionPool, newLogger, retryProtocol } = require("testHelpers");
-const { MemberMetadata, MemberAssignment } = require("../../consumer/assignerProtocol");
+const { MemberMetadata, MemberAssignment } = require("../../consumer/assignerProtocol.js");
 
 describe("Broker > SyncGroup", () => {
   let topicName, groupId, seedBroker, groupCoordinator;

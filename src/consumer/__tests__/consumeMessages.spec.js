@@ -2,12 +2,12 @@ const { describe, expect, beforeEach, afterEach, it, jest } = require("@jest/glo
 
 jest.setTimeout(30000);
 
-const createAdmin = require("../../admin");
-const createProducer = require("../../producer");
-const createConsumer = require("../index");
-const { Types } = require("../../protocol/message/compression");
-const ISOLATION_LEVEL = require("../../protocol/isolationLevel");
-const sleep = require("../../utils/sleep");
+const createAdmin = require("../../admin/index.js");
+const createProducer = require("../../producer/index.js");
+const createConsumer = require("../index.js");
+const { Types } = require("../../protocol/message/compression/index.js");
+const ISOLATION_LEVEL = require("../../protocol/isolationLevel.js");
+const sleep = require("../../utils/sleep.js");
 
 const {
   secureRandom,

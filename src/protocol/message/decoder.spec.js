@@ -4,8 +4,8 @@ const Encoder = require("../encoder");
 const Decoder = require("../decoder");
 const MessageDecoder = require("./decoder");
 
-const MessageV0 = require("./v0");
-const MessageV1 = require("./v1");
+const MessageV0 = require("./v0/index.js");
+const MessageV1 = require("./v1/index.js");
 
 describe("Protocol > Message > decoder", () => {
   describe("v0", () => {

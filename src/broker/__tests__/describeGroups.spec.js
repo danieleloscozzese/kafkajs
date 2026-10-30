@@ -8,7 +8,7 @@ const {
   retryProtocol,
   createCluster,
 } = require("testHelpers");
-const createConsumer = require("../../consumer");
+const createConsumer = require("../../consumer/index.js");
 
 describe("Broker > DescribeGroups", () => {
   let groupId, topicName, seedBroker, broker, cluster, consumer;

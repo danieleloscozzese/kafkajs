@@ -2,8 +2,8 @@ const { describe, expect, beforeEach, afterEach, it, jest } = require("@jest/glo
 
 const MockDate = require("mockdate");
 
-const { createLogger, LEVELS } = require("./index");
-const LoggerConsole = require("./console");
+const { createLogger, LEVELS } = require("./index.js");
+const LoggerConsole = require("./console.js");
 
 describe("Loggers > Console", () => {
   let logger, timeNow;

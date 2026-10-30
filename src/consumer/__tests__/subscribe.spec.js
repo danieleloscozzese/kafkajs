@@ -10,8 +10,8 @@ const {
   waitForConsumerToJoinGroup,
 } = require("testHelpers");
 
-const createConsumer = require("../index");
-const createProducer = require("../../producer");
+const createConsumer = require("../index.js");
+const createProducer = require("../../producer/index.js");
 
 describe("Consumer", () => {
   let groupId, cluster, consumer, producer;

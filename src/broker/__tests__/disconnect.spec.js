@@ -2,7 +2,7 @@ const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals
 
 const { createConnectionPool, connectionOpts, saslEntries, newLogger } = require("testHelpers");
 
-const Broker = require("../index");
+const Broker = require("../index.js");
 
 describe("Broker > disconnect", () => {
   let broker;

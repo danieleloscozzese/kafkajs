@@ -4,13 +4,13 @@ const Runner = require("../runner");
 const Batch = require("../batch");
 const InstrumentationEventEmitter = require("../../instrumentation/emitter");
 const { newLogger, secureRandom, waitFor } = require("testHelpers");
-const sleep = require("../../utils/sleep");
+const sleep = require("../../utils/sleep.js");
 const {
   KafkaJSProtocolError,
   KafkaJSNotImplemented,
   KafkaJSNumberOfRetriesExceeded,
-} = require("../../errors");
-const { createErrorFromCode } = require("../../protocol/error");
+} = require("../../errors.js");
+const { createErrorFromCode } = require("../../protocol/error.js");
 
 const UNKNOWN = -1;
 const REBALANCE_IN_PROGRESS = 27;

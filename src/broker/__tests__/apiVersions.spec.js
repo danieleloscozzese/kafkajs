@@ -1,10 +1,10 @@
 const { describe, test, expect, beforeEach, afterEach, jest } = require("@jest/globals");
 
 const { createConnectionPool, connectionOpts, newLogger } = require("testHelpers");
-const { KafkaJSProtocolError, KafkaJSNonRetriableError } = require("../../errors");
-const { createErrorFromCode } = require("../../protocol/error");
-const { requests } = require("../../protocol/requests");
-const Broker = require("../index");
+const { KafkaJSProtocolError, KafkaJSNonRetriableError } = require("../../errors.js");
+const { createErrorFromCode } = require("../../protocol/error.js");
+const { requests } = require("../../protocol/requests/index.js");
+const Broker = require("../index.js");
 
 const UNSUPPORTED_VERSION_CODE = 35;
 

@@ -7,10 +7,10 @@ const {
   newLogger,
   secureRandom,
 } = require("testHelpers");
-const { KafkaJSProtocolError, KafkaJSConnectionError } = require("../../errors");
-const { createErrorFromCode, errorCodes } = require("../../protocol/error");
-const BrokerPool = require("../brokerPool");
-const Broker = require("../../broker");
+const { KafkaJSProtocolError, KafkaJSConnectionError } = require("../../errors.js");
+const { createErrorFromCode, errorCodes } = require("../../protocol/error.js");
+const BrokerPool = require("../brokerPool.js");
+const Broker = require("../../broker/index.js");
 
 describe("Cluster > BrokerPool", () => {
   let topicName, brokerPool;

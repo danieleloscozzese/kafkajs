@@ -7,7 +7,7 @@ const {
   testIfKafkaAtLeast_0_11,
   createTopic,
 } = require("testHelpers");
-const createProducer = require("../index");
+const createProducer = require("../index.js");
 
 describe("Producer > Transactional producer", () => {
   let producer1, producer2, topicName, transactionalId, message;

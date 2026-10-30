@@ -9,11 +9,11 @@ const {
   createModPartitioner,
   waitForNextEvent,
 } = require("testHelpers");
-const createConsumer = require("../index");
-const createProducer = require("../../producer");
-const sleep = require("../../utils/sleep");
-const waitFor = require("../../utils/waitFor");
-const uniq = require("../../utils/uniq");
+const createConsumer = require("../index.js");
+const createProducer = require("../../producer/index.js");
+const sleep = require("../../utils/sleep.js");
+const waitFor = require("../../utils/waitFor.js");
+const uniq = require("../../utils/uniq.js");
 
 describe("Consumer", () => {
   let topicName, groupId, consumer, consumer2, producer;

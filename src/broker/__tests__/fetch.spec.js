@@ -14,8 +14,8 @@ const {
   testIfKafkaAtLeast_0_11,
   generateMessages,
 } = require("testHelpers");
-const { Types: Compression } = require("../../protocol/message/compression");
-const ISOLATION_LEVEL = require("../../protocol/isolationLevel");
+const { Types: Compression } = require("../../protocol/message/compression/index.js");
+const ISOLATION_LEVEL = require("../../protocol/isolationLevel.js");
 
 const minBytes = 1;
 const maxBytes = 10485760; // 10MB

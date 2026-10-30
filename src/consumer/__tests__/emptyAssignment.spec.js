@@ -2,7 +2,7 @@ const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals
 
 const { MemberMetadata, MemberAssignment } = require("../assignerProtocol");
 
-const createConsumer = require("../index");
+const createConsumer = require("../index.js");
 
 const {
   secureRandom,
