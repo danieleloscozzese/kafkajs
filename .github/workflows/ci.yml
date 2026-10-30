@@ -12,8 +12,6 @@ jobs:
   test:
     name: "Test"
     runs-on: ["ubuntu-latest"]
-    strategy:
-      fail-fast: true
     env:
       TZ: "Europe/Rome"
       KAFKA_VERSION: "2.4"
