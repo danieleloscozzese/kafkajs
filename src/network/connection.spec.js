@@ -1,4 +1,13 @@
-const { describe, test, expect, afterEach, beforeEach, beforeAll, afterAll, it } = require("@jest/globals");
+const {
+  describe,
+  test,
+  expect,
+  afterEach,
+  beforeEach,
+  beforeAll,
+  afterAll,
+  it,
+} = require("@jest/globals");
 
 const { connectionOpts, sslConnectionOpts } = require("../../testHelpers");
 const sleep = require("../utils/sleep");
