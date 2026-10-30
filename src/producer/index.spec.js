@@ -21,7 +21,7 @@ jest.mock("../retry", () => {
   return spy;
 });
 
-const uuid = require("uuid/v4");
+const { randomUUID: uuid } = require("node:crypto");
 const InstrumentationEventEmitter = require("../instrumentation/emitter");
 const createProducer = require("./index");
 const createConsumer = require("../consumer");
