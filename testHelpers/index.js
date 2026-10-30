@@ -1,12 +1,10 @@
+const fs = require("node:fs");
+const crypto = require("node:crypto");
+
 const { test } = require("@jest/globals");
 
-// Disabled to allow for higher order test functions where
-// `callback` is parameterized instead of a static function
-const fs = require("fs");
 const execa = require("execa");
-const uuid = require("uuid/v4");
 const semver = require("semver");
-const crypto = require("crypto");
 const Cluster = require("../src/cluster");
 const waitFor = require("../src/utils/waitFor");
 const connectionBuilder = require("../src/cluster/connectionPoolBuilder");
@@ -27,7 +25,7 @@ const newLogger = (opts = {}) =>
 
 const getHost = () => "localhost";
 const secureRandom = (length = 10) =>
-  `${crypto.randomBytes(length).toString("hex")}-${process.pid}-${uuid()}`;
+  `${crypto.randomBytes(length).toString("hex")}-${process.pid}-${crypto.randomUUID()}`;
 
 const plainTextBrokers = (host = getHost()) => [`${host}:9092`, `${host}:9095`, `${host}:9098`];
 const sslBrokers = (host = getHost()) => [`${host}:9093`, `${host}:9096`, `${host}:9099`];
