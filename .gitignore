@@ -10,4 +10,3 @@ build/
 *.class
 .idea/
 temp/
-jsconfig.json

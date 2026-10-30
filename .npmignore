@@ -31,3 +31,4 @@ logo
 types/tests.ts
 types/tsconfig.json
 .github/
+tsconfig.json
