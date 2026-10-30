@@ -1,7 +1,7 @@
 const { describe, test, expect } = require("@jest/globals");
 
 const RequestV0Protocol = require("./request");
-const CONFIG_RESOURCE_TYPES = require("../../../config-resource-types.mjs");
+const CONFIG_RESOURCE_TYPES = require("../../../config-resource-types");
 
 describe("Protocol > Requests > AlterConfigs > v0", () => {
   test("request", async () => {

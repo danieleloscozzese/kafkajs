@@ -1,4 +1,4 @@
-const { describe, test, expect, beforeEach, jest, it } = require("@jest/globals");
+const { describe, test, expect, beforeEach, it } = require("@jest/globals");
 
 const Decoder = require("../../protocol/decoder");
 const { newLogger } = require("testHelpers");

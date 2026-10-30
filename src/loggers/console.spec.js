@@ -1,4 +1,4 @@
-const { describe, expect, beforeEach, jest, afterEach, it } = require("@jest/globals");
+const { describe, expect, beforeEach, afterEach, it } = require("@jest/globals");
 
 const MockDate = require("mockdate");
 

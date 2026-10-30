@@ -1,10 +1,9 @@
 const { describe, test, expect, beforeEach } = require("@jest/globals");
 
-const os = require("os");
 const RequestV2Protocol = require("./request");
+const Decoder = require("../../../decoder");
+const MessageSetDecoder = require("../../../messageSet/decoder");
 const { Types } = require("../../../message/compression");
-
-const osType = os.type().toLowerCase();
 
 describe("Protocol > Requests > Produce > v2", () => {
   let args;
@@ -110,6 +109,49 @@ describe("Protocol > Requests > Produce > v2", () => {
         },
       ],
     }).encode();
-    expect(buffer).toEqual(Buffer.from(require(`../fixtures/v2_request_gzip_${osType}.json`)));
+
+    const decoder = new Decoder(buffer);
+    expect(decoder.readInt16()).toBe(-1);
+    expect(decoder.readInt32()).toBe(30000);
+
+    const topics = decoder.readArray((decoder) => ({
+      topic: decoder.readString(),
+      partitions: decoder.readArray((decoder) => ({
+        partition: decoder.readInt32(),
+        messageSet: decoder.readBytes(),
+      })),
+    }));
+
+    expect(topics).toHaveLength(1);
+    expect(topics[0].topic).toBe("test-topic-43395f618a885920238c");
+    expect(topics[0].partitions).toHaveLength(1);
+    expect(topics[0].partitions[0].partition).toBe(0);
+
+    const messageSet = topics[0].partitions[0].messageSet;
+    const messages = await MessageSetDecoder(new Decoder(messageSet), messageSet.length);
+
+    expect(
+      messages.map(({ key, value, timestamp }) => ({
+        key: key.toString(),
+        value: value.toString(),
+        timestamp,
+      })),
+    ).toEqual([
+      {
+        key: "key-d27f2271f5447fe62503",
+        value: "some-value-e64a333e986853959623",
+        timestamp: "1509928155660",
+      },
+      {
+        key: "key-3be6f0b8e6c987d0aedc",
+        value: "some-value-7259046cfda805b0172e",
+        timestamp: "1509928155660",
+      },
+      {
+        key: "key-af98821b43a80d6aa4e8",
+        value: "some-value-94b9e769ec3e401bfd57",
+        timestamp: "1509928155660",
+      },
+    ]);
   });
 });

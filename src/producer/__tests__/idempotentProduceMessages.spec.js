@@ -1,4 +1,4 @@
-const { jest, expect, beforeAll, beforeEach, afterEach, it, describe } = require("@jest/globals");
+const { expect, beforeAll, beforeEach, afterEach, it, describe } = require("@jest/globals");
 
 jest.setTimeout(20000);
 

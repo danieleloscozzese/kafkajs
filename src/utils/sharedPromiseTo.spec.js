@@ -1,4 +1,4 @@
-const { describe, beforeEach, it, expect, jest } = require("@jest/globals");
+const { describe, beforeEach, it, expect } = require("@jest/globals");
 
 const sharedPromiseTo = require("./sharedPromiseTo");
 

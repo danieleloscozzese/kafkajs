@@ -7,7 +7,7 @@ const {
   secureRandom,
   newLogger,
 } = require("testHelpers");
-const { ConfigResourceTypes } = require("../../..");
+const ConfigResourceTypes = require("../../protocol/config-resource-types");
 const createAdmin = require("../../admin");
 
 const Broker = require("../index");

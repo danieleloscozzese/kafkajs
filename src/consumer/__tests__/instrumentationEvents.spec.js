@@ -1,4 +1,4 @@
-const { describe, test, expect, beforeEach, afterEach, it, jest } = require("@jest/globals");
+const { describe, test, expect, beforeEach, afterEach, it } = require("@jest/globals");
 
 const InstrumentationEventEmitter = require("../../instrumentation/emitter");
 const createProducer = require("../../producer");

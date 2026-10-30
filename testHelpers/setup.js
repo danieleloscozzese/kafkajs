@@ -3,6 +3,8 @@ const { expect: jestExpect, jest: jestApi } = require("@jest/globals");
 const retries = process.env.TEST_RETRIES != null ? parseInt(process.env.TEST_RETRIES, 10) : 0;
 jestApi.retryTimes(retries);
 
+jestExpect.extend(require("jest-extended/dist/matchers").default);
+
 jestExpect.extend({
   optional(v, value) {
     const pass = typeof v === "undefined" || v === value;

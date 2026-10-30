@@ -1,4 +1,4 @@
-const { describe, test, expect, jest } = require("@jest/globals");
+const { describe, test, expect } = require("@jest/globals");
 
 const initProducerId = require("./index");
 const requestV0 = require("./v0/request");

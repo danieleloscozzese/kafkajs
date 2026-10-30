@@ -1,4 +1,4 @@
-const { describe, expect, jest, beforeEach, afterEach } = require("@jest/globals");
+const { describe, expect, beforeEach, afterEach } = require("@jest/globals");
 
 jest.setTimeout(15000);
 const createProducer = require("../../producer");

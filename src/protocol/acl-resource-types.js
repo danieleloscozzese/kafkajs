@@ -6,7 +6,7 @@
  * @readonly
  * @enum {ACLResourceTypes}
  */
-export default {
+module.exports = {
   /**
    * Represents any ResourceType which this client cannot understand,
    * perhaps because this client is too old.
