@@ -7,6 +7,7 @@ const {
   beforeAll,
   afterAll,
   it,
+  jest,
 } = require("@jest/globals");
 
 const { connectionOpts, sslConnectionOpts } = require("../../testHelpers");

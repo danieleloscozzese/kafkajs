@@ -1,4 +1,4 @@
-const { describe, test, expect, beforeEach } = require("@jest/globals");
+const { describe, test, expect, beforeEach, jest } = require("@jest/globals");
 
 jest.mock("./groupMessagesPerPartition");
 const { newLogger } = require("testHelpers");
