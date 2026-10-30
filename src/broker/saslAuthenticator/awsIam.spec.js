@@ -1,7 +1,7 @@
 const { describe, expect, it } = require("@jest/globals");
 
 const { newLogger } = require("testHelpers");
-const awsIAMAuthenticatorProvider = require("./awsIam");
+const awsIAMAuthenticatorProvider = require("./awsIam.js");
 
 describe("Broker > SASL Authenticator > AWS-IAM", () => {
   it("throws KafkaJSSASLAuthenticationError for missing authorizationIdentity", async () => {

@@ -9,7 +9,7 @@ const {
   createTopic,
   waitForMessages,
 } = require("testHelpers");
-const { KafkaJSError } = require("../../errors");
+const { KafkaJSError } = require("../../errors.js");
 
 const createProducer = require("../index");
 const createConsumer = require("../../consumer/index");

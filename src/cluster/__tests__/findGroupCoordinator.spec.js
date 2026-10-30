@@ -1,13 +1,13 @@
 const { describe, test, expect, beforeEach, afterEach, jest } = require("@jest/globals");
 
 jest.mock("../../utils/shuffle");
-const shuffle = require("../../utils/shuffle");
+const shuffle = require("../../utils/shuffle.js");
 shuffle.mockImplementation((brokers) => brokers.sort((a, b) => a > b));
 
-const Broker = require("../../broker");
+const Broker = require("../../broker/index.js");
 const { createCluster, secureRandom } = require("testHelpers");
-const { KafkaJSBrokerNotFound, KafkaJSConnectionError } = require("../../errors");
-const COORDINATOR_TYPES = require("../../protocol/coordinatorTypes");
+const { KafkaJSBrokerNotFound, KafkaJSConnectionError } = require("../../errors.js");
+const COORDINATOR_TYPES = require("../../protocol/coordinatorTypes.js");
 
 describe("Cluster > findGroupCoordinator", () => {
   let cluster, groupId;

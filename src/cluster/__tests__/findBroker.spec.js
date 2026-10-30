@@ -8,12 +8,12 @@ const {
   newLogger,
 } = require("testHelpers");
 
-const Broker = require("../../broker");
+const Broker = require("../../broker/index.js");
 const {
   KafkaJSLockTimeout,
   KafkaJSConnectionError,
   KafkaJSBrokerNotFound,
-} = require("../../errors");
+} = require("../../errors.js");
 
 describe("Cluster > findBroker", () => {
   let cluster, topic;

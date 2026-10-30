@@ -1,7 +1,7 @@
 const { describe, expect, beforeEach, afterEach, it } = require("@jest/globals");
 
 const { secureRandom, newLogger, createCluster, createTopic } = require("testHelpers");
-const createProducer = require("../index");
+const createProducer = require("../index.js");
 
 describe("Producer > Producing to invalid topics", () => {
   let producer, topicName;

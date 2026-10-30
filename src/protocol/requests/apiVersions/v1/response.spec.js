@@ -1,7 +1,7 @@
 const { describe, test, expect } = require("@jest/globals");
 
 const { unsupportedVersionResponse } = require("testHelpers");
-const { decode, parse } = require("./response");
+const { decode, parse } = require("./response.js");
 
 describe("Protocol > Requests > ApiVersions > v1", () => {
   test("response", async () => {

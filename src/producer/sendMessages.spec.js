@@ -2,9 +2,9 @@ const { describe, test, expect, beforeEach, jest } = require("@jest/globals");
 
 jest.mock("./groupMessagesPerPartition");
 const { newLogger } = require("testHelpers");
-const { errorCodes, createErrorFromCode } = require("../protocol/error");
-const retry = require("../retry");
-const createSendMessages = require("./sendMessages");
+const { errorCodes, createErrorFromCode } = require("../protocol/error.js");
+const retry = require("../retry/index.js");
+const createSendMessages = require("./sendMessages.js");
 
 const createProducerResponse = (topicName, partition) => ({
   topics: [
@@ -93,7 +93,7 @@ describe("Producer > sendMessages", () => {
 
     retrier = retry({ retries: 5 });
 
-    require("./groupMessagesPerPartition").mockImplementation(() => messagesPerPartition);
+    require("./groupMessagesPerPartition.js").mockImplementation(() => messagesPerPartition);
   });
 
   test("only retry failed brokers", async () => {

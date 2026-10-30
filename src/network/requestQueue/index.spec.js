@@ -2,12 +2,12 @@ const { describe, expect, beforeEach, it, jest } = require("@jest/globals");
 
 jest.setTimeout(3000);
 
-const sleep = require("../../utils/sleep");
+const sleep = require("../../utils/sleep.js");
 const { newLogger } = require("testHelpers");
-const InstrumentationEventEmitter = require("../../instrumentation/emitter");
-const events = require("../instrumentationEvents");
-const RequestQueue = require("./index");
-const { KafkaJSInvariantViolation } = require("../../errors");
+const InstrumentationEventEmitter = require("../../instrumentation/emitter.js");
+const events = require("../instrumentationEvents.js");
+const RequestQueue = require("./index.js");
+const { KafkaJSInvariantViolation } = require("../../errors.js");
 
 describe("Network > RequestQueue", () => {
   let requestQueue;

@@ -1,8 +1,8 @@
 const { describe, expect, beforeEach, afterEach, jest } = require("@jest/globals");
 
 jest.setTimeout(15000);
-const createProducer = require("../../producer");
-const createConsumer = require("../index");
+const createProducer = require("../../producer/index.js");
+const createConsumer = require("../index.js");
 const crypto = require("crypto");
 
 const {
