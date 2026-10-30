@@ -21,7 +21,7 @@ jest.mock("../retry", () => {
   return spy;
 });
 
-const { randomUUID: uuid } = require("node:crypto");
+const { randomUUID } = require("node:crypto");
 const InstrumentationEventEmitter = require("../instrumentation/emitter.js");
 const createProducer = require("./index.js");
 const createConsumer = require("../consumer/index.js");
@@ -510,7 +510,7 @@ describe("Producer", () => {
 
       const messagesConsumed = [];
       consumer = createConsumer({
-        groupId: `test-consumer-${uuid()}`,
+        groupId: `test-consumer-${randomUUID()}`,
         cluster: createCluster(),
         logger: newLogger(),
       });

@@ -11,7 +11,7 @@ const {
   newLogger,
   waitForMessages,
   waitForConsumerToJoinGroup,
-} = require("testHelpers");
+} = require("../../testHelpers/index.js");
 
 describe("Consumer", () => {
   /**
