@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const execa = require("execa");
-const crypto = require("crypto");
+const crypto = require("node:crypto");
 
 const secureRandom = (length = 10) => crypto.randomBytes(length).toString("hex");
 

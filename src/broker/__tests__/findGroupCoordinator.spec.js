@@ -27,8 +27,8 @@ describe("Broker > FindGroupCoordinator", () => {
 
     expect(response).toEqual({
       errorCode: 0,
-      errorMessage: expect.toBeOneOf([null, "NONE"]),
-      clientSideThrottleTime: expect.optional(0),
+      errorMessage: "NONE",
+      clientSideThrottleTime: 0,
       throttleTime: 0,
       coordinator: {
         nodeId: expect.any(Number),
