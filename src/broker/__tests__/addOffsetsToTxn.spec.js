@@ -3,7 +3,7 @@ const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals
 const Broker = require("../index");
 const COORDINATOR_TYPES = require("../../protocol/coordinatorTypes");
 const { secureRandom, createConnectionPool, newLogger, retryProtocol } = require("testHelpers");
-const { KafkaJSProtocolError } = require("../../errors");
+const { KafkaJSProtocolError } = require("../../errors.js");
 
 describe("Broker > AddOffsetsToTxn", () => {
   let broker, seedBroker, transactionalId, producerId, producerEpoch, consumerGroupId;

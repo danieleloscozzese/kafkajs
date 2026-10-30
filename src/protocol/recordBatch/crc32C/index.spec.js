@@ -16,7 +16,7 @@ describe("Protocol > RecordBatch > crc32C", () => {
   });
 
   test("samples", () => {
-    const samples = require("./fixtures/samples");
+    const samples = require("./fixtures/samples.js");
     for (const sample of samples) {
       const buffer = Buffer.from(sample.input);
       expect(crc32C(buffer)).toEqual(sample.output);

@@ -8,7 +8,7 @@ const {
   newLogger,
 } = require("testHelpers");
 
-const createProducer = require("../../producer");
+const createProducer = require("../../producer/index.js");
 
 describe("Cluster > fetchTopicsOffset", () => {
   let cluster, topic, producer;

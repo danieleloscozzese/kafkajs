@@ -3,8 +3,8 @@ const { describe, test, expect, it } = require("@jest/globals");
 
 const Long = require("../utils/long");
 
-const Encoder = require("./encoder");
-const Decoder = require("./decoder");
+const Encoder = require("./encoder.js");
+const Decoder = require("./decoder.js");
 
 const MAX_SAFE_POSITIVE_SIGNED_INT = 2147483647;
 const MIN_SAFE_NEGATIVE_SIGNED_INT = -2147483648;

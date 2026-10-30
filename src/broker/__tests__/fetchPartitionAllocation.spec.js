@@ -2,8 +2,8 @@ const { describe, test, expect, beforeEach, jest } = require("@jest/globals");
 
 jest.mock("../../utils/shuffle", () => jest.fn());
 
-const Broker = require("../index");
-const mockShuffle = require("../../utils/shuffle");
+const Broker = require("../index.js");
+const mockShuffle = require("../../utils/shuffle.js");
 
 const { createConnectionPool, newLogger } = require("testHelpers");
 

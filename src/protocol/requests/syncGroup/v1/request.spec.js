@@ -13,7 +13,7 @@ describe("Protocol > Requests > SyncGroup > v1", () => {
         {
           memberId:
             "test-d44f97e7d1a0622387a1-24495-d057a55d-fb7c-446d-98b7-3a3a8dff7944-1f460f6f-bf82-4448-9c18-09b0d7eaceb6",
-          memberAssignment: Buffer.from(require("../fixtures/v1_memberAssignment")),
+          memberAssignment: Buffer.from(require("../fixtures/v1_memberAssignment.json")),
         },
       ],
     }).encode();

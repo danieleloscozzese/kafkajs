@@ -13,7 +13,7 @@ const {
   generateMessages,
   testIfKafkaAtLeast_0_11,
 } = require("testHelpers");
-const { KafkaJSNonRetriableError } = require("../../errors");
+const { KafkaJSNonRetriableError } = require("../../errors.js");
 
 describe("Admin", () => {
   let admin, cluster, groupId, logger, topicName, anotherTopicName, yetAnotherTopicName;

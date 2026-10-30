@@ -7,9 +7,9 @@ const {
   KafkaJSError,
   KafkaJSNumberOfRetriesExceeded,
   KafkaJSNonRetriableError,
-} = require("../../errors");
+} = require("../../errors.js");
 
-const sleep = require("../../utils/sleep");
+const sleep = require("../../utils/sleep.js");
 const {
   secureRandom,
   createCluster,

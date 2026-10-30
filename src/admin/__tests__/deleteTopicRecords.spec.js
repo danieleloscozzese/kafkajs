@@ -13,7 +13,7 @@ const {
   waitForMessages,
 } = require("testHelpers");
 
-const Broker = require("../../broker");
+const Broker = require("../../broker/index.js");
 const {
   KafkaJSProtocolError,
   KafkaJSOffsetOutOfRange,
@@ -21,8 +21,8 @@ const {
   KafkaJSBrokerNotFound,
   KafkaJSNonRetriableError,
   KafkaJSMetadataNotLoaded,
-} = require("../../errors");
-const { createErrorFromCode, errorCodes } = require("../../protocol/error");
+} = require("../../errors.js");
+const { createErrorFromCode, errorCodes } = require("../../protocol/error.js");
 
 const { assign } = Object;
 

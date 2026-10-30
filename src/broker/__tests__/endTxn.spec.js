@@ -9,7 +9,7 @@ const {
   retryProtocol,
   createTopic,
 } = require("testHelpers");
-const { KafkaJSProtocolError } = require("../../errors");
+const { KafkaJSProtocolError } = require("../../errors.js");
 
 describe("Broker > EndTxn", () => {
   let transactionBroker, seedBroker, transactionalId, producerId, producerEpoch, topicName;
