@@ -11,4 +11,5 @@ module.exports = {
   reporters: ["default", "jest-junit"],
   bail: false,
   testTimeout: 90000,
+  injectGlobals: false,
 };
