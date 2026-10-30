@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach } = require("@jest/globals");
+
 const createPartitioner = require("./index");
 
 describe("Producer > Partitioner > Legacy", () => {

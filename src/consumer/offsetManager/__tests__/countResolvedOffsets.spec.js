@@ -1,3 +1,5 @@
+const { describe, expect, beforeEach, it, jest } = require("@jest/globals");
+
 const OffsetManager = require("../index");
 
 describe("Consumer > OffsetMananger > countResolvedOffsets", () => {

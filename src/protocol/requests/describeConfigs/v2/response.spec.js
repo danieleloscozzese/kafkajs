@@ -1,6 +1,8 @@
+const { describe, test, expect } = require("@jest/globals");
+
 const { decode, parse } = require("./response");
-const ConfigResourceTypes = require("../../../config-resource-types.mjs");
-const { DEFAULT_CONFIG } = require("../../../config-source.mjs");
+const ConfigResourceTypes = require("../../../config-resource-types");
+const { DEFAULT_CONFIG } = require("../../../config-source");
 
 describe("Protocol > Requests > DescribeConfigs > v2", () => {
   test("response", async () => {

@@ -153,7 +153,7 @@ module.exports = class BrokerPool {
     const broker = await this.findConnectedBroker();
     const { host: seedHost, port: seedPort } = this.seedBroker.connectionPool;
 
-    return this.retrier(async (bail, retryCount, retryTime) => {
+    return this.retrier(async (bail) => {
       try {
         this.metadata = await broker.metadata(topics);
         this.metadataExpireAt = Date.now() + this.metadataMaxAge;
@@ -274,7 +274,9 @@ module.exports = class BrokerPool {
       const broker = await this.findBroker({ nodeId });
       try {
         return await callback({ nodeId, broker });
-      } catch (e) {}
+      } catch {
+        continue;
+      }
     }
 
     return null;
@@ -296,7 +298,9 @@ module.exports = class BrokerPool {
     for (const nodeId of nodeIds) {
       try {
         return await this.findBroker({ nodeId });
-      } catch (e) {}
+      } catch {
+        continue;
+      }
     }
 
     // Failed to connect to all known brokers, metadata might be old

@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach, it } = require("@jest/globals");
+
 const { createCluster, secureRandom } = require("testHelpers");
 
 describe("Cluster > findLeaderForPartitions", () => {

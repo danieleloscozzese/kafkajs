@@ -1,3 +1,5 @@
+const { jest, describe, expect, beforeEach, afterEach, it } = require("@jest/globals");
+
 const sleep = require("../utils/sleep");
 const seq = require("../utils/seq");
 const createFetchManager = require("./fetchManager");
@@ -105,6 +107,6 @@ describe("FetchManager", () => {
   it("should throw an error when there are no brokers available", async () => {
     getNodeIds.mockImplementation(() => seq(0));
 
-    await expect(fetchManager.start()).rejects.toThrowError(new KafkaJSNoBrokerAvailableError());
+    await expect(fetchManager.start()).rejects.toThrow(new KafkaJSNoBrokerAvailableError());
   });
 });

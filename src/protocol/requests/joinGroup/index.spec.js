@@ -1,3 +1,5 @@
+const { describe, expect, it } = require("@jest/globals");
+
 const JoinGroupVersions = require("./index");
 const JoinGroupV0 = JoinGroupVersions.protocol({ version: 0 });
 const JoinGroupV1 = JoinGroupVersions.protocol({ version: 1 });

@@ -1,3 +1,5 @@
+const { describe, test, expect } = require("@jest/globals");
+
 const RequestV1Protocol = require("./request");
 
 describe("Protocol > Requests > TxnOffsetCommit > v1", () => {

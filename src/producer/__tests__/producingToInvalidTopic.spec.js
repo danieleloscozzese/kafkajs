@@ -1,3 +1,5 @@
+const { describe, expect, beforeEach, afterEach, it } = require("@jest/globals");
+
 const { secureRandom, newLogger, createCluster, createTopic } = require("testHelpers");
 const createProducer = require("../index");
 

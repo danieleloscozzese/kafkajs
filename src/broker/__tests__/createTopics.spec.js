@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach, afterEach, it } = require("@jest/globals");
+
 const {
   createCluster,
   createConnectionPool,
@@ -5,7 +7,7 @@ const {
   secureRandom,
   newLogger,
 } = require("testHelpers");
-const { ConfigResourceTypes } = require("../../..");
+const ConfigResourceTypes = require("../../protocol/config-resource-types");
 const createAdmin = require("../../admin");
 
 const Broker = require("../index");

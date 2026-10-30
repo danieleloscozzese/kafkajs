@@ -1,3 +1,5 @@
+const { describe, expect, it } = require("@jest/globals");
+
 const swapObject = require("./swapObject");
 
 describe("Utils > swapObject", () => {

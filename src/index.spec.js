@@ -1,9 +1,11 @@
+const { describe, test, expect, it } = require("@jest/globals");
+
 jest.mock("./producer");
 jest.mock("./consumer");
 jest.mock("./admin");
 jest.mock("./cluster");
 
-const { Kafka: Client } = require("../index");
+const Client = require("./index");
 const createProducer = require("./producer");
 const createConsumer = require("./consumer");
 const createAdmin = require("./admin");

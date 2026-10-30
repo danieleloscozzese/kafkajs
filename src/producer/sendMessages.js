@@ -67,8 +67,14 @@ module.exports = ({ logger, cluster, partitioner, eosManager, retrier }) => {
       return brokersWithoutResponse.map(async (broker) => {
         const entries = Array.from(topicMetadata.entries());
         const topicDataForBroker = entries
-          .filter(([_, { partitionsPerLeader }]) => !!partitionsPerLeader[broker.nodeId])
-          .map(([topic, { partitionsPerLeader, messagesPerPartition, sequencePerPartition }]) => ({
+          .filter(
+            ([
+              // eslint-disable-next-line no-unused-vars
+              _,
+              { partitionsPerLeader },
+            ]) => !!partitionsPerLeader[broker.nodeId],
+          )
+          .map(([topic, { partitionsPerLeader, messagesPerPartition }]) => ({
             topic,
             partitions: partitionsPerLeader[broker.nodeId],
             messagesPerPartition,

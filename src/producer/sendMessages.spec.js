@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach, jest } = require("@jest/globals");
+
 jest.mock("./groupMessagesPerPartition");
 const { newLogger } = require("testHelpers");
 const { errorCodes, createErrorFromCode } = require("../protocol/error");

@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
+
 const { createCluster, secureRandom, createTopic } = require("testHelpers");
 
 describe("Cluster > metadata", () => {

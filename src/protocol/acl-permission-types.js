@@ -8,7 +8,7 @@
  * @readonly
  * @enum {ACLPermissionTypes}
  */
-export default {
+module.exports = {
   /**
    * Represents any AclPermissionType which this client cannot understand,
    * perhaps because this client is too old.

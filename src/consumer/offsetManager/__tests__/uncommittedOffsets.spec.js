@@ -1,3 +1,5 @@
+const { describe, expect, beforeEach, it } = require("@jest/globals");
+
 const OffsetManager = require("../index");
 
 describe("Consumer > OffsetMananger > uncommittedOffsets", () => {

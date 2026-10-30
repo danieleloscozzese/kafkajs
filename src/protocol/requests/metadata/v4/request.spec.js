@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach } = require("@jest/globals");
+
 const Encoder = require("../../../encoder");
 const RequestProtocol = require("./request");
 

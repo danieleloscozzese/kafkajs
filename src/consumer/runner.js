@@ -186,7 +186,9 @@ module.exports = class Runner extends EventEmitter {
       await this.fetchManager.stop();
       await this.waitForConsumer();
       await this.consumerGroup.leave();
-    } catch (e) {}
+    } catch {
+      return;
+    }
   }
 
   waitForConsumer() {

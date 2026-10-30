@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach, jest } = require("@jest/globals");
+
 const { newLogger } = require("testHelpers");
 const createEosManager = require(".");
 const { KafkaJSNonRetriableError } = require("../../errors");
@@ -367,7 +369,7 @@ describe("Producer > eosManager", () => {
 
       await expect(eosManager.abort()).resolves.not.toThrow();
       expect(eosManager.isInTransaction()).toEqual(false);
-      expect(broker.endTxn).not.toBeCalled();
+      expect(broker.endTxn).not.toHaveBeenCalled();
     });
 
     test("commiting transaction when no operation have been made should not send EndTxn", async () => {
@@ -384,7 +386,7 @@ describe("Producer > eosManager", () => {
 
       await expect(eosManager.commit()).resolves.not.toThrow();
       expect(eosManager.isInTransaction()).toEqual(false);
-      expect(broker.endTxn).not.toBeCalled();
+      expect(broker.endTxn).not.toHaveBeenCalled();
     });
   });
 

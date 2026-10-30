@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
+
 const createAdmin = require("../index");
 
 const {
@@ -8,10 +10,10 @@ const {
   saslBrokers,
 } = require("testHelpers");
 
-const ACL_RESOURCE_TYPES = require("../../protocol/acl-resource-types.mjs");
-const ACL_OPERATION_TYPES = require("../../protocol/acl-operation-types.mjs"");
-const ACL_PERMISSION_TYPES = require("../../protocol/acl-permission-types.mjs");
-const RESOURCE_PATTERN_TYPES = require("../../protocol/resource-pattern-types.mjs");
+const ACL_RESOURCE_TYPES = require("../../protocol/acl-resource-types");
+const ACL_OPERATION_TYPES = require("../../protocol/acl-operation-types");
+const ACL_PERMISSION_TYPES = require("../../protocol/acl-permission-types");
+const RESOURCE_PATTERN_TYPES = require("../../protocol/resource-pattern-types");
 
 describe("Admin", () => {
   let admin;

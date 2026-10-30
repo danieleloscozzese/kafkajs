@@ -1,3 +1,15 @@
+const {
+  describe,
+  test,
+  expect,
+  afterEach,
+  beforeEach,
+  beforeAll,
+  afterAll,
+  it,
+  jest,
+} = require("@jest/globals");
+
 const { connectionOpts, sslConnectionOpts } = require("../../testHelpers");
 const sleep = require("../utils/sleep");
 const { requests } = require("../protocol/requests");
@@ -179,7 +191,7 @@ describe("Network > Connection", () => {
       };
 
       await connection.connect();
-      await expect(connection.send(protocol)).rejects.toThrowError(KafkaJSRequestTimeoutError);
+      await expect(connection.send(protocol)).rejects.toThrow(KafkaJSRequestTimeoutError);
     });
 
     test("throttles the request queue", async () => {

@@ -1,3 +1,5 @@
+const { describe, test, expect } = require("@jest/globals");
+
 const { MemberMetadata, MemberAssignment } = require("../assignerProtocol");
 
 const FIXTURE_ROUND_ROBIN_METADATA = Buffer.from(

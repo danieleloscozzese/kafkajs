@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach } = require("@jest/globals");
+
 const RoundRobinAssigner = require("./index");
 const { MemberAssignment, MemberMetadata } = require("../../assignerProtocol");
 

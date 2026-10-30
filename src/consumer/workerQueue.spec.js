@@ -1,3 +1,5 @@
+const { describe, expect, beforeEach, it, jest } = require("@jest/globals");
+
 const createWorkerQueue = require("./workerQueue");
 const createWorker = require("./worker");
 const Batch = require("./batch");

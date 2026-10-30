@@ -1,3 +1,5 @@
+const { describe, expect, it } = require("@jest/globals");
+
 const { newLogger } = require("testHelpers");
 const plainAuthenticatorProvider = require("./plain");
 

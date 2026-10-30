@@ -1,3 +1,5 @@
+const { describe, test, expect } = require("@jest/globals");
+
 const RequestV2Protocol = require("../v2/request");
 
 describe("Protocol > Requests > Fetch > v2", () => {

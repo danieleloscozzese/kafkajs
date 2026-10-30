@@ -1,3 +1,5 @@
+const { describe, test, expect } = require("@jest/globals");
+
 const RequestV4Protocol = require("./request");
 
 describe("Protocol > Requests > OffsetFetch > v4", () => {

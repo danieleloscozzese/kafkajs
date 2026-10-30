@@ -1,3 +1,5 @@
+const { describe, expect, beforeEach, afterEach, it, jest } = require("@jest/globals");
+
 jest.setTimeout(30000);
 
 const createAdmin = require("../../admin");
@@ -644,7 +646,7 @@ describe("Consumer", () => {
     let calls = 0;
 
     consumer.run({
-      eachMessage: async (event) => {
+      eachMessage: async () => {
         calls++;
         await sleep(100);
       },

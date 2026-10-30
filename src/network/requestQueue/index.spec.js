@@ -1,3 +1,5 @@
+const { describe, expect, beforeEach, it, jest } = require("@jest/globals");
+
 jest.setTimeout(3000);
 
 const sleep = require("../../utils/sleep");
@@ -237,7 +239,7 @@ describe("Network > RequestQueue", () => {
       requestQueue.inflight.set(request.entry.correlationId, "already existing inflight");
       expect(() => {
         requestQueue.push(request);
-      }).toThrowError(new KafkaJSInvariantViolation("Correlation id already exists"));
+      }).toThrow(new KafkaJSInvariantViolation("Correlation id already exists"));
     });
   });
 
@@ -344,7 +346,7 @@ describe("Network > RequestQueue", () => {
   });
 
   describe("instrumentation events", () => {
-    let emitter, removeListener, eventCalled, request, payload, size, requestTimeout;
+    let emitter, eventCalled, request, payload, size, requestTimeout;
 
     beforeEach(() => {
       requestTimeout = 1;
@@ -362,10 +364,6 @@ describe("Network > RequestQueue", () => {
       };
       payload = { ok: true };
       size = 32;
-    });
-
-    afterEach(() => {
-      removeListener && removeListener();
     });
 
     it("does not emit the event if the queue size remains the same", () => {

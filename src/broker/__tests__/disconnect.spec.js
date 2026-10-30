@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
+
 const { createConnectionPool, connectionOpts, saslEntries, newLogger } = require("testHelpers");
 
 const Broker = require("../index");

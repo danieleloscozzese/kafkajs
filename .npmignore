@@ -15,7 +15,6 @@ examples/
 docs/
 website/
 docker-compose.yml
-docker-compose.*.yml
 jest.config.js
 .prettierrc
 .prettierignore

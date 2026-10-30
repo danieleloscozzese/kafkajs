@@ -185,7 +185,7 @@ module.exports = class Cluster {
    * @returns {Promise<import("../../types").BrokerMetadata>}
    */
   async metadata({ topics = [] } = {}) {
-    return this.retrier(async (bail, retryCount, retryTime) => {
+    return this.retrier(async (bail) => {
       try {
         await this.brokerPool.refreshMetadataIfNecessary(topics);
         return this.brokerPool.withBroker(async ({ broker }) => broker.metadata(topics));

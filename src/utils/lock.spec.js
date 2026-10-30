@@ -1,3 +1,5 @@
+const { describe, it, expect, jest } = require("@jest/globals");
+
 const waitFor = require("./waitFor");
 const Lock = require("./lock");
 

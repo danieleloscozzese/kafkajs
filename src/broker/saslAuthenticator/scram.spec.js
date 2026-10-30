@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach, it, jest } = require("@jest/globals");
+
 const Decoder = require("../../protocol/decoder");
 const { newLogger } = require("testHelpers");
 const scram256AuthenticatorProvider = require("./scram256");

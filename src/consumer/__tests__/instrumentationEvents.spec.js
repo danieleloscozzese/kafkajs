@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach, afterEach, it, jest } = require("@jest/globals");
+
 const InstrumentationEventEmitter = require("../../instrumentation/emitter");
 const createProducer = require("../../producer");
 const createConsumer = require("../index");
@@ -482,7 +484,7 @@ describe("Consumer > Instrumentation Events", () => {
 
     await waitForConsumerToJoinGroup(consumer2, { label: "consumer2" });
 
-    expect(onRebalancing).toBeCalledWith({
+    expect(onRebalancing).toHaveBeenCalledWith({
       id: expect.any(Number),
       timestamp: expect.any(Number),
       type: "consumer.rebalancing",

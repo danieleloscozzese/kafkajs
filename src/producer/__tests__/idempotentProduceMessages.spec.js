@@ -1,3 +1,5 @@
+const { expect, beforeAll, beforeEach, afterEach, it, describe, jest } = require("@jest/globals");
+
 jest.setTimeout(20000);
 
 const {
@@ -11,7 +13,6 @@ const { KafkaJSError } = require("../../errors");
 
 const createProducer = require("../index");
 const createConsumer = require("../../consumer/index");
-const { describe } = require("jest-circus");
 
 const arrayUnique = (a) => [...new Set(a)];
 

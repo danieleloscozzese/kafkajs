@@ -1,3 +1,5 @@
+const { describe, expect, it } = require("@jest/globals");
+
 const Batch = require("../batch");
 
 describe("Consumer > Batch", () => {

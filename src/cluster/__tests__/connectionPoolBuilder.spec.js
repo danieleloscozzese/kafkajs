@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach, it, jest } = require("@jest/globals");
+
 const { newLogger } = require("testHelpers");
 const connectionPoolBuilder = require("../connectionPoolBuilder");
 const ConnectionPool = require("../../network/connectionPool");

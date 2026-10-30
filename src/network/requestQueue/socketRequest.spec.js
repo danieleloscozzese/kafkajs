@@ -1,3 +1,5 @@
+const { describe, expect, beforeEach, it, jest } = require("@jest/globals");
+
 const SocketRequest = require("./socketRequest");
 const { KafkaJSRequestTimeoutError, KafkaJSNonRetriableError } = require("../../errors");
 const InstrumentationEventEmitter = require("../../instrumentation/emitter");
@@ -117,7 +119,7 @@ describe("Network > SocketRequest", () => {
   });
 
   describe("instrumentation events", () => {
-    let emitter, removeListener, eventCalled;
+    let emitter, eventCalled;
 
     beforeEach(() => {
       eventCalled = jest.fn();
@@ -127,10 +129,6 @@ describe("Network > SocketRequest", () => {
         timeout: timeoutHandler,
         instrumentationEmitter: emitter,
       });
-    });
-
-    afterEach(() => {
-      removeListener && removeListener();
     });
 
     it("emits NETWORK_REQUEST", () => {

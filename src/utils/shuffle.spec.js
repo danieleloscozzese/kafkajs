@@ -1,3 +1,5 @@
+const { describe, expect, it } = require("@jest/globals");
+
 const shuffle = require("./shuffle");
 
 describe("Utils > shuffle", () => {
@@ -8,7 +10,9 @@ describe("Utils > shuffle", () => {
     const shuffled = shuffle(array);
 
     expect(shuffled).not.toEqual(array);
-    expect(shuffled).toIncludeSameMembers(array);
+    for (let i = 0; i < array.length; i++) {
+      expect(shuffled).toContain(array[i]);
+    }
   });
 
   it("returns the same order for single element arrays", () => {
@@ -16,8 +20,8 @@ describe("Utils > shuffle", () => {
   });
 
   it("throws if it receives a non-array", () => {
-    expect(() => shuffle()).toThrowError(TypeError);
-    expect(() => shuffle("foo")).toThrowError(TypeError);
-    expect(() => shuffle({})).toThrowError(TypeError);
+    expect(() => shuffle()).toThrow(TypeError);
+    expect(() => shuffle("foo")).toThrow(TypeError);
+    expect(() => shuffle({})).toThrow(TypeError);
   });
 });

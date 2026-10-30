@@ -1,3 +1,5 @@
+const { describe, test, expect, beforeEach, afterEach, it, jest } = require("@jest/globals");
+
 let initProducerIdSpy;
 let sendOffsetsSpy;
 let retrySpy;
@@ -763,7 +765,7 @@ describe("Producer", () => {
           idempotent: true,
           retry: { retries: 0 },
         }),
-      ).toThrowError(
+      ).toThrow(
         new KafkaJSNonRetriableError(
           "Idempotent producer must allow retries to protect against transient errors",
         ),

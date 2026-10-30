@@ -8,7 +8,7 @@
  * @readonly
  * @enum {ACLResourcePatternTypes}
  */
-export default {
+module.exports = {
   /**
    * Represents any PatternType which this client cannot understand, perhaps because this client is too old.
    */

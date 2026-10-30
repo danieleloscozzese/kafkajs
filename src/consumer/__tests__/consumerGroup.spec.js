@@ -1,3 +1,5 @@
+const { describe, expect, beforeEach, it, jest } = require("@jest/globals");
+
 const ConsumerGroup = require("../consumerGroup");
 const { newLogger } = require("testHelpers");
 

@@ -1,3 +1,5 @@
+const { describe, it, expect, beforeAll } = require("@jest/globals");
+
 const Long = require("./long");
 
 const max = new Long(9223372036854775807n); // max signed int 64

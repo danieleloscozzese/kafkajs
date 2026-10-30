@@ -1,3 +1,5 @@
+const { describe, test, expect } = require("@jest/globals");
+
 const RequestV2Protocol = require("./request");
 
 describe("Protocol > Requests > CreateTopics > v2", () => {

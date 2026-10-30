@@ -13,11 +13,11 @@ const {
   KafkaJSAggregateError,
 } = require("../errors");
 const { staleMetadata } = require("../protocol/error");
-const CONFIG_RESOURCE_TYPES = require("../protocol/config-resource-types.mjs").default;
-const ACL_RESOURCE_TYPES = require("../protocol/acl-resource-types.mjs").default;
-const ACL_OPERATION_TYPES = require("../protocol/acl-operation-types.mjs").default;
-const ACL_PERMISSION_TYPES = require("../protocol/acl-permission-types.mjs").default;
-const RESOURCE_PATTERN_TYPES = require("../protocol/resource-pattern-types.mjs").default;
+const CONFIG_RESOURCE_TYPES = require("../protocol/config-resource-types");
+const ACL_RESOURCE_TYPES = require("../protocol/acl-resource-types");
+const ACL_OPERATION_TYPES = require("../protocol/acl-operation-types");
+const ACL_PERMISSION_TYPES = require("../protocol/acl-permission-types");
+const RESOURCE_PATTERN_TYPES = require("../protocol/resource-pattern-types");
 const { EARLIEST_OFFSET, LATEST_OFFSET } = require("../constants");
 
 const { CONNECT, DISCONNECT } = events;
@@ -302,7 +302,7 @@ module.exports = ({
 
     const retrier = createRetry(retry);
 
-    return retrier(async (bail, retryCount, retryTime) => {
+    return retrier(async (bail) => {
       try {
         await cluster.addTargetTopic(topic);
         await cluster.refreshMetadataIfNecessary();
@@ -356,7 +356,7 @@ module.exports = ({
 
     const retrier = createRetry(retry);
 
-    return retrier(async (bail, retryCount, retryTime) => {
+    return retrier(async (bail) => {
       try {
         await cluster.addTargetTopic(topic);
         await cluster.refreshMetadataIfNecessary();
@@ -1055,7 +1055,7 @@ module.exports = ({
     );
 
     const retrier = createRetry(retry);
-    return retrier(async (bail) => {
+    return retrier(async () => {
       try {
         const partitionErrors = [];
 
