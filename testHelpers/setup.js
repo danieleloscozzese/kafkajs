@@ -4,6 +4,8 @@ const retries =
   process.env.TEST_RETRIES != null ? Number.parseInt(process.env.TEST_RETRIES, 10) : 0;
 jest.retryTimes(retries);
 
+expect.extend(require("jest-extended"));
+
 expect.extend({
   optional(v, value) {
     const pass = typeof v === "undefined" || v === value;

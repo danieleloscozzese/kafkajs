@@ -1,4 +1,4 @@
-const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
+const { describe, test, expect, beforeEach, afterEach, jest } = require("@jest/globals");
 
 jest.mock("../../utils/shuffle");
 const shuffle = require("../../utils/shuffle");

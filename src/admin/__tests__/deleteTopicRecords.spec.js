@@ -1,4 +1,4 @@
-const { describe, test, expect, beforeEach, afterEach, afterAll } = require("@jest/globals");
+const { describe, test, expect, beforeEach, afterEach, afterAll, jest } = require("@jest/globals");
 
 const createAdmin = require("../index");
 const createProducer = require("../../producer");
