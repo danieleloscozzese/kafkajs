@@ -1,6 +1,6 @@
 {
   "name": "@dagher/kafkajs",
-  "version": "2.2.7",
+  "version": "2.2.8",
   "description": "A modern Apache Kafka client for node.js",
   "author": "Daniel Arthur Gallagher <him@danielarthurgallagher.dev>",
   "module": "index.mjs",
