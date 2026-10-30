@@ -26,12 +26,12 @@ describe("Cluster > findTopicPartitionMetadata", () => {
 
   test("throws and error if the topicMetadata is not loaded", () => {
     cluster.brokerPool.metadata = null;
-    expect(() => cluster.findTopicPartitionMetadata(topic)).toThrowError(
+    expect(() => cluster.findTopicPartitionMetadata(topic)).toThrow(
       /Topic metadata not loaded/,
     );
 
     cluster.brokerPool.metadata = {};
-    expect(() => cluster.findTopicPartitionMetadata(topic)).toThrowError(
+    expect(() => cluster.findTopicPartitionMetadata(topic)).toThrow(
       /Topic metadata not loaded/,
     );
   });

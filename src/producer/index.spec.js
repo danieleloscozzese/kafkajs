@@ -765,7 +765,7 @@ describe("Producer", () => {
           idempotent: true,
           retry: { retries: 0 },
         }),
-      ).toThrowError(
+      ).toThrow(
         new KafkaJSNonRetriableError(
           "Idempotent producer must allow retries to protect against transient errors",
         ),

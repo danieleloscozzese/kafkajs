@@ -239,7 +239,7 @@ describe("Network > RequestQueue", () => {
       requestQueue.inflight.set(request.entry.correlationId, "already existing inflight");
       expect(() => {
         requestQueue.push(request);
-      }).toThrowError(new KafkaJSInvariantViolation("Correlation id already exists"));
+      }).toThrow(new KafkaJSInvariantViolation("Correlation id already exists"));
     });
   });
 
