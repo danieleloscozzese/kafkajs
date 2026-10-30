@@ -10,7 +10,9 @@ describe("Utils > shuffle", () => {
     const shuffled = shuffle(array);
 
     expect(shuffled).not.toEqual(array);
-    expect(shuffled).toIncludeSameMembers(array);
+    for (let i = 0; i < array.length; i++) {
+      expect(shuffled).toContain(array[i]);
+    }
   });
 
   it("returns the same order for single element arrays", () => {
