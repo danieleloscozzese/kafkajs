@@ -1,4 +1,4 @@
-const { describe, expect, beforeEach, afterEach, it } = require("@jest/globals");
+const { jest, describe, expect, beforeEach, afterEach, it } = require("@jest/globals");
 
 const sleep = require("../utils/sleep");
 const seq = require("../utils/seq");
