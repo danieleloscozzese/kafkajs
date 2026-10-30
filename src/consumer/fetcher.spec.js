@@ -1,4 +1,4 @@
-const { jest, expect, beforeEach, it } = require("@jest/globals");
+const { jest, expect, beforeEach, it, describe, afterEach } = require("@jest/globals");
 
 const seq = require("../utils/seq");
 const waitFor = require("../utils/waitFor");
@@ -8,7 +8,6 @@ const createWorkerQueue = require("./workerQueue");
 const createWorker = require("./worker");
 const { newLogger } = require("../../testHelpers");
 const Batch = require("./batch");
-const { describe, afterEach } = require("jest-circus");
 
 describe("Fetcher", () => {
   let fetcher, fetch, handler, workerIds, workers, workerQueue, logger, fetcherAssignments;
