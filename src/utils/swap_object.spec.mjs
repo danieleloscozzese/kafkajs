@@ -17,7 +17,6 @@ describe("Utils > swapObject", () => {
       b2: "b1",
       c2: "c1",
     });
-
   });
 
   it("shares the CommonJS compatibility path", () => {
