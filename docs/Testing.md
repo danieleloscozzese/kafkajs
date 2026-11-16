@@ -71,8 +71,20 @@ Seed-provider cases check ordered rotation, wraparound, fresh async lookups,
 explicit destinations and non-retriable invalid results. The client suite
 registers its native Cluster mock before importing the CommonJS client and
 keeps explicit factories for the remaining CommonJS collaborators.
-Protocol preloading also completes the native request registry before the
-mixed Cluster/SASL graph links; production loading remains unchanged.
+
+SASL controllers, providers and mechanism frames are native ESM. Deterministic
+tests retain PLAIN, AWS and OAuth bytes, SHA-256/SHA-512 proofs and signatures,
+invalid nonce/iteration/signature handling, custom-provider failures, int64
+session lifetimes, shared authentication, reauthentication thresholds and
+credential-free success logs. The temporary mixed-SASL registry preload is
+no longer needed.
+
+Legacy Kafka integration covers PLAIN and both SCRAM mechanisms, including
+rejected credentials. AWS and OAuth currently have deterministic provider/frame
+coverage only, not broker integration. `authenticationTimeout` contributes to
+the broker connection-lock budget; it is not a deadline for arbitrary provider
+code. SASL protocol requests retain ordinary request-queue timeouts. Tests
+characterize these existing boundaries without introducing new deadlines.
 
 For development, it is usually more convenient to boot the containers yourself, and then keep the tests running in watch mode. After you have booted the containers as described in [Running Kafka](ContributionGuide.md#running-kafka), you can run `npm run test:local:watch`. `jest`'s interactive mode will allow you select which tests to run.
 

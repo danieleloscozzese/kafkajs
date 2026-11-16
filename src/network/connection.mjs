@@ -8,7 +8,7 @@ import RequestQueue from "./requestQueue/index.mjs";
 import connectionStatuses from "./connection_status.mjs";
 import sharedPromiseTo from "../utils/shared_promise_to.mjs";
 import Long from "../utils/long.mjs";
-import SASLAuthenticator from "../broker/saslAuthenticator/index.js";
+import SASLAuthenticator from "../broker/saslAuthenticator/index.mjs";
 import apiKeys from "../protocol/requests/api_keys.mjs";
 const { KafkaJSConnectionError, KafkaJSConnectionClosedError } = errors;
 const { INT_32_MAX_VALUE } = constants;

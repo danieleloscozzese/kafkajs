@@ -1,7 +1,7 @@
-const { describe, expect, it } = require("@jest/globals");
-
-const { newLogger } = require("testHelpers");
-const plainAuthenticatorProvider = require("./plain.js");
+import { describe, expect, it } from "@jest/globals";
+import plainAuthenticatorProvider from "./plain.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { newLogger } = testHelpers;
 
 describe("Broker > SASL Authenticator > PLAIN", () => {
   it("throws KafkaJSSASLAuthenticationError for invalid username", async () => {

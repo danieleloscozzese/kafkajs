@@ -1,4 +1,1 @@
-module.exports = {
-  request: require("./request"),
-  response: require("./response"),
-};
+module.exports = require("./index.mjs").default;

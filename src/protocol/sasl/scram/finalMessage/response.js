@@ -1,1 +1,1 @@
-module.exports = require("../firstMessage/response");
+module.exports = require("./response.mjs").default;
