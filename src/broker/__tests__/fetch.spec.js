@@ -14,7 +14,7 @@ const {
   testIfKafkaAtLeast_0_11,
   generateMessages,
 } = require("testHelpers");
-const { Types: Compression } = require("../../protocol/message/compression/index.js");
+const { Types: Compression } = require("../../protocol/message/compression/index.mjs").default;
 const ISOLATION_LEVEL = require("../../protocol/isolation_level.mjs").default;
 
 const minBytes = 1;

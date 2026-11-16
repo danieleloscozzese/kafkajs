@@ -1,5 +1,5 @@
 const Lock = require("../utils/lock.mjs").default;
-const { Types: Compression } = require("../protocol/message/compression");
+const { Types: Compression } = require("../protocol/message/compression/index.mjs").default;
 const { requests, lookup } = require("../protocol/requests");
 const { KafkaJSNonRetriableError } = require("../errors.mjs").default;
 const apiKeys = require("../protocol/requests/apiKeys");

@@ -1,7 +1,7 @@
 const Encoder = require("../../../encoder.mjs").default;
 const { Produce: apiKey } = require("../../apiKeys");
-const MessageSet = require("../../../messageSet");
-const { Types, lookupCodec } = require("../../../message/compression");
+const MessageSet = require("../../../messageSet/index.mjs").default;
+const { Types, lookupCodec } = require("../../../message/compression/index.mjs").default;
 
 // Produce Request on or after v2 indicates the client can parse the timestamp field
 // in the produce Response.

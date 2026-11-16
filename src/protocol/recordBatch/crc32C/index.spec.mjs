@@ -1,6 +1,8 @@
-const { describe, test, expect } = require("@jest/globals");
+import { describe, test, expect } from "@jest/globals";
 
-const crc32C = require("./index");
+import crc32C from "./index.mjs";
+import crcPayload from "./fixtures/crcPayload.json" with { type: "json" };
+import samples from "./fixtures/samples.js";
 
 describe("Protocol > RecordBatch > crc32C", () => {
   test("perform CRC32C computations", () => {
@@ -11,12 +13,11 @@ describe("Protocol > RecordBatch > crc32C", () => {
   });
 
   test("match the java CRC32C code", () => {
-    const buffer = Buffer.from(require("./fixtures/crcPayload.json"));
+    const buffer = Buffer.from(crcPayload);
     expect(crc32C(buffer)).toEqual(818496390);
   });
 
   test("samples", () => {
-    const samples = require("./fixtures/samples.js");
     for (const sample of samples) {
       const buffer = Buffer.from(sample.input);
       expect(crc32C(buffer)).toEqual(sample.output);

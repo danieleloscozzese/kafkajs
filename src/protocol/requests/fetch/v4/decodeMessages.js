@@ -1,7 +1,7 @@
 const Decoder = require("../../../decoder.mjs").default;
-const MessageSetDecoder = require("../../../messageSet/decoder");
-const RecordBatchDecoder = require("../../../recordBatch/v0/decoder");
-const { MAGIC_BYTE } = require("../../../recordBatch/v0");
+const MessageSetDecoder = require("../../../messageSet/decoder.mjs").default;
+const RecordBatchDecoder = require("../../../recordBatch/v0/decoder.mjs").default;
+const { MAGIC_BYTE } = require("../../../recordBatch/v0/index.mjs").default;
 
 // the magic offset is at the same offset for all current message formats, but the 4 bytes
 // between the size and the magic is dependent on the version.

@@ -1,4 +1,1 @@
-module.exports = (decoder) => ({
-  key: decoder.readVarIntString(),
-  value: decoder.readVarIntBytes(),
-});
+module.exports = require("./decoder.mjs").default;

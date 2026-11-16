@@ -165,6 +165,7 @@ import errors, * as namedErrors from "@dagher/kafkajs/src/errors.mjs";
 import constants, * as namedConstants from "@dagher/kafkajs/src/constants.mjs";
 import Encoder from "@dagher/kafkajs/src/protocol/encoder.mjs";
 import Decoder from "@dagher/kafkajs/src/protocol/decoder.mjs";
+import compression from "@dagher/kafkajs/src/protocol/message/compression/index.mjs";
 
 const require = createRequire(import.meta.url);
 const commonjs = require("@dagher/kafkajs");
@@ -210,6 +211,24 @@ for (const [oldName, newName, publicName] of [
   ["coordinatorTypes", "coordinator_types"],
   ["isolationLevel", "isolation_level"],
   ["timestampTypes", "timestamp_types"],
+  ["message/compression/index", "message/compression/index"],
+  ["message/compression/gzip", "message/compression/gzip"],
+  ["message/index", "message/index"],
+  ["message/decoder", "message/decoder"],
+  ["message/v0/index", "message/v0/index"],
+  ["message/v0/decoder", "message/v0/decoder"],
+  ["message/v1/index", "message/v1/index"],
+  ["message/v1/decoder", "message/v1/decoder"],
+  ["messageSet/index", "messageSet/index"],
+  ["messageSet/decoder", "messageSet/decoder"],
+  ["recordBatch/v0/index", "recordBatch/v0/index"],
+  ["recordBatch/v0/decoder", "recordBatch/v0/decoder"],
+  ["recordBatch/record/v0/index", "recordBatch/record/v0/index"],
+  ["recordBatch/record/v0/decoder", "recordBatch/record/v0/decoder"],
+  ["recordBatch/header/v0/index", "recordBatch/header/v0/index"],
+  ["recordBatch/header/v0/decoder", "recordBatch/header/v0/decoder"],
+  ["recordBatch/crc32C/index", "recordBatch/crc32C/index"],
+  ["recordBatch/crc32C/crc32C", "recordBatch/crc32C/crc32_c"],
 ]) {
   const { default: implementation } = await import("@dagher/kafkajs/src/protocol/" + newName + ".mjs");
   assert.strictEqual(require("@dagher/kafkajs/src/protocol/" + oldName + ".js"), implementation);
@@ -226,6 +245,8 @@ for (const [name, value] of Object.entries(constants)) {
 const codec = () => "registered through ESM";
 CompressionCodecs[99] = codec;
 assert.strictEqual(commonjs.CompressionCodecs[99](), codec());
+assert.strictEqual(compression.Codecs, CompressionCodecs);
+assert.strictEqual(compression.lookupCodec(99), codec());
 `,
   );
 
