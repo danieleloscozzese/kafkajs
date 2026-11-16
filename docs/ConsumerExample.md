@@ -8,7 +8,7 @@ The following example assumes that you are using the local Kafka configuration d
 ```javascript
 const ip = require('ip')
 
-const { Kafka, logLevel } = require('kafkajs')
+const { Kafka, logLevel } = require('@dagher/kafkajs')
 
 const host = process.env.HOST_IP || ip.address()
 
@@ -69,7 +69,7 @@ signalTraps.forEach(type => {
 A similar example in TypeScript
 
 ```typescript
-import { Consumer, ConsumerSubscribeTopics, EachBatchPayload, Kafka, EachMessagePayload } from 'kafkajs'
+import { Consumer, ConsumerSubscribeTopics, EachBatchPayload, Kafka, EachMessagePayload } from '@dagher/kafkajs'
 
 export default class ExampleConsumer {
   private kafkaConsumer: Consumer
