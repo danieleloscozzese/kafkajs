@@ -12,7 +12,7 @@ const {
 
 const { connectionOpts, sslConnectionOpts } = require("../../testHelpers");
 const sleep = require("../utils/sleep.mjs").default;
-const { requests } = require("../protocol/requests");
+const { requests } = require("../protocol/requests/index.mjs").default;
 const Decoder = require("../protocol/decoder.mjs").default;
 const Encoder = require("../protocol/encoder.mjs").default;
 const { KafkaJSRequestTimeoutError } = require("../errors.mjs").default;

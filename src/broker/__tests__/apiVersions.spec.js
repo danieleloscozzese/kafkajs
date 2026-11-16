@@ -3,7 +3,7 @@ const { describe, test, expect, beforeEach, afterEach, jest } = require("@jest/g
 const { createConnectionPool, connectionOpts, newLogger } = require("testHelpers");
 const { KafkaJSProtocolError, KafkaJSNonRetriableError } = require("../../errors.mjs").default;
 const { createErrorFromCode } = require("../../protocol/error.mjs").default;
-const { requests } = require("../../protocol/requests/index.js");
+const { requests } = require("../../protocol/requests/index.mjs").default;
 const Broker = require("../index.js");
 
 const UNSUPPORTED_VERSION_CODE = 35;

@@ -25,13 +25,22 @@ import DescribeConfigs from "./describeConfigs/index.mjs";
 import AlterConfigs from "./alterConfigs/index.mjs";
 import AlterPartitionReassignments from "./alterPartitionReassignments/index.mjs";
 import ListPartitionReassignments from "./listPartitionReassignments/index.mjs";
+import DescribeAcls from "./describeAcls/index.mjs";
+import CreateAcls from "./createAcls/index.mjs";
+import DeleteAcls from "./deleteAcls/index.mjs";
+import DescribeGroups from "./describeGroups/index.mjs";
+import ListGroups from "./listGroups/index.mjs";
+import DeleteGroups from "./deleteGroups/index.mjs";
+import SaslHandshake from "./saslHandshake/index.mjs";
+import SaslAuthenticate from "./saslAuthenticate/index.mjs";
+import requests from "./index.mjs";
 import apiKeys from "./api_keys.mjs";
 
 const require = createRequire(import.meta.url);
-const { default: requests } = await import("./index.js");
 
 describe("Protocol registries", () => {
   it("shares registry and API-key objects across module formats", () => {
+    expect(require("./index.js")).toBe(requests);
     expect(require("./apiVersions/index.js")).toBe(ApiVersions);
     expect(require("./metadata/index.js")).toBe(Metadata);
     expect(require("./apiKeys.js")).toBe(apiKeys);
@@ -62,6 +71,14 @@ describe("Protocol registries", () => {
       AlterConfigs,
       AlterPartitionReassignments,
       ListPartitionReassignments,
+      DescribeAcls,
+      CreateAcls,
+      DeleteAcls,
+      DescribeGroups,
+      ListGroups,
+      DeleteGroups,
+      SaslHandshake,
+      SaslAuthenticate,
     })) {
       const directory = name[0].toLowerCase() + name.slice(1);
       expect(require(`./${directory}/index.js`)).toBe(registry);
@@ -95,6 +112,14 @@ describe("Protocol registries", () => {
     [AlterConfigs, apiKeys.AlterConfigs, ["0", "1"]],
     [AlterPartitionReassignments, apiKeys.AlterPartitionReassignments, ["0"]],
     [ListPartitionReassignments, apiKeys.ListPartitionReassignments, ["0"]],
+    [DescribeAcls, apiKeys.DescribeAcls, ["0", "1"]],
+    [CreateAcls, apiKeys.CreateAcls, ["0", "1"]],
+    [DeleteAcls, apiKeys.DeleteAcls, ["0", "1"]],
+    [DescribeGroups, apiKeys.DescribeGroups, ["0", "1", "2"]],
+    [ListGroups, apiKeys.ListGroups, ["0", "1", "2"]],
+    [DeleteGroups, apiKeys.DeleteGroups, ["0", "1"]],
+    [SaslHandshake, apiKeys.SaslHandshake, ["0", "1"]],
+    [SaslAuthenticate, apiKeys.SaslAuthenticate, ["0", "1"]],
   ])("returns synchronous factories for each advertised version", (registry, apiKey, versions) => {
     expect(registry.versions).toEqual(versions);
     expect(registry.protocol({ version: 99 })).toBeUndefined();

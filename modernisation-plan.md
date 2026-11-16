@@ -248,6 +248,12 @@ cold-load budget in paired measurements. This narrow synchronous loading
 boundary preserves the existing API and avoids loading unused versions;
 it does not introduce a second implementation or a generated build.
 
+The completed request lookup graph uses static native imports of these
+registries. Gzip keeps its original lazy codec load: aggregate startup
+measurements exposed overhead from importing it eagerly. Packed-consumer
+loader hooks verify actual ESM loading for both version modules and gzip;
+the CommonJS cache alone cannot establish whether an ESM dependency loaded.
+
 Update test preloading and fixtures deliberately, including JSON loading rules
 on the oldest supported runtime. Keep byte-for-byte request fixtures, decoded
 responses, partial buffers, int64 offsets, CRCs, compression, and malformed
