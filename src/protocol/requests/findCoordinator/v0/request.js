@@ -1,16 +1,1 @@
-const Encoder = require("../../../encoder.mjs").default;
-const { GroupCoordinator: apiKey } = require("../../api_keys.mjs").default;
-
-/**
- * FindCoordinator Request (Version: 0) => group_id
- *   group_id => STRING
- */
-
-module.exports = ({ groupId }) => ({
-  apiKey,
-  apiVersion: 0,
-  apiName: "GroupCoordinator",
-  encode: async () => {
-    return new Encoder().writeString(groupId);
-  },
-});
+module.exports = require("./request.mjs").default;
