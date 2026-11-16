@@ -11,6 +11,8 @@ Run `npm ci` to install the locked dependencies.
 
 To run all the tests a single time without having booted any containers, run `npm test`. This will lint the code, boot all the containers, run all the tests and then tear down the containers. Run `npm run test:types` to check the declarations and `npm run test:pack` to verify the installed package tarball from a clean consumer directory. Neither check requires Kafka.
 
+Declaration tests use relative imports and Node type references; they do not need TypeScript's deprecated `baseUrl` option. Keep deprecation diagnostics enabled.
+
 For a broker-free test, for example, run `npm run jest -- --runInBand --runTestsByPath src/utils/array_diff.spec.mjs`. Many other tests require Kafka even when selected individually.
 
 The npm Jest commands enable Node's experimental VM modules support for native `.mjs` tests; use them rather than invoking Jest directly. Jest transforms are disabled: CommonJS mocks must be registered before requiring their subject, and ESM mocks must be registered with `jest.unstable_mockModule` before dynamically importing their subject. Protocol request and response modules are preloaded in both CommonJS and ESM formats.
