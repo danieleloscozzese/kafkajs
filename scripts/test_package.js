@@ -36,6 +36,14 @@ try {
     "package/src/utils/array_diff.mjs",
     "package/src/utils/groupBy.js",
     "package/src/utils/group_by.mjs",
+    "package/src/utils/mapValues.js",
+    "package/src/utils/map_values.mjs",
+    "package/src/utils/seq.js",
+    "package/src/utils/seq.mjs",
+    "package/src/utils/swapObject.js",
+    "package/src/utils/swap_object.mjs",
+    "package/src/utils/uniq.js",
+    "package/src/utils/uniq.mjs",
     "package/types/index.d.ts",
   ]) {
     assert(files.includes(requiredFile), `Tarball is missing ${requiredFile}`);
@@ -109,6 +117,10 @@ import {
 import once from "@dagher/kafkajs/src/utils/once.mjs";
 import arrayDiff from "@dagher/kafkajs/src/utils/array_diff.mjs";
 import groupBy from "@dagher/kafkajs/src/utils/group_by.mjs";
+import mapValues from "@dagher/kafkajs/src/utils/map_values.mjs";
+import seq from "@dagher/kafkajs/src/utils/seq.mjs";
+import swapObject from "@dagher/kafkajs/src/utils/swap_object.mjs";
+import uniq from "@dagher/kafkajs/src/utils/uniq.mjs";
 
 const require = createRequire(import.meta.url);
 const commonjs = require("@dagher/kafkajs");
@@ -119,6 +131,10 @@ assert(new commonjs.KafkaJSError("shared constructor") instanceof KafkaJSError);
 assert.strictEqual(require("@dagher/kafkajs/src/utils/once.js"), once);
 assert.strictEqual(require("@dagher/kafkajs/src/utils/arrayDiff.js"), arrayDiff);
 assert.strictEqual(require("@dagher/kafkajs/src/utils/groupBy.js"), groupBy);
+assert.strictEqual(require("@dagher/kafkajs/src/utils/mapValues.js"), mapValues);
+assert.strictEqual(require("@dagher/kafkajs/src/utils/seq.js"), seq);
+assert.strictEqual(require("@dagher/kafkajs/src/utils/swapObject.js"), swapObject);
+assert.strictEqual(require("@dagher/kafkajs/src/utils/uniq.js"), uniq);
 
 const codec = () => "registered through ESM";
 CompressionCodecs[99] = codec;

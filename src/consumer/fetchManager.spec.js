@@ -1,7 +1,7 @@
 const { jest, describe, expect, beforeEach, afterEach, it } = require("@jest/globals");
 
 const sleep = require("../utils/sleep");
-const seq = require("../utils/seq");
+const seq = require("../utils/seq.mjs").default;
 const createFetchManager = require("./fetchManager");
 const Batch = require("./batch");
 const { newLogger } = require("testHelpers");
