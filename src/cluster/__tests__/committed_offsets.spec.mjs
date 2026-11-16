@@ -1,6 +1,6 @@
-const { describe, expect, beforeEach, it } = require("@jest/globals");
-
-const { createCluster } = require("testHelpers");
+import { describe, expect, beforeEach, it } from "@jest/globals";
+const { default: testHelpers } = await import("testHelpers");
+const { createCluster } = testHelpers;
 
 describe("Cluster", () => {
   let groupId;

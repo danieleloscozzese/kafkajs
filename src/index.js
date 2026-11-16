@@ -5,7 +5,7 @@ const {
 
 const InstrumentationEventEmitter = require("./instrumentation/emitter.mjs").default;
 const LoggerConsole = require("./loggers/console.mjs").default;
-const Cluster = require("./cluster");
+const Cluster = require("./cluster/index.mjs").default;
 const createProducer = require("./producer");
 const createConsumer = require("./consumer");
 const createAdmin = require("./admin");

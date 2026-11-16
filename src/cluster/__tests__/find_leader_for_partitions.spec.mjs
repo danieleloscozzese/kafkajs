@@ -1,6 +1,6 @@
-const { describe, test, expect, beforeEach, it } = require("@jest/globals");
-
-const { createCluster, secureRandom } = require("testHelpers");
+import { describe, test, expect, beforeEach, it } from "@jest/globals";
+const { default: testHelpers } = await import("testHelpers");
+const { createCluster, secureRandom } = testHelpers;
 
 describe("Cluster > findLeaderForPartitions", () => {
   let cluster, topic;

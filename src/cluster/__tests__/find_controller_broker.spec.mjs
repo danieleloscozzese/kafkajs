@@ -1,7 +1,8 @@
-const { describe, test, expect, beforeEach, jest } = require("@jest/globals");
-
-const { createCluster } = require("testHelpers");
-const { KafkaJSMetadataNotLoaded, KafkaJSBrokerNotFound } = require("../../errors.mjs").default;
+import { describe, test, expect, beforeEach, jest } from "@jest/globals";
+import errors from "../../errors.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { createCluster } = testHelpers;
+const { KafkaJSMetadataNotLoaded, KafkaJSBrokerNotFound } = errors;
 
 describe("Cluster > findControllerBroker", () => {
   let cluster;

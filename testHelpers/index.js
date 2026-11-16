@@ -5,9 +5,9 @@ const { test } = require("@jest/globals");
 
 const { execSync } = require("node:child_process");
 const semver = require("semver");
-const Cluster = require("../src/cluster");
+const Cluster = require("../src/cluster/index.mjs").default;
 const waitFor = require("../src/utils/wait_for.mjs").default;
-const connectionBuilder = require("../src/cluster/connectionPoolBuilder");
+const connectionBuilder = require("../src/cluster/connection_pool_builder.mjs").default;
 const ConnectionPool = require("../src/network/connection_pool.mjs").default;
 const defaultSocketFactory = require("../src/network/socket_factory.mjs").default;
 const socketFactory = defaultSocketFactory();
