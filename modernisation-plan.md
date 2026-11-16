@@ -64,34 +64,54 @@ trees. Keep the synchronous public API synchronous. Do not add top-level `await`
 or make constructors, partitioners, codec factories, or protocol lookup async
 merely to accommodate imports.
 
+**PR 4 decision:** With Node.js 24 prioritised and transpilation explicitly
+excluded, use one native source graph rather than a generated CommonJS build.
+The package requires Node.js 24.1 or later; dropping support for Node 22 and
+24.0 is a breaking change and must be released accordingly. Node 24.0 failed
+the packed mixed-import test when the ESM facade and a migrated module were
+statically imported together; 24.1 passed it. Jest's native
+`require(esm)` support needs Node.js 24.9 or later for development tests.
+
+`package.json` retains `main: index.js`, `module: index.mjs`, and
+`types: types/index.d.ts`, with no restrictive `exports` map. Node's package
+root resolves to the CommonJS entry; the explicit ESM facade imports that same
+entry. Synchronous CommonJS callers use the `.default` of native
+`require("./file.mjs")`; any compatibility shim delegates to that same module.
+Runtime ESM graphs reached by `require` must not contain top-level `await` or
+CommonJS/ESM cycles. Verify identity and synchronous APIs from the packed
+tarball as each slice migrates.
+
+The first slice is `src/utils/once.mjs`: it has no dependencies or module state,
+is called by `src/index.js` for the default-partitioner warning, and retains
+`src/utils/once.js` as a delegating deep-import compatibility path. Its ESM
+tests and package consumer tests cover both paths. No build, transpiler,
+generated files, or generated source maps are needed; `npm ci`, `npm test`,
+and `npm pack` operate directly on checked-in source.
+
 First repair and test an ESM facade over the existing CommonJS implementation.
 For object-shaped CommonJS exports, prefer explicit property extraction over
 depending on Node's heuristic named-export detection. This is a useful,
 releasable intermediate state, not evidence that the implementation is ESM.
 
-Before migrating any module with CommonJS callers, prove a single-source
-distribution approach in PR 4. Recommended compatibility model: the CommonJS
-entry and ESM facade both reach one canonical synchronous implementation in a
-mixed-consumer process; ESM source may need a generated CommonJS distribution
-for this. A naive independent ESM/CJS build is unacceptable if it creates two
-codec registries or incompatible error constructors.
+Before migrating any module with CommonJS callers, prove the single-source
+distribution approach in PR 4. The CommonJS entry and ESM facade must reach one
+canonical synchronous implementation in a mixed-consumer process. A separate
+ESM/CJS runtime is unacceptable if it creates two codec registries or
+incompatible error constructors.
 
-Do not assume `require(esm)` works on the declared Node 22.0.0 minimum, and do
-not insert asynchronous `import()` into synchronous call chains. `createRequire`
-can load remaining CommonJS from ESM as a temporary boundary; it is not a way
-to load arbitrary ESM synchronously on every supported runtime.
+Do not assume `require(esm)` works on Node 22.0.0, and do not insert
+asynchronous `import()` into synchronous call chains. `createRequire` can load
+remaining CommonJS from ESM as a temporary boundary.
 
-The packaging spike must choose and document exact output paths, import/require
-conditions, declaration resolution, source maps, extension rewriting, lazy
-loads, and clean-checkout build commands. Add build tooling only if the spike
-demonstrates that it is needed and the result preserves contracts. If no simple
-approach passes, stop internal conversion at the working facade and propose an
-ESM-only major release separately; do not merge a broken hybrid.
+The packaging spike must verify exact paths, import/require conditions,
+declaration resolution, lazy loads, and clean-checkout packaging. If the
+native approach fails its contract gates, stop internal conversion at the
+working facade; do not add a transpiler or merge a broken hybrid.
 
 Adding `exports` can block previously usable deep imports. Inventory documented
 subpaths and representative consumer use before restricting access. Preserve
-known supported paths or classify their removal as breaking. Keep the engine
-floor unchanged unless a separately approved release decision changes it.
+known supported paths or classify their removal as breaking. The Node 24.1
+engine floor above is an explicit breaking-change decision for this stack.
 
 ### Rewrite policy
 
