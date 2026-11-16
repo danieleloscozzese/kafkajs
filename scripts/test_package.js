@@ -229,6 +229,11 @@ import protocols from "@dagher/kafkajs/src/protocol/requests/index.mjs";
 import createRetry from "@dagher/kafkajs/src/retry/index.mjs";
 import RequestQueue from "@dagher/kafkajs/src/network/requestQueue/index.mjs";
 import SocketRequest from "@dagher/kafkajs/src/network/requestQueue/socket_request.mjs";
+import Connection from "@dagher/kafkajs/src/network/connection.mjs";
+import ConnectionPool from "@dagher/kafkajs/src/network/connection_pool.mjs";
+import createSocket from "@dagher/kafkajs/src/network/socket.mjs";
+import createSocketFactory from "@dagher/kafkajs/src/network/socket_factory.mjs";
+import getEnv from "@dagher/kafkajs/src/env.mjs";
 ${protocolFamilies
   .map(
     ([family], index) =>
@@ -272,6 +277,26 @@ assert.strictEqual(require("@dagher/kafkajs/src/network/requestQueue/index.js"),
 assert.strictEqual(require("@dagher/kafkajs/src/network/requestQueue/socketRequest.js"), SocketRequest);
 assert.equal(RequestQueue.name, "RequestQueue");
 assert.equal(SocketRequest.name, "SocketRequest");
+assert.strictEqual(require("@dagher/kafkajs/src/network/connection.js"), Connection);
+assert.strictEqual(require("@dagher/kafkajs/src/network/connectionPool.js"), ConnectionPool);
+assert.strictEqual(require("@dagher/kafkajs/src/network/socket.js"), createSocket);
+assert.strictEqual(require("@dagher/kafkajs/src/network/socketFactory.js"), createSocketFactory);
+assert.strictEqual(require("@dagher/kafkajs/src/env.js"), getEnv);
+assert.equal(Connection.name, "Connection");
+assert.equal(ConnectionPool.name, "ConnectionPool");
+const connectionOptions = {
+  host: "localhost", port: 9092, connectionTimeout: 1000, requestTimeout: 1000,
+  socketFactory: createSocketFactory(),
+  logger: loggers.createLogger({ level: LEVELS.NOTHING, logCreator: () => () => {} }),
+};
+assert.equal(typeof connectionOptions.socketFactory, "function");
+const connection = new Connection(connectionOptions);
+assert(connection.requestQueue instanceof RequestQueue);
+assert.equal(connection.isConnected(), false);
+await connection.disconnect();
+const pool = new ConnectionPool(connectionOptions);
+assert(pool.pool.every(value => value instanceof Connection));
+await pool.destroy();
 for (const [oldPath, newPath] of [
   ["retry/defaults", "retry/defaults"],
   ["retry/defaults.test", "retry/defaults_test"],

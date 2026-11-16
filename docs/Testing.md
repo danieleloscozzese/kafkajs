@@ -52,6 +52,13 @@ deferred. The queue suite destroys its own timers after each case.
 The producer suite uses a native ESM retry mock registered before loading the
 CommonJS caller; its existing logger snapshot is retained under the renamed test.
 
+Socket creation, default socket factories, connections/pools, and the debug
+environment getter are native ESM. Focused socket tests cover keep-alive, TLS
+SNI/overrides, and custom callback wiring; a broker-free localhost TCP test
+exercises peer closure with in-flight/queued requests and reconnect. Existing
+Kafka-backed tests retain plaintext/TLS and fragmented-response coverage.
+Connection-pool routing assertions compare resolved connections, not promises.
+
 For development, it is usually more convenient to boot the containers yourself, and then keep the tests running in watch mode. After you have booted the containers as described in [Running Kafka](ContributionGuide.md#running-kafka), you can run `npm run test:local:watch`. `jest`'s interactive mode will allow you select which tests to run.
 
 ## Logging

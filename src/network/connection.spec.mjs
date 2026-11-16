@@ -1,4 +1,4 @@
-const {
+import {
   describe,
   test,
   expect,
@@ -8,17 +8,23 @@ const {
   afterAll,
   it,
   jest,
-} = require("@jest/globals");
+} from "@jest/globals";
+import sleep from "../utils/sleep.mjs";
+import protocols from "../protocol/requests/index.mjs";
+import Decoder from "../protocol/decoder.mjs";
+import Encoder from "../protocol/encoder.mjs";
+import errors from "../errors.mjs";
+import Connection from "./connection.mjs";
+import connectionStatuses from "./connection_status.mjs";
+import EventEmitter from "node:events";
+const { default: testHelpers } = await import("testHelpers");
+const { connectionOpts, sslConnectionOpts } = testHelpers;
 
-const { connectionOpts, sslConnectionOpts } = require("../../testHelpers");
-const sleep = require("../utils/sleep.mjs").default;
-const { requests } = require("../protocol/requests/index.mjs").default;
-const Decoder = require("../protocol/decoder.mjs").default;
-const Encoder = require("../protocol/encoder.mjs").default;
-const { KafkaJSRequestTimeoutError } = require("../errors.mjs").default;
-const Connection = require("./connection");
-const { CONNECTION_STATUS } = require("./connection_status.mjs").default;
-const EventEmitter = require("events");
+const { requests } = protocols;
+
+const { KafkaJSRequestTimeoutError } = errors;
+
+const { CONNECTION_STATUS } = connectionStatuses;
 
 describe("Network > Connection", () => {
   const invalidHost = "kafkajs.test";

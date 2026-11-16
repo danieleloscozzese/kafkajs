@@ -10,7 +10,7 @@ const createProducer = require("./producer");
 const createConsumer = require("./consumer");
 const createAdmin = require("./admin");
 const ISOLATION_LEVEL = require("./protocol/isolation_level.mjs").default;
-const defaultSocketFactory = require("./network/socketFactory");
+const defaultSocketFactory = require("./network/socket_factory.mjs").default;
 const once = require("./utils/once.mjs").default;
 const websiteUrl = require("./utils/website_url.mjs").default;
 
