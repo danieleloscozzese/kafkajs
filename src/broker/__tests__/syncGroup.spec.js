@@ -37,17 +37,21 @@ describe("Broker > SyncGroup", () => {
   });
 
   test("request", async () => {
-    const { generationId, memberId } = await groupCoordinator.joinGroup({
-      groupId,
-      sessionTimeout: 30000,
-      rebalanceTimeout: 60000,
-      groupProtocols: [
-        {
-          name: "AssignerName",
-          metadata: MemberMetadata.encode({ version: 1, topics: [topicName] }),
-        },
-      ],
-    });
+    const { generationId, memberId } = await retryProtocol(
+      "GROUP_COORDINATOR_NOT_AVAILABLE",
+      () =>
+        groupCoordinator.joinGroup({
+          groupId,
+          sessionTimeout: 30000,
+          rebalanceTimeout: 60000,
+          groupProtocols: [
+            {
+              name: "AssignerName",
+              metadata: MemberMetadata.encode({ version: 1, topics: [topicName] }),
+            },
+          ],
+        }),
+    );
 
     const memberAssignment = MemberAssignment.encode({
       version: 1,

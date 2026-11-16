@@ -225,12 +225,14 @@ const createTopic = async ({ topic, partitions = 1, replicas = 1, config = [] })
 
   try {
     await admin.connect();
-    await admin.createTopics({
-      waitForLeaders: true,
-      topics: [
-        { topic, numPartitions: partitions, replicationFactor: replicas, configEntries: config },
-      ],
-    });
+    await retryProtocol("UNKNOWN_TOPIC_OR_PARTITION", () =>
+      admin.createTopics({
+        waitForLeaders: true,
+        topics: [
+          { topic, numPartitions: partitions, replicationFactor: replicas, configEntries: config },
+        ],
+      }),
+    );
   } finally {
     admin && (await admin.disconnect());
   }
