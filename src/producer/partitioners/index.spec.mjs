@@ -1,8 +1,14 @@
-const { describe, test, expect, beforeEach } = require("@jest/globals");
+import { describe, test, expect, beforeEach, jest } from "@jest/globals";
 
-const createPartitioner = require("./index");
+jest.unstable_mockModule("./legacy/random_bytes.mjs", () => ({
+  default: (size) => Buffer.alloc(size, 7),
+}));
+const { default: partitioners } = await import("./index.mjs");
 
-describe("Producer > Partitioner > Legacy", () => {
+describe.each([
+  ["Legacy", partitioners.LegacyPartitioner],
+  ["Default", partitioners.DefaultPartitioner],
+])("Producer > Partitioner > %s", (name, createPartitioner) => {
   let topic, partitioner, partitionMetadata;
 
   beforeEach(() => {
@@ -22,6 +28,23 @@ describe("Producer > Partitioner > Legacy", () => {
     const partitionA = partitioner({ topic, partitionMetadata, message: { key: "test-key" } });
     const partitionB = partitioner({ topic, partitionMetadata, message: { key: "test-key" } });
     expect(partitionA).toEqual(partitionB);
+  });
+
+  test.each([0, "", Buffer.alloc(0)])("treats the falsy key %s as keyed", (key) => {
+    const first = partitioner({ topic, partitionMetadata, message: { key } });
+    for (let i = 0; i < 6; i++) {
+      expect(partitioner({ topic, partitionMetadata, message: { key } })).toBe(first);
+    }
+  });
+
+  test("cycles through all partitions when no leaders are available", () => {
+    partitionMetadata.forEach((partition) => {
+      partition.leader = -1;
+    });
+    const assignments = Array.from({ length: 3 }, () =>
+      partitioner({ topic, partitionMetadata, message: {} }),
+    );
+    expect(assignments.sort()).toEqual([0, 1, 2]);
   });
 
   test("round-robin with unavailable partitions", () => {

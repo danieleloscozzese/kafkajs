@@ -239,6 +239,7 @@ import Cluster from "@dagher/kafkajs/src/cluster/index.mjs";
 import BrokerPool from "@dagher/kafkajs/src/cluster/broker_pool.mjs";
 import createConnectionPoolBuilder from "@dagher/kafkajs/src/cluster/connection_pool_builder.mjs";
 import SASLAuthenticator from "@dagher/kafkajs/src/broker/saslAuthenticator/index.mjs";
+import nativePartitioners from "@dagher/kafkajs/src/producer/partitioners/index.mjs";
 ${protocolFamilies
   .map(
     ([family], index) =>
@@ -250,6 +251,25 @@ const require = createRequire(import.meta.url);
 const commonjs = require("@dagher/kafkajs");
 assert.strictEqual(Kafka, commonjs.Kafka);
 assert.strictEqual(Partitioners, commonjs.Partitioners);
+assert.strictEqual(Partitioners, nativePartitioners);
+assert.strictEqual(Partitioners.JavaCompatiblePartitioner, Partitioners.DefaultPartitioner);
+for (const [oldName, newName] of [
+  ["default/index", "default/index"], ["default/murmur2", "default/murmur2"],
+  ["legacy/index", "legacy/index"], ["legacy/murmur2", "legacy/murmur2"],
+  ["legacy/partitioner", "legacy/partitioner"], ["legacy/randomBytes", "legacy/random_bytes"],
+]) {
+  const prefix = "@dagher/kafkajs/src/producer/partitioners/";
+  const { default: implementation } = await import(prefix + newName + ".mjs");
+  assert.strictEqual(require(prefix + oldName + ".js"), implementation);
+}
+for (const createPartitioner of [Partitioners.DefaultPartitioner, Partitioners.LegacyPartitioner]) {
+  const partitioner = createPartitioner();
+  assert.equal(typeof partitioner, "function");
+  assert.equal(partitioner({
+    topic: "packed", partitionMetadata: [{ partitionId: 0, leader: 1 }],
+    message: { partition: 0, key: "fixed" },
+  }), 0);
+}
 assert.strictEqual(KafkaJSError, commonjs.KafkaJSError);
 assert(new commonjs.KafkaJSError("shared constructor") instanceof KafkaJSError);
 assert.strictEqual(require("@dagher/kafkajs/src/utils/once.js"), once);

@@ -1,6 +1,5 @@
-const { describe, test, expect } = require("@jest/globals");
-
-const murmur2 = require("./murmur2");
+import { describe, test, expect } from "@jest/globals";
+import murmur2 from "./murmur2.mjs";
 
 describe("Producer > Partitioner > Default > murmur2", () => {
   test("it works", () => {
