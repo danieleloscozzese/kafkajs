@@ -1,7 +1,9 @@
-const { describe, expect, beforeEach, it, jest } = require("@jest/globals");
+import { describe, expect, beforeEach, it, jest } from "@jest/globals";
+import { createRequire } from "node:module";
+import MockDate from "mockdate";
+import loggers, { createLogger, LEVELS } from "./index.mjs";
 
-const MockDate = require("mockdate");
-const { createLogger, LEVELS } = require("./index.js");
+const require = createRequire(import.meta.url);
 
 describe("Loggers", () => {
   let logger, timeNow, MyLogCreator, myLogger;
@@ -19,6 +21,12 @@ describe("Loggers", () => {
 
     const rootLogger = createLogger({ logCreator: MyLogCreator, level: LEVELS.DEBUG });
     logger = rootLogger.namespace("MyNamespace");
+  });
+
+  it("shares the CommonJS compatibility path", () => {
+    expect(require("./index.js")).toBe(loggers);
+    expect(loggers.LEVELS).toBe(LEVELS);
+    expect(loggers.createLogger).toBe(createLogger);
   });
 
   it("calls the log creator with the log level", () => {

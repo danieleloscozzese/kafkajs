@@ -1,10 +1,10 @@
 const {
   createLogger,
   LEVELS: { INFO },
-} = require("./loggers");
+} = require("./loggers/index.mjs").default;
 
 const InstrumentationEventEmitter = require("./instrumentation/emitter.mjs").default;
-const LoggerConsole = require("./loggers/console");
+const LoggerConsole = require("./loggers/console.mjs").default;
 const Cluster = require("./cluster");
 const createProducer = require("./producer");
 const createConsumer = require("./consumer");

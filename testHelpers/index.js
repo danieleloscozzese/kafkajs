@@ -15,9 +15,9 @@ const socketFactory = defaultSocketFactory();
 const {
   createLogger,
   LEVELS: { NOTHING },
-} = require("../src/loggers");
+} = require("../src/loggers/index.mjs").default;
 
-const LoggerConsole = require("../src/loggers/console");
+const LoggerConsole = require("../src/loggers/console.mjs").default;
 const Kafka = require("../src");
 
 const newLogger = (opts = {}) =>

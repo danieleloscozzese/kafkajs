@@ -12,7 +12,7 @@ exports.AclResourceTypes = require("./src/protocol/acl-resource-types");
 exports.AclOperationTypes = require("./src/protocol/acl-operation-types");
 exports.AclPermissionTypes = require("./src/protocol/acl-permission-types");
 exports.ResourcePatternTypes = require("./src/protocol/resource-pattern-types");
-exports.LEVELS = require("./src/loggers").LEVELS;
+exports.LEVELS = require("./src/loggers/index.mjs").default.LEVELS;
 exports.logLevel = exports.LEVELS;
 
 exports.KafkaJSError = errors.KafkaJSError;

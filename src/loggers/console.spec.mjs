@@ -1,9 +1,10 @@
-const { describe, expect, beforeEach, afterEach, it, jest } = require("@jest/globals");
+import { describe, expect, beforeEach, afterEach, it, jest } from "@jest/globals";
+import { createRequire } from "node:module";
+import MockDate from "mockdate";
+import { createLogger, LEVELS } from "./index.mjs";
+import LoggerConsole from "./console.mjs";
 
-const MockDate = require("mockdate");
-
-const { createLogger, LEVELS } = require("./index.js");
-const LoggerConsole = require("./console.js");
+const require = createRequire(import.meta.url);
 
 describe("Loggers > Console", () => {
   let logger, timeNow;
@@ -25,6 +26,10 @@ describe("Loggers > Console", () => {
     global.console.error.mockRestore();
     global.console.warn.mockRestore();
     global.console.log.mockRestore();
+  });
+
+  it("shares the CommonJS compatibility path", () => {
+    expect(require("./console.js")).toBe(LoggerConsole);
   });
 
   it("logs INFO", () => {
