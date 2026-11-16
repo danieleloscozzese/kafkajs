@@ -234,6 +234,7 @@ import ConnectionPool from "@dagher/kafkajs/src/network/connection_pool.mjs";
 import createSocket from "@dagher/kafkajs/src/network/socket.mjs";
 import createSocketFactory from "@dagher/kafkajs/src/network/socket_factory.mjs";
 import getEnv from "@dagher/kafkajs/src/env.mjs";
+import Broker from "@dagher/kafkajs/src/broker/index.mjs";
 ${protocolFamilies
   .map(
     ([family], index) =>
@@ -297,6 +298,13 @@ await connection.disconnect();
 const pool = new ConnectionPool(connectionOptions);
 assert(pool.pool.every(value => value instanceof Connection));
 await pool.destroy();
+assert.strictEqual(require("@dagher/kafkajs/src/broker/index.js"), Broker);
+assert.equal(Broker.name, "Broker");
+const broker = new Broker({ connectionPool: pool, logger: connectionOptions.logger });
+assert(broker.connectionPool instanceof ConnectionPool);
+assert.equal(broker.isConnected(), false);
+assert.throws(() => broker.lookupRequest(), /Broker not connected/);
+await broker.disconnect();
 for (const [oldPath, newPath] of [
   ["retry/defaults", "retry/defaults"],
   ["retry/defaults.test", "retry/defaults_test"],

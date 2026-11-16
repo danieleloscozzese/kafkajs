@@ -1,8 +1,8 @@
-const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
-
-const { createConnectionPool, connectionOpts, secureRandom, newLogger } = require("testHelpers");
-const CONFIG_RESOURCE_TYPES = require("../../protocol/config_resource_types.mjs").default;
-const Broker = require("../index");
+import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
+import CONFIG_RESOURCE_TYPES from "../../protocol/config_resource_types.mjs";
+import Broker from "../index.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { createConnectionPool, connectionOpts, secureRandom, newLogger } = testHelpers;
 
 describe("Broker > alterConfigs", () => {
   let seedBroker, broker;

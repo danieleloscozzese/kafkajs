@@ -1,6 +1,6 @@
-const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
-
-const Broker = require("../index");
+import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
+import Broker from "../index.mjs";
+const { default: testHelpers } = await import("testHelpers");
 const {
   secureRandom,
   createConnectionPool,
@@ -8,7 +8,7 @@ const {
   createTopic,
   retryProtocol,
   testIfKafkaAtLeast_0_11,
-} = require("testHelpers");
+} = testHelpers;
 
 describe("Broker > Metadata", () => {
   let topicName, broker;

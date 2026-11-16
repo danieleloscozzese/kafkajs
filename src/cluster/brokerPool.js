@@ -1,4 +1,4 @@
-const Broker = require("../broker");
+const Broker = require("../broker/index.mjs").default;
 const createRetry = require("../retry/index.mjs").default;
 const shuffle = require("../utils/shuffle.mjs").default;
 const arrayDiff = require("../utils/array_diff.mjs").default;

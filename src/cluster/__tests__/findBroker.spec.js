@@ -8,7 +8,7 @@ const {
   newLogger,
 } = require("testHelpers");
 
-const Broker = require("../../broker/index.js");
+const Broker = require("../../broker/index.mjs").default;
 const {
   KafkaJSLockTimeout,
   KafkaJSConnectionError,

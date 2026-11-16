@@ -1,9 +1,11 @@
-const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
-
-const Broker = require("../index");
-const COORDINATOR_TYPES = require("../../protocol/coordinator_types.mjs").default;
-const { Types: Compression } = require("../../protocol/message/compression/index.mjs").default;
-const { KafkaJSProtocolError } = require("../../errors.mjs").default;
+import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
+import Broker from "../index.mjs";
+import COORDINATOR_TYPES from "../../protocol/coordinator_types.mjs";
+import compression0 from "../../protocol/message/compression/index.mjs";
+import errors from "../../errors.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { Types: Compression } = compression0;
+const { KafkaJSProtocolError } = errors;
 const {
   secureRandom,
   createConnectionPool,
@@ -11,7 +13,7 @@ const {
   createTopic,
   testIfKafkaAtLeast_0_11,
   retryProtocol,
-} = require("testHelpers");
+} = testHelpers;
 
 describe("Broker > Produce", () => {
   let topicName, broker, broker2;

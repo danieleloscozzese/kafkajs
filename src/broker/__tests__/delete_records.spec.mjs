@@ -1,8 +1,8 @@
-const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
-
-const Broker = require("../index");
-const createProducer = require("../../producer");
-
+import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
+import Broker from "../index.mjs";
+import errors from "../../errors.mjs";
+const { default: createProducer } = await import("../../producer/index.js");
+const { default: testHelpers } = await import("testHelpers");
 const {
   createCluster,
   newLogger,
@@ -11,9 +11,9 @@ const {
   createModPartitioner,
   createConnectionPool,
   retryProtocol,
-} = require("testHelpers");
+} = testHelpers;
 
-const { KafkaJSProtocolError } = require("../../errors.mjs").default;
+const { KafkaJSProtocolError } = errors;
 
 describe("Broker > deleteRecords", () => {
   let topicName, cluster, seedBroker, producer, broker, metadata, partitionLeader, recordsToDelete;

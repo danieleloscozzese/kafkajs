@@ -1,16 +1,11 @@
-const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
+import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
+import Broker from "../index.mjs";
+const { default: assignerProtocol } = await import("../../consumer/assignerProtocol.js");
+const { default: testHelpers } = await import("testHelpers");
+const { MemberMetadata, MemberAssignment } = assignerProtocol;
+const { secureRandom, createConnectionPool, newLogger, createTopic, retryProtocol } = testHelpers;
 
-const Broker = require("../index");
-const { MemberMetadata, MemberAssignment } = require("../../consumer/assignerProtocol");
-const {
-  secureRandom,
-  createConnectionPool,
-  newLogger,
-  createTopic,
-  retryProtocol,
-} = require("testHelpers");
-
-describe("Broker > OffsetFetch", () => {
+describe("Broker > OffsetCommit", () => {
   let topicName, groupId, seedBroker, broker, groupCoordinator;
 
   beforeEach(async () => {
@@ -22,6 +17,7 @@ describe("Broker > OffsetFetch", () => {
       logger: newLogger(),
     });
     await seedBroker.connect();
+
     await createTopic({ topic: topicName });
 
     const metadata = await retryProtocol(
@@ -101,25 +97,80 @@ describe("Broker > OffsetFetch", () => {
     const topics = [
       {
         topic: topicName,
-        partitions: [{ partition: 0 }],
+        partitions: [{ partition: 0, offset: "0" }],
       },
     ];
 
-    const response = await groupCoordinator.offsetFetch({
+    const response = await groupCoordinator.offsetCommit({
       groupId,
+      groupGenerationId: generationId,
+      memberId,
       topics,
     });
 
     expect(response).toEqual({
       clientSideThrottleTime: expect.optional(0),
       throttleTime: 0,
-      errorCode: 0,
-      responses: [
+      responses: [{ partitions: [{ errorCode: 0, partition: 0 }], topic: topicName }],
+    });
+  });
+
+  test("request with metadata", async () => {
+    const produceData = [
+      {
+        topic: topicName,
+        partitions: [
+          {
+            partition: 0,
+            messages: [{ key: `key-0`, value: `some-value-0` }],
+          },
+        ],
+      },
+    ];
+
+    await broker.produce({ topicData: produceData });
+    const { generationId, memberId } = await groupCoordinator.joinGroup({
+      groupId,
+      sessionTimeout: 30000,
+      groupProtocols: [
         {
-          partitions: [{ errorCode: 0, metadata: "", offset: "-1", partition: 0 }],
-          topic: topicName,
+          name: "AssignerName",
+          metadata: MemberMetadata.encode({ version: 1, topics: [topicName] }),
         },
       ],
+    });
+
+    const memberAssignment = MemberAssignment.encode({
+      version: 1,
+      assignment: { [topicName]: [0] },
+    });
+
+    const groupAssignment = [{ memberId, memberAssignment }];
+    await groupCoordinator.syncGroup({
+      groupId,
+      generationId,
+      memberId,
+      groupAssignment,
+    });
+
+    const topics = [
+      {
+        topic: topicName,
+        partitions: [{ partition: 0, offset: "0", metadata: "test" }],
+      },
+    ];
+
+    const response = await groupCoordinator.offsetCommit({
+      groupId,
+      groupGenerationId: generationId,
+      memberId,
+      topics,
+    });
+
+    expect(response).toEqual({
+      clientSideThrottleTime: expect.optional(0),
+      throttleTime: 0,
+      responses: [{ partitions: [{ errorCode: 0, partition: 0 }], topic: topicName }],
     });
   });
 });

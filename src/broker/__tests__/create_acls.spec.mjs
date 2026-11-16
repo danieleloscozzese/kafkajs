@@ -1,12 +1,11 @@
-const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
-
-const { createConnectionPool, connectionOpts, secureRandom, newLogger } = require("testHelpers");
-
-const Broker = require("../index");
-const ACL_RESOURCE_TYPES = require("../../protocol/acl_resource_types.mjs").default;
-const ACL_OPERATION_TYPES = require("../../protocol/acl_operation_types.mjs").default;
-const ACL_PERMISSION_TYPES = require("../../protocol/acl_permission_types.mjs").default;
-const RESOURCE_PATTERN_TYPES = require("../../protocol/resource_pattern_types.mjs").default;
+import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
+import Broker from "../index.mjs";
+import ACL_RESOURCE_TYPES from "../../protocol/acl_resource_types.mjs";
+import ACL_OPERATION_TYPES from "../../protocol/acl_operation_types.mjs";
+import ACL_PERMISSION_TYPES from "../../protocol/acl_permission_types.mjs";
+import RESOURCE_PATTERN_TYPES from "../../protocol/resource_pattern_types.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { createConnectionPool, connectionOpts, secureRandom, newLogger } = testHelpers;
 
 describe("Broker > createAcls", () => {
   let seedBroker, broker;

@@ -1,7 +1,7 @@
-const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
-
-const Broker = require("../index");
-const { secureRandom, createConnectionPool, newLogger, retryProtocol } = require("testHelpers");
+import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
+import Broker from "../index.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { secureRandom, createConnectionPool, newLogger, retryProtocol } = testHelpers;
 
 describe("Broker > FindGroupCoordinator", () => {
   let groupId, seedBroker;

@@ -59,6 +59,12 @@ exercises peer closure with in-flight/queued requests and reconnect. Existing
 Kafka-backed tests retain plaintext/TLS and fragmented-response coverage.
 Connection-pool routing assertions compare resolved connections, not promises.
 
+The broker wrapper and all broker suites use native ESM. Their existing
+API-version negotiation, authentication, metadata, data, group, transaction,
+and administration cases are retained. Remaining CommonJS test helpers load
+after native subjects to avoid test-only linking cycles; installed-package
+tests still exercise static mixed imports.
+
 For development, it is usually more convenient to boot the containers yourself, and then keep the tests running in watch mode. After you have booted the containers as described in [Running Kafka](ContributionGuide.md#running-kafka), you can run `npm run test:local:watch`. `jest`'s interactive mode will allow you select which tests to run.
 
 ## Logging

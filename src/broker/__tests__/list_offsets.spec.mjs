@@ -1,14 +1,8 @@
-const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
-
-const Broker = require("../index");
-const apiKeys = require("../../protocol/requests/api_keys.mjs").default;
-const {
-  secureRandom,
-  createConnectionPool,
-  newLogger,
-  createTopic,
-  retryProtocol,
-} = require("testHelpers");
+import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
+import Broker from "../index.mjs";
+import apiKeys from "../../protocol/requests/api_keys.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { secureRandom, createConnectionPool, newLogger, createTopic, retryProtocol } = testHelpers;
 
 const EARLIEST = -2;
 const LATEST = -1;

@@ -1,8 +1,7 @@
-const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
-
-const { createConnectionPool, connectionOpts, secureRandom, newLogger } = require("testHelpers");
-
-const Broker = require("../index.js");
+import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
+import Broker from "../index.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { createConnectionPool, connectionOpts, secureRandom, newLogger } = testHelpers;
 
 describe("Broker > alterPartitionReassignments", () => {
   let seedBroker, broker;
@@ -31,48 +30,49 @@ describe("Broker > alterPartitionReassignments", () => {
 
   test("request", async () => {
     await broker.connect();
-    const topicName1 = `test-topic-${secureRandom()}`;
+    const topicName = `test-topic-${secureRandom()}`;
 
     await broker.createTopics({
       topics: [
         {
-          topic: topicName1,
-          replicaAssignment: [
-            { partition: 0, replicas: [2, 1] },
-            { partition: 1, replicas: [0, 2] },
-          ],
+          topic: topicName,
+          replicaAssignment: [{ partition: 0, replicas: [0, 2] }],
         },
       ],
     });
 
-    const response = await broker.alterPartitionReassignments({
+    await broker.alterPartitionReassignments({
       topics: [
         {
-          topic: topicName1,
-          partitionAssignment: [
-            { partition: 0, replicas: [1, 0] },
-            { partition: 1, replicas: [2, 1] },
-          ],
+          topic: topicName,
+          partitionAssignment: [{ partition: 0, replicas: [2, 1] }],
         },
       ],
-      timeout: 5000,
     });
 
-    response.responses[0].partitions.sort((a, b) => b.partition - a.partition);
+    const response = await broker.listPartitionReassignments({
+      topics: [
+        {
+          topic: topicName,
+          partitions: [0],
+        },
+      ],
+    });
 
+    response.topics[0].partitions[0].replicas.sort();
     expect(response).toEqual({
       throttleTime: 0,
       errorCode: 0,
-      responses: [
+      topics: [
         {
-          topic: topicName1,
+          name: topicName,
           partitions: [
-            { partition: 1, errorCode: 0 },
-            { partition: 0, errorCode: 0 },
+            { partition: 0, replicas: [0, 1, 2], addingReplicas: [1], removingReplicas: [0] },
           ],
         },
       ],
     });
-    await broker.deleteTopics({ topics: [topicName1] });
+
+    await broker.deleteTopics({ topics: [topicName] });
   });
 });

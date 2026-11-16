@@ -1,11 +1,13 @@
-const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
+import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
+import Broker from "../index.mjs";
+const { default: assignerProtocol } = await import("../../consumer/assignerProtocol.js");
+const { default: testHelpers } = await import("testHelpers");
+const { MemberMetadata, MemberAssignment } = assignerProtocol;
 
-const Broker = require("../index");
-const { secureRandom, createConnectionPool, newLogger, retryProtocol } = require("testHelpers");
-const { MemberMetadata, MemberAssignment } = require("../../consumer/assignerProtocol.js");
+const { secureRandom, createConnectionPool, newLogger, createTopic, retryProtocol } = testHelpers;
 
-describe("Broker > SyncGroup", () => {
-  let topicName, groupId, seedBroker, groupCoordinator;
+describe("Broker > Heartbeat", () => {
+  let topicName, groupId, seedBroker, broker, groupCoordinator;
 
   beforeEach(async () => {
     topicName = `test-topic-${secureRandom()}`;
@@ -16,6 +18,23 @@ describe("Broker > SyncGroup", () => {
       logger: newLogger(),
     });
     await seedBroker.connect();
+    await createTopic({ topic: topicName });
+
+    const metadata = await retryProtocol(
+      "LEADER_NOT_AVAILABLE",
+      async () => await seedBroker.metadata([topicName]),
+    );
+
+    // Find leader of partition
+    const partitionBroker = metadata.topicMetadata[0].partitionMetadata[0].leader;
+    const newBrokerData = metadata.brokers.find((b) => b.nodeId === partitionBroker);
+
+    // Connect to the correct broker to produce message
+    broker = new Broker({
+      connectionPool: createConnectionPool(newBrokerData),
+      logger: newLogger(),
+    });
+    await broker.connect();
 
     const {
       coordinator: { host, port },
@@ -33,6 +52,7 @@ describe("Broker > SyncGroup", () => {
 
   afterEach(async () => {
     seedBroker && (await seedBroker.disconnect());
+    broker && (await broker.disconnect());
     groupCoordinator && (await groupCoordinator.disconnect());
   });
 
@@ -40,7 +60,6 @@ describe("Broker > SyncGroup", () => {
     const { generationId, memberId } = await groupCoordinator.joinGroup({
       groupId,
       sessionTimeout: 30000,
-      rebalanceTimeout: 60000,
       groupProtocols: [
         {
           name: "AssignerName",
@@ -55,18 +74,23 @@ describe("Broker > SyncGroup", () => {
     });
 
     const groupAssignment = [{ memberId, memberAssignment }];
-    const response = await groupCoordinator.syncGroup({
+    await groupCoordinator.syncGroup({
       groupId,
       generationId,
       memberId,
       groupAssignment,
     });
 
+    const response = await groupCoordinator.heartbeat({
+      groupId,
+      groupGenerationId: generationId,
+      memberId,
+    });
+
     expect(response).toEqual({
       clientSideThrottleTime: expect.optional(0),
       throttleTime: 0,
       errorCode: 0,
-      memberAssignment,
     });
   });
 });
