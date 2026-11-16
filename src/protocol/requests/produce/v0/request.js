@@ -1,6 +1,6 @@
 const Encoder = require("../../../encoder.mjs").default;
 const { Produce: apiKey } = require("../../apiKeys");
-const MessageSet = require("../../../messageSet");
+const MessageSet = require("../../../messageSet/index.mjs").default;
 
 /**
  * Produce Request (Version: 0) => acks timeout [topic_data]

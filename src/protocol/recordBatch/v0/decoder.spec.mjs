@@ -1,11 +1,12 @@
-const { describe, test, expect } = require("@jest/globals");
+import { describe, test, expect } from "@jest/globals";
 
-const Decoder = require("../../decoder.mjs").default;
-const recordBatchDecoder = require("./decoder");
+import Decoder from "../../decoder.mjs";
+import recordBatchDecoder from "./decoder.mjs";
+import recordBatch from "../fixtures/v0_recordbatch.json" with { type: "json" };
 
 describe("Protocol > RecordBatch > v0", () => {
   test("decodes", async () => {
-    const decoder = new Decoder(Buffer.from(require("../fixtures/v0_recordbatch.json")));
+    const decoder = new Decoder(Buffer.from(recordBatch));
     const decoded = await recordBatchDecoder(decoder);
 
     expect(decoded).toEqual({

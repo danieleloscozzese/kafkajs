@@ -2,7 +2,7 @@ const { describe, test, expect, beforeEach } = require("@jest/globals");
 
 const Encoder = require("../../../encoder.mjs").default;
 const RequestProtocol = require("./request");
-const MessageSet = require("../../../messageSet");
+const MessageSet = require("../../../messageSet/index.mjs").default;
 
 describe("Protocol > Requests > Produce > v0", () => {
   let args, messageSet1, messageSet2;

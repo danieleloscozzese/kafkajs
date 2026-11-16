@@ -1,6 +1,6 @@
 const Decoder = require("../../../decoder.mjs").default;
 const { parse: parseV0 } = require("../v0/response");
-const MessageSetDecoder = require("../../../messageSet/decoder");
+const MessageSetDecoder = require("../../../messageSet/decoder.mjs").default;
 
 /**
  * Fetch Response (Version: 1) => throttle_time_ms [responses]

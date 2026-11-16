@@ -1,12 +1,13 @@
-const { describe, test, expect } = require("@jest/globals");
+import { describe, test, expect } from "@jest/globals";
 
-const Decoder = require("../../../decoder.mjs").default;
-const recordDecoder = require("./decoder");
-const TimestampTypes = require("../../../timestamp_types.mjs").default;
+import Decoder from "../../../decoder.mjs";
+import recordDecoder from "./decoder.mjs";
+import TimestampTypes from "../../../timestamp_types.mjs";
+import record from "../../fixtures/v0_record.json" with { type: "json" };
 
 describe("Protocol > RecordBatch > Record > v0", () => {
   test("decodes", async () => {
-    const decoder = new Decoder(Buffer.from(require("../../fixtures/v0_record.json")));
+    const decoder = new Decoder(Buffer.from(record));
 
     expect(
       recordDecoder(decoder, {
@@ -35,7 +36,7 @@ describe("Protocol > RecordBatch > Record > v0", () => {
   });
 
   test("uses record batch maxTimestamp when topic is configured with timestamp type LOG_APPEND_TIME", async () => {
-    const decoder = new Decoder(Buffer.from(require("../../fixtures/v0_record.json")));
+    const decoder = new Decoder(Buffer.from(record));
     const batchContext = {
       firstOffset: "0",
       firstTimestamp: "1509827900073",
@@ -51,7 +52,7 @@ describe("Protocol > RecordBatch > Record > v0", () => {
   });
 
   test("decodes control record", async () => {
-    const decoder = new Decoder(Buffer.from(require("../../fixtures/v0_record.json")));
+    const decoder = new Decoder(Buffer.from(record));
 
     expect(
       recordDecoder(decoder, {

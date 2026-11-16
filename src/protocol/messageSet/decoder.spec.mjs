@@ -1,9 +1,11 @@
-const { describe, test, expect } = require("@jest/globals");
+import { describe, test, expect } from "@jest/globals";
 
-const Encoder = require("../encoder.mjs").default;
-const Decoder = require("../decoder.mjs").default;
-const MessageSet = require("./index");
-const MessageSetDecoder = require("./decoder");
+import Encoder from "../encoder.mjs";
+import Decoder from "../decoder.mjs";
+import MessageSet from "./index.mjs";
+import MessageSetDecoder from "./decoder.mjs";
+import uncompressed from "./fixtures/messages_v0_uncompressed.json.json" with { type: "json" };
+import gzip from "./fixtures/messages_v0_GZIP.json" with { type: "json" };
 
 const messages = [
   {
@@ -38,11 +40,11 @@ const messages = [
 const Fixtures = {
   v0: {
     uncompressed: {
-      data: require("./fixtures/messages_v0_uncompressed.json"),
+      data: uncompressed,
       output: messages,
     },
     gzip: {
-      data: require("./fixtures/messages_v0_GZIP.json"),
+      data: gzip,
       output: messages,
     },
   },
@@ -70,8 +72,7 @@ describe("Protocol > MessageSet > decoder", () => {
     // read some bytes to simulate a partial message
     const messageSetBuffer = messageSet.buffer.slice(Decoder.int32Size(), messageSet.buffer.length);
 
-    const temp = new Encoder();
-    temp.buffer = messageSetBuffer;
+    const temp = new Encoder().writeBuffer(messageSetBuffer);
 
     const { buffer } = new Encoder().writeInt32(messageSet.size()).writeEncoder(temp);
     const decoder = new Decoder(buffer);

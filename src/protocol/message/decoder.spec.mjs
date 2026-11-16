@@ -1,11 +1,11 @@
-const { describe, test, expect } = require("@jest/globals");
+import { describe, test, expect } from "@jest/globals";
 
-const Encoder = require("../encoder.mjs").default;
-const Decoder = require("../decoder.mjs").default;
-const MessageDecoder = require("./decoder");
+import Encoder from "../encoder.mjs";
+import Decoder from "../decoder.mjs";
+import MessageDecoder from "./decoder.mjs";
 
-const MessageV0 = require("./v0/index.js");
-const MessageV1 = require("./v1/index.js");
+import MessageV0 from "./v0/index.mjs";
+import MessageV1 from "./v1/index.mjs";
 
 describe("Protocol > Message > decoder", () => {
   describe("v0", () => {

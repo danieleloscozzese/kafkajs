@@ -5,7 +5,7 @@ jest.setTimeout(30000);
 const createAdmin = require("../../admin/index.js");
 const createProducer = require("../../producer/index.js");
 const createConsumer = require("../index.js");
-const { Types } = require("../../protocol/message/compression/index.js");
+const { Types } = require("../../protocol/message/compression/index.mjs").default;
 const ISOLATION_LEVEL = require("../../protocol/isolation_level.mjs").default;
 const sleep = require("../../utils/sleep.mjs").default;
 

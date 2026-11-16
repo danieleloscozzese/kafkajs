@@ -26,6 +26,12 @@ Protocol foundation tests retain the existing wire vectors and add explicit
 framing, CRC32, signed-int64 and mixed-module identity checks. Run them with
 `npm run jest -- --runInBand --testPathPatterns='src/protocol/'`.
 
+Message-set, record-batch and compression implementations are also native ESM.
+Their JSON fixtures use explicit import attributes, and compression tests
+exercise codec registration through the CommonJS path and use it in ESM record
+encoding and decoding. Gzip is imported statically; codec factories remain
+synchronous and the registry remains shared and mutable.
+
 For development, it is usually more convenient to boot the containers yourself, and then keep the tests running in watch mode. After you have booted the containers as described in [Running Kafka](ContributionGuide.md#running-kafka), you can run `npm run test:local:watch`. `jest`'s interactive mode will allow you select which tests to run.
 
 ## Logging
