@@ -1,11 +1,11 @@
 const { jest, describe, expect, beforeEach, afterEach, it } = require("@jest/globals");
 
-const sleep = require("../utils/sleep");
+const sleep = require("../utils/sleep.mjs").default;
 const seq = require("../utils/seq.mjs").default;
 const createFetchManager = require("./fetchManager");
 const Batch = require("./batch");
 const { newLogger } = require("testHelpers");
-const waitFor = require("../utils/waitFor.js");
+const waitFor = require("../utils/wait_for.mjs").default;
 const { KafkaJSNonRetriableError, KafkaJSNoBrokerAvailableError } = require("../errors.mjs").default;
 
 describe("FetchManager", () => {

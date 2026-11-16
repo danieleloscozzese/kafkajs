@@ -1,4 +1,4 @@
-const Long = require("../utils/long");
+const Long = require("../utils/long.mjs").default;
 
 const INT8_SIZE = 1;
 const INT16_SIZE = 2;

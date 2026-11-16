@@ -1,4 +1,4 @@
-const Long = require("../utils/long");
+const Long = require("../utils/long.mjs").default;
 const filterAbortedMessages = require("./filterAbortedMessages");
 
 /**

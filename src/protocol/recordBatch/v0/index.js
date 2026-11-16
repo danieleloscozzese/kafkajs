@@ -1,4 +1,4 @@
-const Long = require("../../../utils/long");
+const Long = require("../../../utils/long.mjs").default;
 const Encoder = require("../../encoder");
 const crc32C = require("../crc32C");
 const {

@@ -7,7 +7,7 @@ const createProducer = require("../../producer/index.js");
 const createConsumer = require("../index.js");
 const { Types } = require("../../protocol/message/compression/index.js");
 const ISOLATION_LEVEL = require("../../protocol/isolationLevel.js");
-const sleep = require("../../utils/sleep.js");
+const sleep = require("../../utils/sleep.mjs").default;
 
 const {
   secureRandom,

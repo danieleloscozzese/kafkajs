@@ -58,6 +58,20 @@ try {
     "package/src/utils/swap_object.mjs",
     "package/src/utils/uniq.js",
     "package/src/utils/uniq.mjs",
+    "package/src/utils/long.js",
+    "package/src/utils/long.mjs",
+    "package/src/utils/lock.js",
+    "package/src/utils/lock.mjs",
+    "package/src/utils/sharedPromiseTo.js",
+    "package/src/utils/shared_promise_to.mjs",
+    "package/src/utils/shuffle.js",
+    "package/src/utils/shuffle.mjs",
+    "package/src/utils/sleep.js",
+    "package/src/utils/sleep.mjs",
+    "package/src/utils/waitFor.js",
+    "package/src/utils/wait_for.mjs",
+    "package/src/utils/websiteUrl.js",
+    "package/src/utils/website_url.mjs",
     "package/types/index.d.ts",
   ]) {
     assert(files.includes(requiredFile), `Tarball is missing ${requiredFile}`);
@@ -135,6 +149,13 @@ import mapValues from "@dagher/kafkajs/src/utils/map_values.mjs";
 import seq from "@dagher/kafkajs/src/utils/seq.mjs";
 import swapObject from "@dagher/kafkajs/src/utils/swap_object.mjs";
 import uniq from "@dagher/kafkajs/src/utils/uniq.mjs";
+import Long from "@dagher/kafkajs/src/utils/long.mjs";
+import Lock from "@dagher/kafkajs/src/utils/lock.mjs";
+import sharedPromiseTo from "@dagher/kafkajs/src/utils/shared_promise_to.mjs";
+import shuffle from "@dagher/kafkajs/src/utils/shuffle.mjs";
+import sleep from "@dagher/kafkajs/src/utils/sleep.mjs";
+import waitFor from "@dagher/kafkajs/src/utils/wait_for.mjs";
+import websiteUrl from "@dagher/kafkajs/src/utils/website_url.mjs";
 import InstrumentationEvent from "@dagher/kafkajs/src/instrumentation/event.mjs";
 import InstrumentationEventEmitter from "@dagher/kafkajs/src/instrumentation/emitter.mjs";
 import instrumentationEventType from "@dagher/kafkajs/src/instrumentation/event_type.mjs";
@@ -156,6 +177,14 @@ assert.strictEqual(require("@dagher/kafkajs/src/utils/mapValues.js"), mapValues)
 assert.strictEqual(require("@dagher/kafkajs/src/utils/seq.js"), seq);
 assert.strictEqual(require("@dagher/kafkajs/src/utils/swapObject.js"), swapObject);
 assert.strictEqual(require("@dagher/kafkajs/src/utils/uniq.js"), uniq);
+assert.strictEqual(require("@dagher/kafkajs/src/utils/long.js"), Long);
+assert.strictEqual(require("@dagher/kafkajs/src/utils/long.js").MAX_VALUE, Long.MAX_VALUE);
+assert.strictEqual(require("@dagher/kafkajs/src/utils/lock.js"), Lock);
+assert.strictEqual(require("@dagher/kafkajs/src/utils/sharedPromiseTo.js"), sharedPromiseTo);
+assert.strictEqual(require("@dagher/kafkajs/src/utils/shuffle.js"), shuffle);
+assert.strictEqual(require("@dagher/kafkajs/src/utils/sleep.js"), sleep);
+assert.strictEqual(require("@dagher/kafkajs/src/utils/waitFor.js"), waitFor);
+assert.strictEqual(require("@dagher/kafkajs/src/utils/websiteUrl.js"), websiteUrl);
 assert.strictEqual(require("@dagher/kafkajs/src/instrumentation/event.js"), InstrumentationEvent);
 assert.strictEqual(require("@dagher/kafkajs/src/instrumentation/emitter.js"), InstrumentationEventEmitter);
 assert.strictEqual(require("@dagher/kafkajs/src/instrumentation/eventType.js"), instrumentationEventType);

@@ -5,7 +5,7 @@
  * @typedef {ReturnType<typeof createWorker>} Worker
  */
 
-const sharedPromiseTo = require("../utils/sharedPromiseTo");
+const sharedPromiseTo = require("../utils/shared_promise_to.mjs").default;
 
 /**
  * @param {{ handler: Handler<T>, workerId: number }} options

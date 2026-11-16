@@ -1,7 +1,7 @@
-const { describe, it, expect, jest } = require("@jest/globals");
+import { describe, it, expect, jest } from "@jest/globals";
 
-const sleep = require("./sleep");
-const waitFor = require("./waitFor");
+import sleep from "./sleep.mjs";
+import waitFor from "./wait_for.mjs";
 
 describe("Utils > waitFor", () => {
   it("waits for the condition", async () => {

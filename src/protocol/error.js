@@ -1,5 +1,5 @@
 const { KafkaJSProtocolError } = require("../errors.mjs").default;
-const websiteUrl = require("../utils/websiteUrl");
+const websiteUrl = require("../utils/website_url.mjs").default;
 
 const errorCodes = [
   {

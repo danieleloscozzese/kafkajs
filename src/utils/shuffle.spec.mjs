@@ -1,6 +1,6 @@
-const { describe, expect, it } = require("@jest/globals");
+import { describe, expect, it } from "@jest/globals";
 
-const shuffle = require("./shuffle");
+import shuffle from "./shuffle.mjs";
 
 describe("Utils > shuffle", () => {
   it("shuffles", () => {

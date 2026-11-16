@@ -11,7 +11,7 @@ const {
 } = require("@jest/globals");
 
 const { connectionOpts, sslConnectionOpts } = require("../../testHelpers");
-const sleep = require("../utils/sleep");
+const sleep = require("../utils/sleep.mjs").default;
 const { requests } = require("../protocol/requests");
 const Decoder = require("../protocol/decoder");
 const Encoder = require("../protocol/encoder");

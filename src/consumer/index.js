@@ -1,4 +1,4 @@
-const Long = require("../utils/long");
+const Long = require("../utils/long.mjs").default;
 const createRetry = require("../retry");
 const { initialRetryTime } = require("../retry/defaults");
 const ConsumerGroup = require("./consumerGroup");
@@ -9,7 +9,7 @@ const { KafkaJSNonRetriableError } = require("../errors.mjs").default;
 const { roundRobin } = require("./assigners");
 const { EARLIEST_OFFSET, LATEST_OFFSET } = require("../constants.mjs").default;
 const ISOLATION_LEVEL = require("../protocol/isolationLevel");
-const sharedPromiseTo = require("../utils/sharedPromiseTo");
+const sharedPromiseTo = require("../utils/shared_promise_to.mjs").default;
 
 const { keys, values } = Object;
 const { CONNECT, DISCONNECT, STOP, CRASH } = events;

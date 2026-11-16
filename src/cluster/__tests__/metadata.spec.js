@@ -1,7 +1,7 @@
 const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
 
 const { createCluster, secureRandom, createTopic } = require("testHelpers");
-const waitFor = require("../../utils/waitFor");
+const waitFor = require("../../utils/wait_for.mjs").default;
 
 describe("Cluster > metadata", () => {
   let cluster, topic1, topic2, topic3;

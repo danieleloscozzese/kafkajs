@@ -1,6 +1,6 @@
-const { describe, it, expect, beforeAll } = require("@jest/globals");
+import { describe, it, expect, beforeAll } from "@jest/globals";
 
-const Long = require("./long");
+import Long from "./long.mjs";
 
 const max = new Long(9223372036854775807n); // max signed int 64
 
