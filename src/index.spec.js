@@ -1,9 +1,10 @@
 const { describe, test, expect, it, jest } = require("@jest/globals");
 
-jest.mock("./producer");
-jest.mock("./consumer");
-jest.mock("./admin");
-jest.mock("./cluster");
+// Explicit factories avoid automock evaluating the mixed module graph.
+jest.mock("./producer", () => jest.fn());
+jest.mock("./consumer", () => jest.fn());
+jest.mock("./admin", () => jest.fn());
+jest.mock("./cluster", () => jest.fn());
 
 const Client = require("./index");
 const createProducer = require("./producer");
