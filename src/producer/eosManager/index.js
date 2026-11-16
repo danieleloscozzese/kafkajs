@@ -1,4 +1,4 @@
-const createRetry = require("../../retry");
+const createRetry = require("../../retry/index.mjs").default;
 const Lock = require("../../utils/lock.mjs").default;
 const { KafkaJSNonRetriableError } = require("../../errors.mjs").default;
 const COORDINATOR_TYPES = require("../../protocol/coordinator_types.mjs").default;

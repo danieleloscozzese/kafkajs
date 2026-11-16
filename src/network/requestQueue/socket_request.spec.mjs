@@ -1,9 +1,9 @@
-const { describe, expect, beforeEach, it, jest } = require("@jest/globals");
-
-const SocketRequest = require("./socketRequest");
-const { KafkaJSRequestTimeoutError, KafkaJSNonRetriableError } = require("../../errors.mjs").default;
-const InstrumentationEventEmitter = require("../../instrumentation/emitter.mjs").default;
-const events = require("../instrumentationEvents");
+import { describe, expect, beforeEach, it, jest } from "@jest/globals";
+import SocketRequest from "./socket_request.mjs";
+import errors from "../../errors.mjs";
+import InstrumentationEventEmitter from "../../instrumentation/emitter.mjs";
+import events from "../instrumentation_events.mjs";
+const { KafkaJSRequestTimeoutError, KafkaJSNonRetriableError } = errors;
 
 describe("Network > SocketRequest", () => {
   let request, sendRequest, timeoutHandler;

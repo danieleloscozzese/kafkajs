@@ -17,7 +17,7 @@ const Decoder = require("../protocol/decoder.mjs").default;
 const Encoder = require("../protocol/encoder.mjs").default;
 const { KafkaJSRequestTimeoutError } = require("../errors.mjs").default;
 const Connection = require("./connection");
-const { CONNECTION_STATUS } = require("./connectionStatus");
+const { CONNECTION_STATUS } = require("./connection_status.mjs").default;
 const EventEmitter = require("events");
 
 describe("Network > Connection", () => {

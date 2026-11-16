@@ -3,7 +3,7 @@ const { describe, test, expect, beforeEach, jest } = require("@jest/globals");
 jest.mock("./groupMessagesPerPartition");
 const { newLogger } = require("testHelpers");
 const { errorCodes, createErrorFromCode } = require("../protocol/error.mjs").default;
-const retry = require("../retry/index.js");
+const retry = require("../retry/index.mjs").default;
 const createSendMessages = require("./sendMessages.js");
 
 const createProducerResponse = (topicName, partition) => ({

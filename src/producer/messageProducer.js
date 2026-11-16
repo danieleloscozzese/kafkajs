@@ -1,6 +1,6 @@
 const createSendMessages = require("./sendMessages");
 const { KafkaJSError, KafkaJSNonRetriableError } = require("../errors.mjs").default;
-const { CONNECTION_STATUS } = require("../network/connectionStatus");
+const { CONNECTION_STATUS } = require("../network/connection_status.mjs").default;
 
 module.exports = ({
   logger,

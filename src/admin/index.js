@@ -1,4 +1,4 @@
-const createRetry = require("../retry");
+const createRetry = require("../retry/index.mjs").default;
 const waitFor = require("../utils/wait_for.mjs").default;
 const groupBy = require("../utils/group_by.mjs").default;
 const createConsumer = require("../consumer");

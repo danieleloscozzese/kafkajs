@@ -1,6 +1,6 @@
 const Long = require("../utils/long.mjs").default;
-const createRetry = require("../retry");
-const { initialRetryTime } = require("../retry/defaults");
+const createRetry = require("../retry/index.mjs").default;
+const { initialRetryTime } = require("../retry/defaults.mjs").default;
 const ConsumerGroup = require("./consumerGroup");
 const Runner = require("./runner");
 const { events, wrap: wrapEvent, unwrap: unwrapEvent } = require("./instrumentationEvents");
