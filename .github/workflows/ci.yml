@@ -16,10 +16,10 @@ jobs:
       TZ: "Europe/Rome"
       KAFKA_VERSION: "2.4"
     steps:
-      - uses: "actions/checkout@v5"
+      - uses: "actions/checkout@v7.0.1"
         name: "Check out"
 
-      - uses: "actions/setup-node@v6"
+      - uses: "actions/setup-node@v7.1.0"
         name: "Set up Node.js"
         with:
           node-version: "24"
