@@ -1,9 +1,9 @@
 const createRetry = require("../../retry");
 const Lock = require("../../utils/lock");
-const { KafkaJSNonRetriableError } = require("../../errors");
+const { KafkaJSNonRetriableError } = require("../../errors.mjs").default;
 const COORDINATOR_TYPES = require("../../protocol/coordinatorTypes");
 const createStateMachine = require("./transactionStateMachine");
-const { INT_32_MAX_VALUE } = require("../../constants");
+const { INT_32_MAX_VALUE } = require("../../constants.mjs").default;
 const assert = require("assert");
 
 const STATES = require("./transactionStates");

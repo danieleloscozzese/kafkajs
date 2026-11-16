@@ -3,7 +3,7 @@ const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals
 const createAdmin = require("../index");
 const createConsumer = require("../../consumer");
 const createProducer = require("../../producer");
-const { KafkaJSProtocolError } = require("../../errors");
+const { KafkaJSProtocolError } = require("../../errors.mjs").default;
 
 const {
   createCluster,

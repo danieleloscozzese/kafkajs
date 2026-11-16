@@ -11,14 +11,14 @@ const {
   KafkaJSBrokerNotFound,
   KafkaJSDeleteTopicRecordsError,
   KafkaJSAggregateError,
-} = require("../errors");
+} = require("../errors.mjs").default;
 const { staleMetadata } = require("../protocol/error");
 const CONFIG_RESOURCE_TYPES = require("../protocol/config-resource-types");
 const ACL_RESOURCE_TYPES = require("../protocol/acl-resource-types");
 const ACL_OPERATION_TYPES = require("../protocol/acl-operation-types");
 const ACL_PERMISSION_TYPES = require("../protocol/acl-permission-types");
 const RESOURCE_PATTERN_TYPES = require("../protocol/resource-pattern-types");
-const { EARLIEST_OFFSET, LATEST_OFFSET } = require("../constants");
+const { EARLIEST_OFFSET, LATEST_OFFSET } = require("../constants.mjs").default;
 
 const { CONNECT, DISCONNECT } = events;
 

@@ -1,5 +1,5 @@
 const apiKeys = require("./apiKeys");
-const { KafkaJSServerDoesNotSupportApiKey, KafkaJSNotImplemented } = require("../../errors");
+const { KafkaJSServerDoesNotSupportApiKey, KafkaJSNotImplemented } = require("../../errors.mjs").default;
 
 /**
  * @typedef {(options?: Object) => { request: any, response: any, logResponseErrors?: boolean }} Request

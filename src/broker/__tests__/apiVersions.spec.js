@@ -1,7 +1,7 @@
 const { describe, test, expect, beforeEach, afterEach, jest } = require("@jest/globals");
 
 const { createConnectionPool, connectionOpts, newLogger } = require("testHelpers");
-const { KafkaJSProtocolError, KafkaJSNonRetriableError } = require("../../errors.js");
+const { KafkaJSProtocolError, KafkaJSNonRetriableError } = require("../../errors.mjs").default;
 const { createErrorFromCode } = require("../../protocol/error.js");
 const { requests } = require("../../protocol/requests/index.js");
 const Broker = require("../index.js");

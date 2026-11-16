@@ -1,8 +1,8 @@
 const createSocket = require("./socket");
 const createRequest = require("../protocol/request");
 const Decoder = require("../protocol/decoder");
-const { KafkaJSConnectionError, KafkaJSConnectionClosedError } = require("../errors");
-const { INT_32_MAX_VALUE } = require("../constants");
+const { KafkaJSConnectionError, KafkaJSConnectionClosedError } = require("../errors.mjs").default;
+const { INT_32_MAX_VALUE } = require("../constants.mjs").default;
 const getEnv = require("../env");
 const RequestQueue = require("./requestQueue");
 const { CONNECTION_STATUS, CONNECTED_STATUS } = require("./connectionStatus");

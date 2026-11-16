@@ -5,7 +5,7 @@ const InstrumentationEventEmitter = require("../instrumentation/emitter.mjs").de
 const createEosManager = require("./eosManager");
 const createMessageProducer = require("./messageProducer");
 const { events, wrap: wrapEvent, unwrap: unwrapEvent } = require("./instrumentationEvents");
-const { KafkaJSNonRetriableError } = require("../errors");
+const { KafkaJSNonRetriableError } = require("../errors.mjs").default;
 
 const { values, keys } = Object;
 const eventNames = values(events);

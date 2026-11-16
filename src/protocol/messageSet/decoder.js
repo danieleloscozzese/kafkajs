@@ -2,7 +2,7 @@ const Long = require("../../utils/long");
 const Decoder = require("../decoder");
 const MessageDecoder = require("../message/decoder");
 const { lookupCodecByAttributes } = require("../message/compression");
-const { KafkaJSPartialMessageError } = require("../../errors");
+const { KafkaJSPartialMessageError } = require("../../errors.mjs").default;
 
 /**
  * MessageSet => [Offset MessageSize Message]

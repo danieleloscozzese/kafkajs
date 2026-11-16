@@ -1,7 +1,7 @@
 const { describe, expect, beforeEach, it, jest } = require("@jest/globals");
 
 const SocketRequest = require("./socketRequest");
-const { KafkaJSRequestTimeoutError, KafkaJSNonRetriableError } = require("../../errors");
+const { KafkaJSRequestTimeoutError, KafkaJSNonRetriableError } = require("../../errors.mjs").default;
 const InstrumentationEventEmitter = require("../../instrumentation/emitter.mjs").default;
 const events = require("../instrumentationEvents");
 

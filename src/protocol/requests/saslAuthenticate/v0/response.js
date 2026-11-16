@@ -7,7 +7,7 @@ const {
   errorCodes,
 } = require("../../../error");
 
-const { KafkaJSProtocolError } = require("../../../../errors");
+const { KafkaJSProtocolError } = require("../../../../errors.mjs").default;
 const SASL_AUTHENTICATION_FAILED = 58;
 const protocolAuthError = errorCodes.find((e) => e.code === SASL_AUTHENTICATION_FAILED);
 

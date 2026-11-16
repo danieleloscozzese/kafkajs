@@ -7,7 +7,7 @@ const {
   KafkaJSError,
   KafkaJSNumberOfRetriesExceeded,
   KafkaJSNonRetriableError,
-} = require("../../errors.js");
+} = require("../../errors.mjs").default;
 
 const sleep = require("../../utils/sleep.js");
 const {

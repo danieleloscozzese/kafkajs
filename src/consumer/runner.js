@@ -1,7 +1,7 @@
 const { EventEmitter } = require("events");
 const Long = require("../utils/long");
 const createRetry = require("../retry");
-const { isKafkaJSError, isRebalancing } = require("../errors");
+const { isKafkaJSError, isRebalancing } = require("../errors.mjs").default;
 
 const {
   events: { FETCH, FETCH_START, START_BATCH_PROCESS, END_BATCH_PROCESS, REBALANCING },

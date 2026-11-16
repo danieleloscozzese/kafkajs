@@ -7,7 +7,7 @@ const { newLogger } = require("testHelpers");
 const InstrumentationEventEmitter = require("../../instrumentation/emitter.mjs").default;
 const events = require("../instrumentationEvents.js");
 const RequestQueue = require("./index.js");
-const { KafkaJSInvariantViolation } = require("../../errors.js");
+const { KafkaJSInvariantViolation } = require("../../errors.mjs").default;
 
 describe("Network > RequestQueue", () => {
   let requestQueue;

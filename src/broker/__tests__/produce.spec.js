@@ -3,7 +3,7 @@ const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals
 const Broker = require("../index");
 const COORDINATOR_TYPES = require("../../protocol/coordinatorTypes");
 const { Types: Compression } = require("../../protocol/message/compression");
-const { KafkaJSProtocolError } = require("../../errors");
+const { KafkaJSProtocolError } = require("../../errors.mjs").default;
 const {
   secureRandom,
   createConnectionPool,

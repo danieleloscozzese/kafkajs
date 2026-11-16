@@ -1,5 +1,5 @@
 const sleep = require("./sleep");
-const { KafkaJSTimeout } = require("../errors");
+const { KafkaJSTimeout } = require("../errors.mjs").default;
 
 module.exports = (
   fn,

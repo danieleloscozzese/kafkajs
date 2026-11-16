@@ -1,5 +1,5 @@
 const Decoder = require("../../../decoder");
-const { KafkaJSOffsetOutOfRange } = require("../../../../errors");
+const { KafkaJSOffsetOutOfRange } = require("../../../../errors.mjs").default;
 const { failure, createErrorFromCode, errorCodes } = require("../../../error");
 const MessageSetDecoder = require("../../../messageSet/decoder");
 

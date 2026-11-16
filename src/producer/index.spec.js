@@ -40,7 +40,7 @@ const {
   waitForMessages,
 } = require("testHelpers");
 const createRetrier = require("../retry/index.js");
-const { KafkaJSNonRetriableError } = require("../errors.js");
+const { KafkaJSNonRetriableError } = require("../errors.mjs").default;
 const sleep = require("../utils/sleep.js");
 
 describe("Producer", () => {

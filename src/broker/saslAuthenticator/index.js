@@ -5,7 +5,7 @@ const scram256AuthenticatorProvider = require("./scram256");
 const scram512AuthenticatorProvider = require("./scram512");
 const awsIAMAuthenticatorProvider = require("./awsIam");
 const oauthBearerAuthenticatorProvider = require("./oauthBearer");
-const { KafkaJSSASLAuthenticationError } = require("../../errors");
+const { KafkaJSSASLAuthenticationError } = require("../../errors.mjs").default;
 
 const BUILT_IN_AUTHENTICATION_PROVIDERS = {
   AWS: awsIAMAuthenticatorProvider,

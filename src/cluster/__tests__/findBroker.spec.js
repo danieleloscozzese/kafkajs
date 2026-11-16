@@ -13,7 +13,7 @@ const {
   KafkaJSLockTimeout,
   KafkaJSConnectionError,
   KafkaJSBrokerNotFound,
-} = require("../../errors.js");
+} = require("../../errors.mjs").default;
 
 describe("Cluster > findBroker", () => {
   let cluster, topic;

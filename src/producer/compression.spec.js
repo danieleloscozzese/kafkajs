@@ -2,7 +2,7 @@ const { describe, expect, beforeEach, afterEach, it } = require("@jest/globals")
 
 const createProducer = require("./index");
 const Compression = require("../protocol/message/compression");
-const { KafkaJSNotImplemented } = require("../errors");
+const { KafkaJSNotImplemented } = require("../errors.mjs").default;
 
 const {
   secureRandom,

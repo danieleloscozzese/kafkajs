@@ -1,5 +1,5 @@
 const { format } = require("util");
-const { KafkaJSLockTimeout } = require("../errors");
+const { KafkaJSLockTimeout } = require("../errors.mjs").default;
 
 const PRIVATE = {
   LOCKED: Symbol("private:Lock:locked"),

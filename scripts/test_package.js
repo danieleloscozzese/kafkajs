@@ -30,6 +30,10 @@ try {
     "package/index.js",
     "package/index.mjs",
     "package/src/index.js",
+    "package/src/errors.js",
+    "package/src/errors.mjs",
+    "package/src/constants.js",
+    "package/src/constants.mjs",
     "package/src/loggers/index.js",
     "package/src/loggers/index.mjs",
     "package/src/loggers/console.js",
@@ -136,6 +140,8 @@ import InstrumentationEventEmitter from "@dagher/kafkajs/src/instrumentation/emi
 import instrumentationEventType from "@dagher/kafkajs/src/instrumentation/event_type.mjs";
 import loggers, { LEVELS } from "@dagher/kafkajs/src/loggers/index.mjs";
 import LoggerConsole from "@dagher/kafkajs/src/loggers/console.mjs";
+import errors, * as namedErrors from "@dagher/kafkajs/src/errors.mjs";
+import constants, * as namedConstants from "@dagher/kafkajs/src/constants.mjs";
 
 const require = createRequire(import.meta.url);
 const commonjs = require("@dagher/kafkajs");
@@ -156,6 +162,15 @@ assert.strictEqual(require("@dagher/kafkajs/src/instrumentation/eventType.js"), 
 assert.strictEqual(require("@dagher/kafkajs/src/loggers/index.js"), loggers);
 assert.strictEqual(require("@dagher/kafkajs/src/loggers/console.js"), LoggerConsole);
 assert.strictEqual(commonjs.LEVELS, LEVELS);
+assert.strictEqual(require("@dagher/kafkajs/src/errors.js"), errors);
+assert.strictEqual(require("@dagher/kafkajs/src/constants.js"), constants);
+for (const [name, value] of Object.entries(errors)) {
+  assert.strictEqual(namedErrors[name], value);
+  assert.strictEqual(commonjs[name], value);
+}
+for (const [name, value] of Object.entries(constants)) {
+  assert.strictEqual(namedConstants[name], value);
+}
 
 const codec = () => "registered through ESM";
 CompressionCodecs[99] = codec;

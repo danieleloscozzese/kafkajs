@@ -6,7 +6,7 @@ shuffle.mockImplementation((brokers) => brokers.sort((a, b) => a > b));
 
 const Broker = require("../../broker/index.js");
 const { createCluster, secureRandom } = require("testHelpers");
-const { KafkaJSBrokerNotFound, KafkaJSConnectionError } = require("../../errors.js");
+const { KafkaJSBrokerNotFound, KafkaJSConnectionError } = require("../../errors.mjs").default;
 const COORDINATOR_TYPES = require("../../protocol/coordinatorTypes.js");
 
 describe("Cluster > findGroupCoordinator", () => {

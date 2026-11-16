@@ -21,7 +21,7 @@ const {
   KafkaJSBrokerNotFound,
   KafkaJSNonRetriableError,
   KafkaJSMetadataNotLoaded,
-} = require("../../errors.js");
+} = require("../../errors.mjs").default;
 const { createErrorFromCode, errorCodes } = require("../../protocol/error.js");
 
 const { assign } = Object;

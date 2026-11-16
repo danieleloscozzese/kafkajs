@@ -3,14 +3,14 @@ const Lock = require("../utils/lock");
 const sharedPromiseTo = require("../utils/sharedPromiseTo");
 const createRetry = require("../retry");
 const connectionPoolBuilder = require("./connectionPoolBuilder");
-const { EARLIEST_OFFSET, LATEST_OFFSET } = require("../constants");
+const { EARLIEST_OFFSET, LATEST_OFFSET } = require("../constants.mjs").default;
 const {
   KafkaJSError,
   KafkaJSBrokerNotFound,
   KafkaJSMetadataNotLoaded,
   KafkaJSTopicMetadataNotLoaded,
   KafkaJSGroupCoordinatorNotFound,
-} = require("../errors");
+} = require("../errors.mjs").default;
 const COORDINATOR_TYPES = require("../protocol/coordinatorTypes");
 
 const { keys } = Object;

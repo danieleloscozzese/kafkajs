@@ -1,7 +1,7 @@
 const {
   KafkaJSAggregateError,
   KafkaJSAlterPartitionReassignmentsError,
-} = require("../../../../errors");
+} = require("../../../../errors.mjs").default;
 const Decoder = require("../../../decoder");
 const { failure, createErrorFromCode } = require("../../../error");
 

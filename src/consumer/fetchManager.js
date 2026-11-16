@@ -2,7 +2,7 @@ const seq = require("../utils/seq.mjs").default;
 const createFetcher = require("./fetcher");
 const createWorker = require("./worker");
 const createWorkerQueue = require("./workerQueue");
-const { KafkaJSFetcherRebalanceError, KafkaJSNoBrokerAvailableError } = require("../errors");
+const { KafkaJSFetcherRebalanceError, KafkaJSNoBrokerAvailableError } = require("../errors.mjs").default;
 
 /** @typedef {ReturnType<typeof createFetchManager>} FetchManager */
 

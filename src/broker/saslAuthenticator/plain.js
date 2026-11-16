@@ -1,5 +1,5 @@
 const { request, response } = require("../../protocol/sasl/plain");
-const { KafkaJSSASLAuthenticationError } = require("../../errors");
+const { KafkaJSSASLAuthenticationError } = require("../../errors.mjs").default;
 
 const plainAuthenticatorProvider =
   (sasl) =>

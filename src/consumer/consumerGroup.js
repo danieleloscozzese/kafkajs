@@ -17,7 +17,7 @@ const {
   KafkaJSNonRetriableError,
   KafkaJSStaleTopicMetadataAssignment,
   isRebalancing,
-} = require("../errors");
+} = require("../errors.mjs").default;
 
 const { keys } = Object;
 

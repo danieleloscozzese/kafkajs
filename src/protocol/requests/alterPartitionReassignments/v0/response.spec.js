@@ -1,6 +1,6 @@
 const { describe, test, expect } = require("@jest/globals");
 
-const { KafkaJSAggregateError } = require("../../../../errors");
+const { KafkaJSAggregateError } = require("../../../../errors.mjs").default;
 const { decode, parse } = require("./response");
 
 describe("Protocol > Requests > AlterPartitionReassignments > v0", () => {

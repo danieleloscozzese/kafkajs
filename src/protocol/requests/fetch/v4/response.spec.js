@@ -1,7 +1,7 @@
 const { describe, test, expect } = require("@jest/globals");
 
 const { decode, parse } = require("./response");
-const { KafkaJSNotImplemented } = require("../../../../errors");
+const { KafkaJSNotImplemented } = require("../../../../errors.mjs").default;
 
 describe("Protocol > Requests > Fetch > v4", () => {
   const batchContext = {

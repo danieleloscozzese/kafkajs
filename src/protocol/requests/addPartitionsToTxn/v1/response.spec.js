@@ -1,7 +1,7 @@
 const { describe, test, expect } = require("@jest/globals");
 
 const { decode, parse } = require("./response");
-const { KafkaJSProtocolError } = require("../../../../errors");
+const { KafkaJSProtocolError } = require("../../../../errors.mjs").default;
 
 describe("Protocol > Requests > AddPartitionsToTxn > v1", () => {
   test("response", async () => {

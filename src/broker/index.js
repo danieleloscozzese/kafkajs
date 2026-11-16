@@ -1,7 +1,7 @@
 const Lock = require("../utils/lock");
 const { Types: Compression } = require("../protocol/message/compression");
 const { requests, lookup } = require("../protocol/requests");
-const { KafkaJSNonRetriableError } = require("../errors");
+const { KafkaJSNonRetriableError } = require("../errors.mjs").default;
 const apiKeys = require("../protocol/requests/apiKeys");
 const shuffle = require("../utils/shuffle");
 

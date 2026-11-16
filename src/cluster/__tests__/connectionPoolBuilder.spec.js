@@ -3,7 +3,7 @@ const { describe, test, expect, beforeEach, it, jest } = require("@jest/globals"
 const { newLogger } = require("testHelpers");
 const connectionPoolBuilder = require("../connectionPoolBuilder.js");
 const ConnectionPool = require("../../network/connectionPool.js");
-const { KafkaJSConnectionError, KafkaJSNonRetriableError } = require("../../errors.js");
+const { KafkaJSConnectionError, KafkaJSNonRetriableError } = require("../../errors.mjs").default;
 
 describe("Cluster > ConnectionBuilder", () => {
   let builder;

@@ -1,7 +1,7 @@
 const { describe, test, expect, beforeEach, afterEach, jest } = require("@jest/globals");
 
 const createAdmin = require("../index");
-const { KafkaJSProtocolError } = require("../../errors");
+const { KafkaJSProtocolError } = require("../../errors.mjs").default;
 const { createErrorFromCode } = require("../../protocol/error");
 
 const { secureRandom, createCluster, newLogger, createTopic } = require("testHelpers");
@@ -155,7 +155,7 @@ describe("Admin", () => {
       admin = createAdmin({ cluster, logger: newLogger() });
       await admin.connect();
 
-      const metadata = await cluster.brokerPool.seedBroker.metadata();
+      const metadata = await cluster.metadata({ topics: [topicName] });
       const brokers = metadata.brokers;
       const brokerToDescribeConfig = brokers[1].nodeId.toString();
 
