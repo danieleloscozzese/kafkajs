@@ -30,7 +30,7 @@ What you need to do depends on what partitioner you were previously using and wh
 Import the `LegacyPartitioner` and configure your producer to use it:
 
 ```js
-const { Partitioners } = require('kafkajs')
+const { Partitioners } = require('@dagher/kafkajs')
 kafka.producer({ createPartitioner: Partitioners.LegacyPartitioner })
 ```
 
@@ -43,7 +43,7 @@ The new `DefaultPartitioner` is re-exported as `JavaCompatiblePartitioner`, so e
 kafka.producer()
 
 // Or explicitly use the default partitioner
-const { Partitioners } = require('kafkajs')
+const { Partitioners } = require('@dagher/kafkajs')
 kafka.producer({ createPartitioner: Partitioners.DefaultPartitioner })
 ```
 
@@ -173,7 +173,7 @@ To migrate, simply import `ConfigResourceTypes` instead of `ResourceTypes` when 
 
 ```ts
 // Before
-import { ResourceTypes } from 'kafkajs'
+import { ResourceTypes } from '@dagher/kafkajs'
 await admin.describeConfigs({
   includeSynonyms: false,
   resources: [
@@ -185,7 +185,7 @@ await admin.describeConfigs({
 })
 
 // After
-const { ConfigResourceTypes } = require('kafkajs')
+const { ConfigResourceTypes } = require('@dagher/kafkajs')
 
 await admin.describeConfigs({
   includeSynonyms: false,

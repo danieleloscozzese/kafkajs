@@ -14,11 +14,7 @@ To alleviate this issue, we are now automatically creating pre-release versions 
 To use the latest pre-release version, run:
 
 ```sh
-# Yarn
-yarn add kafkajs@beta
-
-# Npm
-npm install --save kafkajs@beta
+npm install --save @dagher/kafkajs@beta
 ```
 
 ## Versioning
