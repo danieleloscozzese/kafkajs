@@ -27,9 +27,9 @@ const noImplementedRequestDefinitions = {
  * @type {{[apiName: string]: RequestDefinitions}}
  */
 const requests = {
-  Produce: require("./produce"),
-  Fetch: require("./fetch"),
-  ListOffsets: require("./listOffsets"),
+  Produce: require("./produce/index.mjs").default,
+  Fetch: require("./fetch/index.mjs").default,
+  ListOffsets: require("./listOffsets/index.mjs").default,
   Metadata: require("./metadata/index.mjs").default,
   LeaderAndIsr: noImplementedRequestDefinitions,
   StopReplica: noImplementedRequestDefinitions,
