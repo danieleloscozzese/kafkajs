@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { OffsetCommit: apiKey } = require("../../apiKeys");
+const { OffsetCommit: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * OffsetCommit Request (Version: 2) => group_id group_generation_id member_id retention_time [topics]

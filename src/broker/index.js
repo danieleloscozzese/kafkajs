@@ -2,7 +2,7 @@ const Lock = require("../utils/lock.mjs").default;
 const { Types: Compression } = require("../protocol/message/compression/index.mjs").default;
 const { requests, lookup } = require("../protocol/requests");
 const { KafkaJSNonRetriableError } = require("../errors.mjs").default;
-const apiKeys = require("../protocol/requests/apiKeys");
+const apiKeys = require("../protocol/requests/api_keys.mjs").default;
 const shuffle = require("../utils/shuffle.mjs").default;
 
 const PRIVATE = {

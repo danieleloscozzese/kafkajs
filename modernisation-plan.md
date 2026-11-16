@@ -241,6 +241,13 @@ Replace computed `require` paths with explicit version-to-module registries
 where synchronous lookup requires it. Preserve unsupported-version errors,
 version negotiation, and the current request/response factory contracts.
 
+**Discovery slice decision:** Native ESM version registries keep explicit
+lazy `createRequire` calls to the canonical `.mjs` implementations. Eager
+imports of the API-version and metadata families exceeded the proposed
+cold-load budget in paired measurements. This narrow synchronous loading
+boundary preserves the existing API and avoids loading unused versions;
+it does not introduce a second implementation or a generated build.
+
 Update test preloading and fixtures deliberately, including JSON loading rules
 on the oldest supported runtime. Keep byte-for-byte request fixtures, decoded
 responses, partial buffers, int64 offsets, CRCs, compression, and malformed

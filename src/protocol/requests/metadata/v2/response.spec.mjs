@@ -1,15 +1,16 @@
-const { describe, test, expect, beforeEach } = require("@jest/globals");
+import { describe, test, expect, beforeEach } from "@jest/globals";
+import Encoder from "../../../encoder.mjs";
+import protocolErrors from "../../../error.mjs";
+import response from "./response.mjs";
+const { createErrorFromCode } = protocolErrors;
 
-const Encoder = require("../../../encoder.mjs").default;
-const { createErrorFromCode } = require("../../../error.mjs").default;
-const response = require("./response");
-
-describe("Protocol > Requests > Metadata > v1", () => {
+describe("Protocol > Requests > Metadata > v2", () => {
   let decoded;
 
   beforeEach(() => {
     decoded = {
       brokers: [{ nodeId: 0, host: "localhost", port: 9092, rack: "something" }],
+      clusterId: "78UTM0lvTsqVdknL7AgKqQ",
       controllerId: 3,
       topicMetadata: [
         {
@@ -34,6 +35,7 @@ describe("Protocol > Requests > Metadata > v1", () => {
             .writeInt32(9092)
             .writeString("something"),
         ])
+        .writeString("78UTM0lvTsqVdknL7AgKqQ")
         .writeInt32(3)
         .writeArray([
           new Encoder()

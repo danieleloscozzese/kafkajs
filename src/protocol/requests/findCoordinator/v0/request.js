@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { GroupCoordinator: apiKey } = require("../../apiKeys");
+const { GroupCoordinator: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * FindCoordinator Request (Version: 0) => group_id

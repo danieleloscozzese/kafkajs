@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { InitProducerId: apiKey } = require("../../apiKeys");
+const { InitProducerId: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * InitProducerId Request (Version: 0) => transactional_id transaction_timeout_ms

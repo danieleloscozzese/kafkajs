@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { Fetch: apiKey } = require("../../apiKeys");
+const { Fetch: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * Fetch Request (Version: 3) => replica_id max_wait_time min_bytes max_bytes [topics]

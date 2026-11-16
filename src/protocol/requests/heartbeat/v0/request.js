@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { Heartbeat: apiKey } = require("../../apiKeys");
+const { Heartbeat: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * Heartbeat Request (Version: 0) => group_id group_generation_id member_id

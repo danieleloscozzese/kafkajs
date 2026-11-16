@@ -1,6 +1,5 @@
-const { describe, expect, it } = require("@jest/globals");
-
-const ApiVersions = require("./index");
+import { describe, expect, it } from "@jest/globals";
+import ApiVersions from "./index.mjs";
 const ApiVersionsV0 = ApiVersions.protocol({ version: 0 });
 const ApiVersionsV1 = ApiVersions.protocol({ version: 1 });
 const ApiVersionsV2 = ApiVersions.protocol({ version: 2 });

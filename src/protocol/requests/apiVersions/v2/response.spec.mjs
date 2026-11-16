@@ -1,11 +1,14 @@
-const { describe, test, expect } = require("@jest/globals");
-
-const { unsupportedVersionResponse } = require("testHelpers");
-const { decode, parse } = require("./response.js");
+import { describe, test, expect } from "@jest/globals";
+import helpers from "testHelpers";
+import responseModule from "./response.mjs";
+import responseFixtureV1 from "../fixtures/v1_response.json" with { type: "json" };
+import missingThrottleTimeV1 from "../fixtures/v1_response_missing_throttle_time.json" with { type: "json" };
+const { unsupportedVersionResponse } = helpers;
+const { decode, parse } = responseModule;
 
 describe("Protocol > Requests > ApiVersions > v2", () => {
   test("response", async () => {
-    const data = await decode(Buffer.from(require("../fixtures/v1_response.json")));
+    const data = await decode(Buffer.from(responseFixtureV1));
     expect(data).toEqual({
       apiVersions: [
         { apiKey: 0, maxVersion: 3, minVersion: 0 },
@@ -53,9 +56,7 @@ describe("Protocol > Requests > ApiVersions > v2", () => {
 
   // https://github.com/tulios/kafkajs/issues/491
   test("defaults throttle_time_ms if it is not provided in the response", async () => {
-    const data = await decode(
-      Buffer.from(require("../fixtures/v1_response_missing_throttle_time.json")),
-    );
+    const data = await decode(Buffer.from(missingThrottleTimeV1));
     expect(data).toEqual({
       apiVersions: [
         { apiKey: 0, maxVersion: 3, minVersion: 0 },

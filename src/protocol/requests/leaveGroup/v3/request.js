@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { LeaveGroup: apiKey } = require("../../apiKeys");
+const { LeaveGroup: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * Version 3 changes leavegroup to operate on a batch of members

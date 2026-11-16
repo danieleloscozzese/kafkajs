@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { DeleteAcls: apiKey } = require("../../apiKeys");
+const { DeleteAcls: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * DeleteAcls Request (Version: 0) => [filters]

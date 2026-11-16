@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { CreatePartitions: apiKey } = require("../../apiKeys");
+const { CreatePartitions: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * CreatePartitions Request (Version: 0) => [topic_partitions] timeout validate_only

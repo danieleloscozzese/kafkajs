@@ -1,7 +1,7 @@
 const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
 
 const Broker = require("../index");
-const apiKeys = require("../../protocol/requests/apiKeys");
+const apiKeys = require("../../protocol/requests/api_keys.mjs").default;
 const {
   secureRandom,
   createConnectionPool,

@@ -1,4 +1,4 @@
-const apiKeys = require("./apiKeys");
+const apiKeys = require("./api_keys.mjs").default;
 const { KafkaJSServerDoesNotSupportApiKey, KafkaJSNotImplemented } = require("../../errors.mjs").default;
 
 /**
@@ -30,7 +30,7 @@ const requests = {
   Produce: require("./produce"),
   Fetch: require("./fetch"),
   ListOffsets: require("./listOffsets"),
-  Metadata: require("./metadata"),
+  Metadata: require("./metadata/index.mjs").default,
   LeaderAndIsr: noImplementedRequestDefinitions,
   StopReplica: noImplementedRequestDefinitions,
   UpdateMetadata: noImplementedRequestDefinitions,
@@ -45,7 +45,7 @@ const requests = {
   DescribeGroups: require("./describeGroups"),
   ListGroups: require("./listGroups"),
   SaslHandshake: require("./saslHandshake"),
-  ApiVersions: require("./apiVersions"),
+  ApiVersions: require("./apiVersions/index.mjs").default,
   CreateTopics: require("./createTopics"),
   DeleteTopics: require("./deleteTopics"),
   DeleteRecords: require("./deleteRecords"),

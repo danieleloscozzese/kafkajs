@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { Produce: apiKey } = require("../../apiKeys");
+const { Produce: apiKey } = require("../../api_keys.mjs").default;
 const MessageSet = require("../../../messageSet/index.mjs").default;
 
 /**

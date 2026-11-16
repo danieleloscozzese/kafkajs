@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { SaslAuthenticate: apiKey } = require("../../apiKeys");
+const { SaslAuthenticate: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * SaslAuthenticate Request (Version: 0) => sasl_auth_bytes

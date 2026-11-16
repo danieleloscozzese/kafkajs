@@ -1,22 +1,19 @@
-const { describe, test, expect, beforeEach } = require("@jest/globals");
+import { describe, test, expect, beforeEach } from "@jest/globals";
+import Encoder from "../../../encoder.mjs";
+import protocolErrors from "../../../error.mjs";
+import response from "./response.mjs";
+const { createErrorFromCode } = protocolErrors;
 
-const Encoder = require("../../../encoder.mjs").default;
-const { createErrorFromCode } = require("../../../error.mjs").default;
-const response = require("./response");
-
-describe("Protocol > Requests > Metadata > v2", () => {
+describe("Protocol > Requests > Metadata > v0", () => {
   let decoded;
 
   beforeEach(() => {
     decoded = {
-      brokers: [{ nodeId: 0, host: "localhost", port: 9092, rack: "something" }],
-      clusterId: "78UTM0lvTsqVdknL7AgKqQ",
-      controllerId: 3,
+      brokers: [{ nodeId: 0, host: "localhost", port: 9092 }],
       topicMetadata: [
         {
           topicErrorCode: 0,
           topic: "test-topic-1",
-          isInternal: true,
           partitionMetadata: [
             { partitionErrorCode: 0, partitionId: 1, leader: 2, replicas: [3], isr: [4] },
           ],
@@ -28,20 +25,11 @@ describe("Protocol > Requests > Metadata > v2", () => {
   describe("response", () => {
     test("decode", async () => {
       const encoded = new Encoder()
-        .writeArray([
-          new Encoder()
-            .writeInt32(0)
-            .writeString("localhost")
-            .writeInt32(9092)
-            .writeString("something"),
-        ])
-        .writeString("78UTM0lvTsqVdknL7AgKqQ")
-        .writeInt32(3)
+        .writeArray([new Encoder().writeInt32(0).writeString("localhost").writeInt32(9092)])
         .writeArray([
           new Encoder()
             .writeInt16(0)
             .writeString("test-topic-1")
-            .writeBoolean(true)
             .writeArray([
               new Encoder()
                 .writeInt16(0)

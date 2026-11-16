@@ -1,11 +1,13 @@
-const { describe, test, expect } = require("@jest/globals");
-
-const { unsupportedVersionResponse } = require("testHelpers");
-const { decode, parse } = require("./response.js");
+import { describe, test, expect } from "@jest/globals";
+import helpers from "testHelpers";
+import responseModule from "./response.mjs";
+import responseFixtureV0 from "../fixtures/v0_response.json" with { type: "json" };
+const { unsupportedVersionResponse } = helpers;
+const { decode, parse } = responseModule;
 
 describe("Protocol > Requests > ApiVersions > v0", () => {
   test("response", async () => {
-    const data = await decode(Buffer.from(require("../fixtures/v0_response.json")));
+    const data = await decode(Buffer.from(responseFixtureV0));
     expect(data).toEqual({
       errorCode: 0,
       apiVersions: [

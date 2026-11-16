@@ -1,4 +1,4 @@
-const apiKeys = require("../protocol/requests/apiKeys");
+const apiKeys = require("../protocol/requests/api_keys.mjs").default;
 const Connection = require("./connection");
 
 module.exports = class ConnectionPool {

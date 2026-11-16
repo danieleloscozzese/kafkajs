@@ -1,8 +1,6 @@
-const { describe, test, expect, beforeEach } = require("@jest/globals");
-
-const Encoder = require("../../../encoder.mjs").default;
-const RequestProtocol = require("./request");
-
+import { describe, test, expect, beforeEach } from "@jest/globals";
+import Encoder from "../../../encoder.mjs";
+import RequestProtocol from "./request.mjs";
 describe("Protocol > Requests > Metadata > v2", () => {
   let topics;
 

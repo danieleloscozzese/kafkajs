@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { SyncGroup: apiKey } = require("../../apiKeys");
+const { SyncGroup: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * Version 3 adds group_instance_id to indicate member identity across restarts.

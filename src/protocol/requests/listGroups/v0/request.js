@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { ListGroups: apiKey } = require("../../apiKeys");
+const { ListGroups: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * ListGroups Request (Version: 0)

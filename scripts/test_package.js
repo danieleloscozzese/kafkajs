@@ -133,6 +133,24 @@ assert.equal(packageExports.CompressionTypes.GZIP, 1);
 `,
   );
   fs.writeFileSync(
+    path.join(consumerDir, "lazy_protocols.cjs"),
+    `const assert = require("node:assert/strict");
+for (const [family, latest] of [["apiVersions", 2], ["metadata", 6]]) {
+  const prefix = "@dagher/kafkajs/src/protocol/requests/" + family;
+  const registry = require(prefix + "/index.js");
+  const first = require.resolve(prefix + "/v0/request.mjs");
+  const last = require.resolve(prefix + "/v" + latest + "/request.mjs");
+  assert.equal(require.cache[first], undefined);
+  assert.equal(require.cache[last], undefined);
+  const result = registry.protocol({ version: 0 })({ topics: [] });
+  assert.equal(result.request.apiVersion, 0);
+  assert.equal(result.then, undefined);
+  assert(require.cache[first]);
+  assert.equal(require.cache[last], undefined);
+}
+`,
+  );
+  fs.writeFileSync(
     path.join(consumerDir, "mixed-import.mjs"),
     `import assert from "node:assert/strict";
 import { createRequire } from "node:module";
@@ -166,6 +184,9 @@ import constants, * as namedConstants from "@dagher/kafkajs/src/constants.mjs";
 import Encoder from "@dagher/kafkajs/src/protocol/encoder.mjs";
 import Decoder from "@dagher/kafkajs/src/protocol/decoder.mjs";
 import compression from "@dagher/kafkajs/src/protocol/message/compression/index.mjs";
+import apiVersions from "@dagher/kafkajs/src/protocol/requests/apiVersions/index.mjs";
+import metadata from "@dagher/kafkajs/src/protocol/requests/metadata/index.mjs";
+import apiKeys from "@dagher/kafkajs/src/protocol/requests/api_keys.mjs";
 
 const require = createRequire(import.meta.url);
 const commonjs = require("@dagher/kafkajs");
@@ -247,6 +268,23 @@ CompressionCodecs[99] = codec;
 assert.strictEqual(commonjs.CompressionCodecs[99](), codec());
 assert.strictEqual(compression.Codecs, CompressionCodecs);
 assert.strictEqual(compression.lookupCodec(99), codec());
+assert.strictEqual(require("@dagher/kafkajs/src/protocol/requests/apiVersions/index.js"), apiVersions);
+assert.strictEqual(require("@dagher/kafkajs/src/protocol/requests/metadata/index.js"), metadata);
+assert.strictEqual(require("@dagher/kafkajs/src/protocol/requests/apiKeys.js"), apiKeys);
+for (const [family, versionCount] of [["apiVersions", 3], ["metadata", 7]]) {
+  const prefix = "@dagher/kafkajs/src/protocol/requests/" + family;
+  const { default: registry } = await import(prefix + "/index.mjs");
+  assert.strictEqual(require(prefix + "/index.js"), registry);
+  for (let version = 0; version < versionCount; version++) {
+    const protocol = registry.protocol({ version })({ topics: [] });
+    assert.equal(protocol.request.apiVersion, version);
+    for (const kind of ["request", "response"]) {
+      const filename = prefix + "/v" + version + "/" + kind;
+      const { default: implementation } = await import(filename + ".mjs");
+      assert.strictEqual(require(filename + ".js"), implementation);
+    }
+  }
+}
 `,
   );
 
@@ -255,6 +293,7 @@ assert.strictEqual(compression.lookupCodec(99), codec());
     "static-import.mjs",
     "dynamic-import.mjs",
     "mixed-import.mjs",
+    "lazy_protocols.cjs",
   ]) {
     execFileSync(process.execPath, [path.join(consumerDir, file)], {
       cwd: consumerDir,

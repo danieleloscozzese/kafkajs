@@ -1,10 +1,11 @@
-const { describe, test, expect } = require("@jest/globals");
+import { describe, test, expect } from "@jest/globals";
+import responseModule from "./response.mjs";
+import responseFixtureV3 from "../fixtures/v3_response.json" with { type: "json" };
+const { decode, parse } = responseModule;
 
-const { decode, parse } = require("./response");
-
-describe("Protocol > Requests > Metadata > v4", () => {
+describe("Protocol > Requests > Metadata > v3", () => {
   test("response", async () => {
-    const data = await decode(Buffer.from(require("../fixtures/v4_response.json")));
+    const data = await decode(Buffer.from(responseFixtureV3));
     expect(data).toEqual({
       throttleTime: 0,
       brokers: [
@@ -32,15 +33,15 @@ describe("Protocol > Requests > Metadata > v4", () => {
       topicMetadata: [
         {
           topicErrorCode: 0,
-          topic: "test-topic-66d1df55ec27e033d726",
+          topic: "test-topic-0f67c79007c9157fc83d",
           isInternal: false,
           partitionMetadata: [
             {
               partitionErrorCode: 0,
               partitionId: 0,
-              leader: 1,
-              replicas: [1],
-              isr: [1],
+              leader: 2,
+              replicas: [2],
+              isr: [2],
             },
           ],
         },

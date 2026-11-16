@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { OffsetFetch: apiKey } = require("../../apiKeys");
+const { OffsetFetch: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * OffsetFetch Request (Version: 1) => group_id [topics]

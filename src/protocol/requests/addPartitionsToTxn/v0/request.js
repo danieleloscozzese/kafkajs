@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { AddPartitionsToTxn: apiKey } = require("../../apiKeys");
+const { AddPartitionsToTxn: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * AddPartitionsToTxn Request (Version: 0) => transactional_id producer_id producer_epoch [topics]

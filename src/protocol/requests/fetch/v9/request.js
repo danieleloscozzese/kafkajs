@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { Fetch: apiKey } = require("../../apiKeys");
+const { Fetch: apiKey } = require("../../api_keys.mjs").default;
 const ISOLATION_LEVEL = require("../../../isolation_level.mjs").default;
 
 /**

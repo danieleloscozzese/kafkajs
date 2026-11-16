@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { DescribeConfigs: apiKey } = require("../../apiKeys");
+const { DescribeConfigs: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * DescribeConfigs Request (Version: 0) => [resources]
