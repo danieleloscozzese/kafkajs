@@ -1,9 +1,11 @@
-const { describe, test, expect, beforeEach, it, jest } = require("@jest/globals");
+import { describe, test, expect, beforeEach, it, jest } from "@jest/globals";
+import Decoder from "../../protocol/decoder.mjs";
+import scram256AuthenticatorProvider from "./scram256.mjs";
+import scram0 from "./scram.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { newLogger } = testHelpers;
 
-const Decoder = require("../../protocol/decoder.mjs").default;
-const { newLogger } = require("testHelpers");
-const scram256AuthenticatorProvider = require("./scram256.js");
-const { SCRAM, DIGESTS } = require("./scram.js");
+const { SCRAM, DIGESTS } = scram0;
 
 describe("Broker > SASL Authenticator > SCRAM", () => {
   let sasl, saslAuthenticate, logger, host, port;

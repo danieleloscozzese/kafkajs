@@ -1,4 +1,1 @@
-module.exports = {
-  decode: async () => true,
-  parse: async () => true,
-};
+module.exports = require("./response.mjs").default;

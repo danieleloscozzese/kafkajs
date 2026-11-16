@@ -1,7 +1,7 @@
-const { describe, expect, it } = require("@jest/globals");
-
-const { newLogger } = require("testHelpers");
-const oauthBearerAuthenticatorProvider = require("./oauthBearer.js");
+import { describe, expect, it } from "@jest/globals";
+import oauthBearerAuthenticatorProvider from "./oauth_bearer.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { newLogger } = testHelpers;
 
 describe("Broker > SASL Authenticator > OAUTHBEARER", () => {
   it("throws KafkaJSSASLAuthenticationError for missing oauthBearerProvider", async () => {

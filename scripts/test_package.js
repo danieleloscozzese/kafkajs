@@ -238,6 +238,7 @@ import Broker from "@dagher/kafkajs/src/broker/index.mjs";
 import Cluster from "@dagher/kafkajs/src/cluster/index.mjs";
 import BrokerPool from "@dagher/kafkajs/src/cluster/broker_pool.mjs";
 import createConnectionPoolBuilder from "@dagher/kafkajs/src/cluster/connection_pool_builder.mjs";
+import SASLAuthenticator from "@dagher/kafkajs/src/broker/saslAuthenticator/index.mjs";
 ${protocolFamilies
   .map(
     ([family], index) =>
@@ -323,6 +324,41 @@ const seedPool = await builder.build();
 assert(seedPool instanceof ConnectionPool);
 await seedPool.destroy();
 await cluster.disconnect();
+assert.strictEqual(require("@dagher/kafkajs/src/broker/saslAuthenticator/index.js"), SASLAuthenticator);
+assert.equal(SASLAuthenticator.name, "SASLAuthenticator");
+for (const [oldName, newName] of [
+  ["plain", "plain"], ["scram", "scram"], ["scram256", "scram256"],
+  ["scram512", "scram512"], ["awsIam", "aws_iam"], ["oauthBearer", "oauth_bearer"],
+]) {
+  const prefix = "@dagher/kafkajs/src/broker/saslAuthenticator/";
+  const { default: implementation } = await import(prefix + newName + ".mjs");
+  assert.strictEqual(require(prefix + oldName + ".js"), implementation);
+}
+for (const path of [
+  "plain/index", "plain/request", "plain/response",
+  "awsIam/index", "awsIam/request", "awsIam/response",
+  "oauthBearer/index", "oauthBearer/request", "oauthBearer/response",
+  "scram/index", "scram/firstMessage/request", "scram/firstMessage/response",
+  "scram/finalMessage/request", "scram/finalMessage/response",
+]) {
+  const prefix = "@dagher/kafkajs/src/protocol/sasl/";
+  const { default: implementation } = await import(prefix + path + ".mjs");
+  assert.strictEqual(require(prefix + path + ".js"), implementation);
+}
+const scramFrames = require("@dagher/kafkajs/src/protocol/sasl/scram/index.js");
+assert.strictEqual(scramFrames.firstMessage.response, scramFrames.finalMessage.response);
+const plainProvider = require("@dagher/kafkajs/src/broker/saslAuthenticator/plain.js");
+let authenticated = 0;
+const authenticator = plainProvider({ username: "user", password: "packed-fixture" })({
+  host: "localhost", port: 9092, logger: connectionOptions.logger,
+  saslAuthenticate: async ({ request }) => {
+    assert.equal(new Decoder(await request.encode()).readBytes().toString(), "\\0user\\0packed-fixture");
+    authenticated++;
+  },
+});
+assert.equal(authenticator.then, undefined);
+await authenticator.authenticate();
+assert.equal(authenticated, 1);
 for (const [oldPath, newPath] of [
   ["retry/defaults", "retry/defaults"],
   ["retry/defaults.test", "retry/defaults_test"],
