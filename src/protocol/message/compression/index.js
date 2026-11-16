@@ -1,4 +1,4 @@
-const { KafkaJSNotImplemented } = require("../../../errors");
+const { KafkaJSNotImplemented } = require("../../../errors.mjs").default;
 
 const COMPRESSION_CODEC_MASK = 0x07;
 

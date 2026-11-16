@@ -1,5 +1,5 @@
 const Decoder = require("../../decoder");
-const { KafkaJSPartialMessageError } = require("../../../errors");
+const { KafkaJSPartialMessageError } = require("../../../errors.mjs").default;
 const { lookupCodecByAttributes } = require("../../message/compression");
 const RecordDecoder = require("../record/v0/decoder");
 const TimestampTypes = require("../../timestampTypes");

@@ -1,5 +1,5 @@
 const Decoder = require("../../../decoder");
-const { KafkaJSMemberIdRequired } = require("../../../../errors");
+const { KafkaJSMemberIdRequired } = require("../../../../errors.mjs").default;
 const {
   failure,
   createErrorFromCode,

@@ -5,9 +5,9 @@ const ConsumerGroup = require("./consumerGroup");
 const Runner = require("./runner");
 const { events, wrap: wrapEvent, unwrap: unwrapEvent } = require("./instrumentationEvents");
 const InstrumentationEventEmitter = require("../instrumentation/emitter.mjs").default;
-const { KafkaJSNonRetriableError } = require("../errors");
+const { KafkaJSNonRetriableError } = require("../errors.mjs").default;
 const { roundRobin } = require("./assigners");
-const { EARLIEST_OFFSET, LATEST_OFFSET } = require("../constants");
+const { EARLIEST_OFFSET, LATEST_OFFSET } = require("../constants.mjs").default;
 const ISOLATION_LEVEL = require("../protocol/isolationLevel");
 const sharedPromiseTo = require("../utils/sharedPromiseTo");
 

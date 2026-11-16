@@ -1,6 +1,6 @@
 const crypto = require("crypto");
 const scram = require("../../protocol/sasl/scram");
-const { KafkaJSSASLAuthenticationError, KafkaJSNonRetriableError } = require("../../errors");
+const { KafkaJSSASLAuthenticationError, KafkaJSNonRetriableError } = require("../../errors.mjs").default;
 
 const GS2_HEADER = "n,,";
 

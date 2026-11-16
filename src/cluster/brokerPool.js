@@ -2,7 +2,7 @@ const Broker = require("../broker");
 const createRetry = require("../retry");
 const shuffle = require("../utils/shuffle");
 const arrayDiff = require("../utils/array_diff.mjs").default;
-const { KafkaJSBrokerNotFound, KafkaJSProtocolError } = require("../errors");
+const { KafkaJSBrokerNotFound, KafkaJSProtocolError } = require("../errors.mjs").default;
 
 const { keys, assign, values } = Object;
 const hasBrokerBeenReplaced = (broker, { host, port, rack }) =>

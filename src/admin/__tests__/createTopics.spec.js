@@ -5,7 +5,7 @@ const {
   KafkaJSProtocolError,
   KafkaJSAggregateError,
   KafkaJSCreateTopicError,
-} = require("../../errors.js");
+} = require("../../errors.mjs").default;
 const { createErrorFromCode } = require("../../protocol/error.js");
 
 const { secureRandom, createCluster, newLogger } = require("testHelpers");

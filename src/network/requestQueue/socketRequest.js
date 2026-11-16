@@ -1,4 +1,4 @@
-const { KafkaJSRequestTimeoutError, KafkaJSNonRetriableError } = require("../../errors");
+const { KafkaJSRequestTimeoutError, KafkaJSNonRetriableError } = require("../../errors.mjs").default;
 const events = require("../instrumentationEvents");
 
 const PRIVATE = {

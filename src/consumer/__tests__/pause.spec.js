@@ -2,7 +2,7 @@ const { describe, expect, beforeEach, afterEach, it, jest } = require("@jest/glo
 
 const createProducer = require("../../producer");
 const createConsumer = require("../index");
-const { KafkaJSNonRetriableError } = require("../../errors");
+const { KafkaJSNonRetriableError } = require("../../errors.mjs").default;
 
 const {
   secureRandom,

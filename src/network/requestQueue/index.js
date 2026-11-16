@@ -1,7 +1,7 @@
 const { EventEmitter } = require("events");
 const SocketRequest = require("./socketRequest");
 const events = require("../instrumentationEvents");
-const { KafkaJSInvariantViolation } = require("../../errors");
+const { KafkaJSInvariantViolation } = require("../../errors.mjs").default;
 
 const PRIVATE = {
   EMIT_QUEUE_SIZE_EVENT: Symbol("private:RequestQueue:emitQueueSizeEvent"),

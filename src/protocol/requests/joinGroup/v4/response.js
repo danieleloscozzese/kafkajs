@@ -1,5 +1,5 @@
 const { decode } = require("../v3/response");
-const { KafkaJSMemberIdRequired } = require("../../../../errors");
+const { KafkaJSMemberIdRequired } = require("../../../../errors.mjs").default;
 const { failure, createErrorFromCode, errorCodes } = require("../../../error");
 
 /**

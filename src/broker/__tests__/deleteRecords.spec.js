@@ -13,7 +13,7 @@ const {
   retryProtocol,
 } = require("testHelpers");
 
-const { KafkaJSProtocolError } = require("../../errors.js");
+const { KafkaJSProtocolError } = require("../../errors.mjs").default;
 
 describe("Broker > deleteRecords", () => {
   let topicName, cluster, seedBroker, producer, broker, metadata, partitionLeader, recordsToDelete;

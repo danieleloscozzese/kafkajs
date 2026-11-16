@@ -1,5 +1,5 @@
 const Decoder = require("../../../decoder");
-const { KafkaJSDeleteTopicRecordsError } = require("../../../../errors");
+const { KafkaJSDeleteTopicRecordsError } = require("../../../../errors.mjs").default;
 const { failure, createErrorFromCode } = require("../../../error");
 
 /**

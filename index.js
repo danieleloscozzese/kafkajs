@@ -1,4 +1,4 @@
-const errors = require("./src/errors");
+const errors = require("./src/errors.mjs").default;
 
 exports.Kafka = require("./src");
 exports.Partitioners = require("./src/producer/partitioners");

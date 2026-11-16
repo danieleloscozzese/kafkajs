@@ -1,4 +1,4 @@
-const { KafkaJSNumberOfRetriesExceeded, KafkaJSNonRetriableError } = require("../errors");
+const { KafkaJSNumberOfRetriesExceeded, KafkaJSNonRetriableError } = require("../errors.mjs").default;
 
 const isTestMode = process.env.NODE_ENV === "test";
 const RETRY_DEFAULT = isTestMode ? require("./defaults.test") : require("./defaults");

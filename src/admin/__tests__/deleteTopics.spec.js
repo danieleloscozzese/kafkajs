@@ -1,7 +1,7 @@
 const { describe, test, expect, beforeEach, afterEach, jest } = require("@jest/globals");
 
 const createAdmin = require("../index");
-const { KafkaJSProtocolError } = require("../../errors");
+const { KafkaJSProtocolError } = require("../../errors.mjs").default;
 const { createErrorFromCode } = require("../../protocol/error");
 
 const { secureRandom, createCluster, newLogger } = require("testHelpers");

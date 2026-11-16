@@ -1,6 +1,6 @@
 const Decoder = require("../../../decoder");
 const { failure, createErrorFromCode } = require("../../../error");
-const { KafkaJSAggregateError, KafkaJSCreateTopicError } = require("../../../../errors");
+const { KafkaJSAggregateError, KafkaJSCreateTopicError } = require("../../../../errors.mjs").default;
 
 /**
  * CreateTopics Response (Version: 0) => [topic_errors]

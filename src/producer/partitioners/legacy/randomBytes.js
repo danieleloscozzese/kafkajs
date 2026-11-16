@@ -1,4 +1,4 @@
-const { KafkaJSNonRetriableError } = require("../../../errors");
+const { KafkaJSNonRetriableError } = require("../../../errors.mjs").default;
 
 const toNodeCompatible = (crypto) => ({
   randomBytes: (size) => crypto.getRandomValues(Buffer.allocUnsafe(size)),

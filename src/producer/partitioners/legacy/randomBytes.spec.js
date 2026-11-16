@@ -1,6 +1,6 @@
 const { describe, test, expect } = require("@jest/globals");
 
-const { KafkaJSNonRetriableError } = require("../../../errors");
+const { KafkaJSNonRetriableError } = require("../../../errors.mjs").default;
 const randomBytes = require("./randomBytes");
 
 describe("Producer > Partitioner > Default > RandomBytes", () => {

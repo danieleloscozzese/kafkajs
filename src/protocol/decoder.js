@@ -1,4 +1,4 @@
-const { KafkaJSInvalidVarIntError, KafkaJSInvalidLongError } = require("../errors");
+const { KafkaJSInvalidVarIntError, KafkaJSInvalidLongError } = require("../errors.mjs").default;
 const Long = require("../utils/long");
 
 const INT8_SIZE = 1;

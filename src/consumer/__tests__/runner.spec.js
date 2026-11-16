@@ -9,7 +9,7 @@ const {
   KafkaJSProtocolError,
   KafkaJSNotImplemented,
   KafkaJSNumberOfRetriesExceeded,
-} = require("../../errors.js");
+} = require("../../errors.mjs").default;
 const { createErrorFromCode } = require("../../protocol/error.js");
 
 const UNKNOWN = -1;

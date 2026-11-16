@@ -1,7 +1,7 @@
 const {
   KafkaJSPartialMessageError,
   KafkaJSUnsupportedMagicByteInMessageSet,
-} = require("../../errors");
+} = require("../../errors.mjs").default;
 
 const V0Decoder = require("./v0/decoder");
 const V1Decoder = require("./v1/decoder");

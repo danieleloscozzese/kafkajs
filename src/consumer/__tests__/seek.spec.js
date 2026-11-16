@@ -3,7 +3,7 @@ const { describe, expect, beforeEach, afterEach, it } = require("@jest/globals")
 const createAdmin = require("../../admin");
 const createProducer = require("../../producer");
 const createConsumer = require("../index");
-const { KafkaJSNonRetriableError } = require("../../errors");
+const { KafkaJSNonRetriableError } = require("../../errors.mjs").default;
 
 const {
   secureRandom,

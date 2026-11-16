@@ -1,4 +1,4 @@
-const { KafkaJSProtocolError } = require("../errors");
+const { KafkaJSProtocolError } = require("../errors.mjs").default;
 const websiteUrl = require("../utils/websiteUrl");
 
 const errorCodes = [

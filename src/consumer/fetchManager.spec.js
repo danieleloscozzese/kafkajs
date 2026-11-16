@@ -6,7 +6,7 @@ const createFetchManager = require("./fetchManager");
 const Batch = require("./batch");
 const { newLogger } = require("testHelpers");
 const waitFor = require("../utils/waitFor.js");
-const { KafkaJSNonRetriableError, KafkaJSNoBrokerAvailableError } = require("../errors.js");
+const { KafkaJSNonRetriableError, KafkaJSNoBrokerAvailableError } = require("../errors.mjs").default;
 
 describe("FetchManager", () => {
   let fetchManager, fetch, handler, getNodeIds, concurrency, batchSize;

@@ -1,4 +1,4 @@
-const { KafkaJSConnectionError, KafkaJSNonRetriableError } = require("../errors");
+const { KafkaJSConnectionError, KafkaJSNonRetriableError } = require("../errors.mjs").default;
 const ConnectionPool = require("../network/connectionPool");
 
 /**
