@@ -1,7 +1,7 @@
 const { describe, expect, beforeEach, it, jest } = require("@jest/globals");
 
 const OffsetManager = require("../index");
-const InstrumentationEventEmitter = require("../../../instrumentation/emitter");
+const InstrumentationEventEmitter = require("../../../instrumentation/emitter.mjs").default;
 const { createErrorFromCode } = require("../../../protocol/error");
 const NOT_COORDINATOR_FOR_GROUP_CODE = 16;
 

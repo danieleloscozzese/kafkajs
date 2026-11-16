@@ -1,4 +1,4 @@
-const InstrumentationEventType = require("../instrumentation/eventType");
+const InstrumentationEventType = require("../instrumentation/event_type.mjs").default;
 const eventType = InstrumentationEventType("network");
 
 module.exports = {
