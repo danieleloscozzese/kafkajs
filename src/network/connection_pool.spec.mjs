@@ -1,8 +1,8 @@
-const { describe, expect, beforeEach, afterEach, it } = require("@jest/globals");
-
-const apiKeys = require("../protocol/requests/api_keys.mjs").default;
-const { connectionOpts } = require("testHelpers");
-const ConnectionPool = require("./connectionPool.js");
+import { describe, expect, beforeEach, afterEach, it } from "@jest/globals";
+import apiKeys from "../protocol/requests/api_keys.mjs";
+import ConnectionPool from "./connection_pool.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { connectionOpts } = testHelpers;
 
 describe("ConnectionPool", () => {
   /** @type {ConnectionPool} */
@@ -28,11 +28,17 @@ describe("ConnectionPool", () => {
   });
 
   it("should return different connection for Fetch requests", async () => {
-    const heartbeatConnection = pool.getConnectionByRequest({
+    const heartbeatConnection = await pool.getConnectionByRequest({
       request: { apiKey: apiKeys.Heartbeat },
     });
-    const fetchConnection = pool.getConnectionByRequest({ request: { apiKey: apiKeys.Fetch } });
-    expect(heartbeatConnection !== fetchConnection).toBe(true);
+    const fetchConnection = await pool.getConnectionByRequest({
+      request: { apiKey: apiKeys.Fetch },
+    });
+    const metadataConnection = await pool.getConnectionByRequest({
+      request: { apiKey: apiKeys.Metadata },
+    });
+    expect(heartbeatConnection).not.toBe(fetchConnection);
+    expect(metadataConnection).toBe(heartbeatConnection);
   });
 
   it("should reconnect connection if it disconnects", async () => {

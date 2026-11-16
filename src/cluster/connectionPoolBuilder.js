@@ -1,5 +1,5 @@
 const { KafkaJSConnectionError, KafkaJSNonRetriableError } = require("../errors.mjs").default;
-const ConnectionPool = require("../network/connectionPool");
+const ConnectionPool = require("../network/connection_pool.mjs").default;
 
 /**
  * @typedef {Object} ConnectionPoolBuilder

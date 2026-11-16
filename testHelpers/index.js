@@ -8,8 +8,8 @@ const semver = require("semver");
 const Cluster = require("../src/cluster");
 const waitFor = require("../src/utils/wait_for.mjs").default;
 const connectionBuilder = require("../src/cluster/connectionPoolBuilder");
-const ConnectionPool = require("../src/network/connectionPool");
-const defaultSocketFactory = require("../src/network/socketFactory");
+const ConnectionPool = require("../src/network/connection_pool.mjs").default;
+const defaultSocketFactory = require("../src/network/socket_factory.mjs").default;
 const socketFactory = defaultSocketFactory();
 
 const {
