@@ -30,6 +30,12 @@ try {
     "package/index.js",
     "package/index.mjs",
     "package/src/index.js",
+    "package/src/instrumentation/emitter.js",
+    "package/src/instrumentation/emitter.mjs",
+    "package/src/instrumentation/event.js",
+    "package/src/instrumentation/event.mjs",
+    "package/src/instrumentation/eventType.js",
+    "package/src/instrumentation/event_type.mjs",
     "package/src/utils/once.js",
     "package/src/utils/once.mjs",
     "package/src/utils/arrayDiff.js",
@@ -121,6 +127,9 @@ import mapValues from "@dagher/kafkajs/src/utils/map_values.mjs";
 import seq from "@dagher/kafkajs/src/utils/seq.mjs";
 import swapObject from "@dagher/kafkajs/src/utils/swap_object.mjs";
 import uniq from "@dagher/kafkajs/src/utils/uniq.mjs";
+import InstrumentationEvent from "@dagher/kafkajs/src/instrumentation/event.mjs";
+import InstrumentationEventEmitter from "@dagher/kafkajs/src/instrumentation/emitter.mjs";
+import instrumentationEventType from "@dagher/kafkajs/src/instrumentation/event_type.mjs";
 
 const require = createRequire(import.meta.url);
 const commonjs = require("@dagher/kafkajs");
@@ -135,6 +144,9 @@ assert.strictEqual(require("@dagher/kafkajs/src/utils/mapValues.js"), mapValues)
 assert.strictEqual(require("@dagher/kafkajs/src/utils/seq.js"), seq);
 assert.strictEqual(require("@dagher/kafkajs/src/utils/swapObject.js"), swapObject);
 assert.strictEqual(require("@dagher/kafkajs/src/utils/uniq.js"), uniq);
+assert.strictEqual(require("@dagher/kafkajs/src/instrumentation/event.js"), InstrumentationEvent);
+assert.strictEqual(require("@dagher/kafkajs/src/instrumentation/emitter.js"), InstrumentationEventEmitter);
+assert.strictEqual(require("@dagher/kafkajs/src/instrumentation/eventType.js"), instrumentationEventType);
 
 const codec = () => "registered through ESM";
 CompressionCodecs[99] = codec;

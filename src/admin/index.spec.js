@@ -1,7 +1,7 @@
 const { describe, test, expect, afterEach, it, jest } = require("@jest/globals");
 
 const createAdmin = require("./index");
-const InstrumentationEventEmitter = require("../instrumentation/emitter");
+const InstrumentationEventEmitter = require("../instrumentation/emitter.mjs").default;
 const { createCluster, newLogger, secureRandom } = require("testHelpers");
 const createRetry = require("../retry/index.js");
 

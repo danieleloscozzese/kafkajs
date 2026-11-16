@@ -4,7 +4,7 @@ jest.setTimeout(3000);
 
 const sleep = require("../../utils/sleep.js");
 const { newLogger } = require("testHelpers");
-const InstrumentationEventEmitter = require("../../instrumentation/emitter.js");
+const InstrumentationEventEmitter = require("../../instrumentation/emitter.mjs").default;
 const events = require("../instrumentationEvents.js");
 const RequestQueue = require("./index.js");
 const { KafkaJSInvariantViolation } = require("../../errors.js");
