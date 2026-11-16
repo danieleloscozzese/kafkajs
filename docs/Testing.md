@@ -28,11 +28,3 @@ KAFKAJS_LOG_LEVEL=debug KAFKAJS_DEBUG_PROTOCOL_BUFFERS=1 KAFKAJS_DEBUG_EXTENDED_
 ## Helpers
 
 [`testHelpers/index.js`](https://github.com/tulios/kafkajs/blob/master/testHelpers/index.js) provides several helpers for connecting to your cluster and asserting upon its state. Tests are typically co-located with the code that they are testing. See [`src/consumer/__tests__/consumeMessages.spec.js`](https://github.com/tulios/kafkajs/blob/master/src/consumer/__tests__/consumeMessages.spec.js) for an example that makes use of the helpers to implement an integration test.
-
-Kafka metadata and coordinator readiness can lag behind successful requests.
-For setup operations, use `retryProtocol` with the specific transient error
-expected at that step, rather than retrying an entire test. The `createTopic`
-helper retries `UNKNOWN_TOPIC_OR_PARTITION` while metadata propagates; group
-setup may need to retry `GROUP_COORDINATOR_NOT_AVAILABLE` even after coordinator
-discovery succeeds. Other errors still fail immediately, and Jest's timeout
-remains the limit for setup.

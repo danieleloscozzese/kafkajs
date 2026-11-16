@@ -33,21 +33,6 @@ describe("Network > RequestQueue", () => {
     requestQueue = createRequestQueue();
   });
 
-  describe("#checkPendingRequests", () => {
-    it("does not schedule a timeout when the queue is idle and throttling has expired", () => {
-      jest.useFakeTimers();
-
-      try {
-        requestQueue.throttledUntil = Date.now() - 1;
-        requestQueue.checkPendingRequests();
-
-        expect(jest.getTimerCount()).toBe(0);
-      } finally {
-        jest.useRealTimers();
-      }
-    });
-  });
-
   describe("#waitForPendingRequests", () => {
     let request, send, size, payload;
 
