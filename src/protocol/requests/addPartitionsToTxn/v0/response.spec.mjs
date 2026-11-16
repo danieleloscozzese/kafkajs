@@ -1,17 +1,19 @@
-const { describe, test, expect } = require("@jest/globals");
+import { describe, test, expect } from "@jest/globals";
+import response0 from "./response.mjs";
+import errors0 from "../../../../errors.mjs";
+import v0Response from "../fixtures/v0_response.json" with { type: "json" };
+const { decode, parse } = response0;
+const { KafkaJSProtocolError } = errors0;
 
-const { decode, parse } = require("./response");
-const { KafkaJSProtocolError } = require("../../../../errors.mjs").default;
-
-describe("Protocol > Requests > TxnOffsetCommit > v0", () => {
+describe("Protocol > Requests > AddPartitionsToTxn > v0", () => {
   test("response", async () => {
-    const data = await decode(Buffer.from(require("../fixtures/v0_response.json")));
+    const data = await decode(Buffer.from(v0Response));
     expect(data).toEqual({
       throttleTime: 0,
-      topics: [
+      errors: [
         {
-          topic: "test-topic-0ba33173f7664d75c6b2-63632-a0dab079-1c9a-44ba-be25-ca3d50df5003",
-          partitions: [
+          topic: "test-topic-f6bab978bdca094688e3-37015-ca4f7ad4-5dcc-4bb9-9853-b1e4c4ed78a7",
+          partitionErrors: [
             { errorCode: 0, partition: 1 },
             { errorCode: 0, partition: 2 },
           ],
@@ -25,10 +27,10 @@ describe("Protocol > Requests > TxnOffsetCommit > v0", () => {
   test("throws KafkaJSProtocolError if there is an error on any of the partitions", async () => {
     const data = {
       throttleTime: 0,
-      topics: [
+      errors: [
         {
           topic: "test-topic",
-          partitions: [
+          partitionErrors: [
             { errorCode: 0, partition: 1 },
             { errorCode: 49, partition: 2 },
           ],

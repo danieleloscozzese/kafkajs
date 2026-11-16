@@ -12,6 +12,11 @@ import LeaveGroup from "./leaveGroup/index.mjs";
 import SyncGroup from "./syncGroup/index.mjs";
 import OffsetCommit from "./offsetCommit/index.mjs";
 import OffsetFetch from "./offsetFetch/index.mjs";
+import InitProducerId from "./initProducerId/index.mjs";
+import AddPartitionsToTxn from "./addPartitionsToTxn/index.mjs";
+import AddOffsetsToTxn from "./addOffsetsToTxn/index.mjs";
+import EndTxn from "./endTxn/index.mjs";
+import TxnOffsetCommit from "./txnOffsetCommit/index.mjs";
 import apiKeys from "./api_keys.mjs";
 
 const require = createRequire(import.meta.url);
@@ -36,6 +41,11 @@ describe("Protocol registries", () => {
       SyncGroup,
       OffsetCommit,
       OffsetFetch,
+      InitProducerId,
+      AddPartitionsToTxn,
+      AddOffsetsToTxn,
+      EndTxn,
+      TxnOffsetCommit,
     })) {
       const directory = name[0].toLowerCase() + name.slice(1);
       expect(require(`./${directory}/index.js`)).toBe(registry);
@@ -56,6 +66,11 @@ describe("Protocol registries", () => {
     [SyncGroup, apiKeys.SyncGroup, ["0", "1", "2", "3"]],
     [OffsetCommit, apiKeys.OffsetCommit, ["0", "1", "2", "3", "4", "5"]],
     [OffsetFetch, apiKeys.OffsetFetch, ["1", "2", "3", "4"]],
+    [InitProducerId, apiKeys.InitProducerId, ["0", "1"]],
+    [AddPartitionsToTxn, apiKeys.AddPartitionsToTxn, ["0", "1"]],
+    [AddOffsetsToTxn, apiKeys.AddOffsetsToTxn, ["0", "1"]],
+    [EndTxn, apiKeys.EndTxn, ["0", "1"]],
+    [TxnOffsetCommit, apiKeys.TxnOffsetCommit, ["0", "1"]],
   ])("returns synchronous factories for each advertised version", (registry, apiKey, versions) => {
     expect(registry.versions).toEqual(versions);
     expect(registry.protocol({ version: 99 })).toBeUndefined();

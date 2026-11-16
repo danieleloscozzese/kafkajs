@@ -1,7 +1,6 @@
-const { describe, test, expect } = require("@jest/globals");
-
-const RequestV1Protocol = require("./request");
-
+import { describe, test, expect } from "@jest/globals";
+import RequestV1Protocol from "./request.mjs";
+import v0Request from "../fixtures/v0_request.json" with { type: "json" };
 describe("Protocol > Requests > AddPartitionsToTxn > v1", () => {
   test("request", async () => {
     const { buffer } = await RequestV1Protocol({
@@ -16,6 +15,6 @@ describe("Protocol > Requests > AddPartitionsToTxn > v1", () => {
       ],
     }).encode();
 
-    expect(buffer).toEqual(Buffer.from(require("../fixtures/v0_request.json")));
+    expect(buffer).toEqual(Buffer.from(v0Request));
   });
 });

@@ -20,6 +20,11 @@ const protocolFamilies = [
   ["syncGroup", [0, 1, 2, 3]],
   ["offsetCommit", [0, 1, 2, 3, 4, 5]],
   ["offsetFetch", [1, 2, 3, 4]],
+  ["initProducerId", [0, 1]],
+  ["addPartitionsToTxn", [0, 1]],
+  ["addOffsetsToTxn", [0, 1]],
+  ["endTxn", [0, 1]],
+  ["txnOffsetCommit", [0, 1]],
 ];
 
 fs.mkdirSync(consumerDir);
