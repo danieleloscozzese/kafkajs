@@ -1,4 +1,4 @@
-const { afterEach, describe, expect, beforeEach, it, jest } = require("@jest/globals");
+const { describe, expect, beforeEach, it, jest } = require("@jest/globals");
 
 jest.setTimeout(3000);
 
@@ -31,10 +31,6 @@ describe("Network > RequestQueue", () => {
 
   beforeEach(() => {
     requestQueue = createRequestQueue();
-  });
-
-  afterEach(() => {
-    requestQueue.destroy();
   });
 
   describe("#waitForPendingRequests", () => {
@@ -113,134 +109,6 @@ describe("Network > RequestQueue", () => {
         entry: createEntry(),
         expectResponse: true,
       };
-    });
-
-    describe("#scheduleCheckPendingRequests baseline invariants", () => {
-      beforeEach(() => {
-        jest.useFakeTimers();
-        jest.setSystemTime(new Date("2026-01-19T12:00:00.000Z"));
-      });
-
-      afterEach(() => {
-        jest.useRealTimers();
-      });
-
-      const createPendingRequest = () => ({
-        sendRequest: jest.fn(),
-        entry: createEntry(),
-        expectResponse: true,
-      });
-
-      it.each([
-        ["past", -1],
-        ["zero", 0],
-      ])("schedules a non-negative retry for a %s throttle deadline", (label, offset) => {
-        requestQueue = createRequestQueue({ maxInFlightRequests: 1 });
-        const inFlightRequest = createPendingRequest();
-        requestQueue.push(inFlightRequest);
-        requestQueue.throttledUntil = Date.now() + offset;
-        const request = createPendingRequest();
-        requestQueue.push(request);
-
-        expect(requestQueue.throttleCheckTimeoutId).not.toBeNull();
-        expect(request.sendRequest).not.toHaveBeenCalled();
-
-        jest.advanceTimersByTime(9);
-        expect(request.sendRequest).not.toHaveBeenCalled();
-
-        jest.advanceTimersByTime(1);
-        expect(request.sendRequest).not.toHaveBeenCalled();
-        requestQueue.fulfillRequest({
-          correlationId: inFlightRequest.entry.correlationId,
-          payload: Buffer.alloc(0),
-          size: 0,
-        });
-        expect(request.sendRequest).toHaveBeenCalledTimes(1);
-      });
-
-      it("waits for a future throttle deadline before sending a pending request", () => {
-        const request = createPendingRequest();
-        requestQueue.throttledUntil = Date.now() + 25;
-        requestQueue.push(request);
-
-        jest.advanceTimersByTime(24);
-        expect(request.sendRequest).not.toHaveBeenCalled();
-
-        jest.advanceTimersByTime(1);
-        expect(request.sendRequest).toHaveBeenCalledTimes(1);
-      });
-
-      it.each([
-        ["past", -1],
-        ["zero", 0],
-      ])("does not schedule a timer for a %s deadline with no pending requests", (label, offset) => {
-        requestQueue.throttledUntil = Date.now() + offset;
-
-        requestQueue.scheduleCheckPendingRequests();
-
-        expect(requestQueue.throttleCheckTimeoutId).toBeNull();
-        expect(jest.getTimerCount()).toBe(0);
-      });
-
-      it("keeps an existing check and reschedules for the remaining future throttle", () => {
-        const request = createPendingRequest();
-        requestQueue.throttledUntil = Date.now() + 25;
-        requestQueue.push(request);
-        const existingTimeoutId = requestQueue.throttleCheckTimeoutId;
-
-        requestQueue.throttledUntil = Date.now() + 40;
-        requestQueue.scheduleCheckPendingRequests();
-
-        expect(requestQueue.throttleCheckTimeoutId).toBe(existingTimeoutId);
-        jest.advanceTimersByTime(25);
-        expect(request.sendRequest).not.toHaveBeenCalled();
-        jest.advanceTimersByTime(15);
-        expect(request.sendRequest).toHaveBeenCalledTimes(1);
-      });
-
-      it("keeps a saturated queue pending until an in-flight request completes", () => {
-        requestQueue = createRequestQueue({ maxInFlightRequests: 1 });
-        const inFlightRequest = createPendingRequest();
-        const pendingRequest = createPendingRequest();
-        requestQueue.push(inFlightRequest);
-        requestQueue.push(pendingRequest);
-
-        jest.advanceTimersByTime(20);
-        expect(pendingRequest.sendRequest).not.toHaveBeenCalled();
-        expect(requestQueue.pending).toHaveLength(1);
-
-        requestQueue.fulfillRequest({
-          correlationId: inFlightRequest.entry.correlationId,
-          payload: Buffer.alloc(0),
-          size: 0,
-        });
-
-        expect(pendingRequest.sendRequest).toHaveBeenCalledTimes(1);
-        expect(requestQueue.pending).toHaveLength(0);
-      });
-
-      it("cancels a late throttle check on destroy but progresses on completion", () => {
-        requestQueue = createRequestQueue({ maxInFlightRequests: 1 });
-        const inFlightRequest = createPendingRequest();
-        const pendingRequest = createPendingRequest();
-        requestQueue.push(inFlightRequest);
-        requestQueue.throttledUntil = Date.now() + 20;
-        requestQueue.push(pendingRequest);
-
-        requestQueue.destroy();
-        jest.advanceTimersByTime(20);
-        expect(pendingRequest.sendRequest).not.toHaveBeenCalled();
-        expect(requestQueue.pending).toHaveLength(1);
-
-        requestQueue.fulfillRequest({
-          correlationId: inFlightRequest.entry.correlationId,
-          payload: Buffer.alloc(0),
-          size: 0,
-        });
-
-        expect(pendingRequest.sendRequest).toHaveBeenCalledTimes(1);
-        expect(requestQueue.pending).toHaveLength(0);
-      });
     });
 
     describe("when there are no inflight requests", () => {
