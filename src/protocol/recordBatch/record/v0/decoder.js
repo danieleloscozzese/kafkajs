@@ -1,6 +1,6 @@
 const Long = require("../../../../utils/long.mjs").default;
 const HeaderDecoder = require("../../header/v0/decoder");
-const TimestampTypes = require("../../../timestampTypes");
+const TimestampTypes = require("../../../timestamp_types.mjs").default;
 
 /**
  * v0

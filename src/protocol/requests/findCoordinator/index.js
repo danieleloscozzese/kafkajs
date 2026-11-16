@@ -1,4 +1,4 @@
-const COORDINATOR_TYPES = require("../../coordinatorTypes");
+const COORDINATOR_TYPES = require("../../coordinator_types.mjs").default;
 
 const versions = {
   0: ({ groupId }) => {

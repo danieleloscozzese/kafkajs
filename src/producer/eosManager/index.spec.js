@@ -3,7 +3,7 @@ const { describe, test, expect, beforeEach, jest } = require("@jest/globals");
 const { newLogger } = require("testHelpers");
 const createEosManager = require(".");
 const { KafkaJSNonRetriableError } = require("../../errors.mjs").default;
-const COORDINATOR_TYPES = require("../../protocol/coordinatorTypes.js");
+const COORDINATOR_TYPES = require("../../protocol/coordinator_types.mjs").default;
 
 describe("Producer > eosManager", () => {
   const topic = "topic-name";

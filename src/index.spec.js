@@ -10,7 +10,7 @@ const createProducer = require("./producer");
 const createConsumer = require("./consumer");
 const createAdmin = require("./admin");
 const Cluster = require("./cluster");
-const ISOLATION_LEVEL = require("./protocol/isolationLevel");
+const ISOLATION_LEVEL = require("./protocol/isolation_level.mjs").default;
 
 describe("Client", () => {
   it("gives access to its logger", () => {

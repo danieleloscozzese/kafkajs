@@ -1,5 +1,5 @@
 const Long = require("../../utils/long.mjs").default;
-const Decoder = require("../decoder");
+const Decoder = require("../decoder.mjs").default;
 const MessageDecoder = require("../message/decoder");
 const { lookupCodecByAttributes } = require("../message/compression");
 const { KafkaJSPartialMessageError } = require("../../errors.mjs").default;

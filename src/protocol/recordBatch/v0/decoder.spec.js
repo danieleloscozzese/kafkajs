@@ -1,6 +1,6 @@
 const { describe, test, expect } = require("@jest/globals");
 
-const Decoder = require("../../decoder");
+const Decoder = require("../../decoder.mjs").default;
 const recordBatchDecoder = require("./decoder");
 
 describe("Protocol > RecordBatch > v0", () => {

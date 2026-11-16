@@ -2,8 +2,8 @@ const {
   KafkaJSAggregateError,
   KafkaJSAlterPartitionReassignmentsError,
 } = require("../../../../errors.mjs").default;
-const Decoder = require("../../../decoder");
-const { failure, createErrorFromCode } = require("../../../error");
+const Decoder = require("../../../decoder.mjs").default;
+const { failure, createErrorFromCode } = require("../../../error.mjs").default;
 
 /**
  * AlterPartitionReassignments Response (Version: 0) => throttle_time_ms error_code error_message [responses] TAG_BUFFER

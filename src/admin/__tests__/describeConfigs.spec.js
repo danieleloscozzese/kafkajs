@@ -2,10 +2,10 @@ const { describe, test, expect, beforeEach, afterEach, jest } = require("@jest/g
 
 const createAdmin = require("../index");
 const { KafkaJSProtocolError } = require("../../errors.mjs").default;
-const { createErrorFromCode } = require("../../protocol/error");
+const { createErrorFromCode } = require("../../protocol/error.mjs").default;
 
 const { secureRandom, createCluster, newLogger, createTopic } = require("testHelpers");
-const CONFIG_RESOURCE_TYPES = require("../../protocol/config-resource-types");
+const CONFIG_RESOURCE_TYPES = require("../../protocol/config_resource_types.mjs").default;
 const NOT_CONTROLLER = 41;
 
 describe("Admin", () => {

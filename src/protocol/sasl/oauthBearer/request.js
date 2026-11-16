@@ -25,7 +25,7 @@
  * identity. If both steps succeed, the user is logged in.
  */
 
-const Encoder = require("../../encoder");
+const Encoder = require("../../encoder.mjs").default;
 
 const SEPARATOR = "\u0001"; // SOH - Start Of Header ASCII
 

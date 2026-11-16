@@ -1,8 +1,8 @@
 const { describe, test, expect } = require("@jest/globals");
 
-const Decoder = require("../../../decoder");
+const Decoder = require("../../../decoder.mjs").default;
 const recordDecoder = require("./decoder");
-const TimestampTypes = require("../../../timestampTypes");
+const TimestampTypes = require("../../../timestamp_types.mjs").default;
 
 describe("Protocol > RecordBatch > Record > v0", () => {
   test("decodes", async () => {

@@ -1,6 +1,6 @@
 import { describe, test, expect, beforeEach, afterEach, jest } from "@jest/globals";
 import { KafkaJSBrokerNotFound, KafkaJSConnectionError } from "../../errors.mjs";
-import COORDINATOR_TYPES from "../../protocol/coordinatorTypes.js";
+import COORDINATOR_TYPES from "../../protocol/coordinator_types.mjs";
 
 jest.unstable_mockModule("../../utils/shuffle.mjs", () => ({
   default: jest.fn((brokers) => brokers.sort((a, b) => a > b)),

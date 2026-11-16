@@ -1,4 +1,4 @@
-const Decoder = require("../../../decoder");
+const Decoder = require("../../../decoder.mjs").default;
 const MessageSetDecoder = require("../../../messageSet/decoder");
 const RecordBatchDecoder = require("../../../recordBatch/v0/decoder");
 const { MAGIC_BYTE } = require("../../../recordBatch/v0");

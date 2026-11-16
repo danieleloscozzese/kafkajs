@@ -163,6 +163,8 @@ import loggers, { LEVELS } from "@dagher/kafkajs/src/loggers/index.mjs";
 import LoggerConsole from "@dagher/kafkajs/src/loggers/console.mjs";
 import errors, * as namedErrors from "@dagher/kafkajs/src/errors.mjs";
 import constants, * as namedConstants from "@dagher/kafkajs/src/constants.mjs";
+import Encoder from "@dagher/kafkajs/src/protocol/encoder.mjs";
+import Decoder from "@dagher/kafkajs/src/protocol/decoder.mjs";
 
 const require = createRequire(import.meta.url);
 const commonjs = require("@dagher/kafkajs");
@@ -193,6 +195,26 @@ assert.strictEqual(require("@dagher/kafkajs/src/loggers/console.js"), LoggerCons
 assert.strictEqual(commonjs.LEVELS, LEVELS);
 assert.strictEqual(require("@dagher/kafkajs/src/errors.js"), errors);
 assert.strictEqual(require("@dagher/kafkajs/src/constants.js"), constants);
+assert.strictEqual(require("@dagher/kafkajs/src/protocol/encoder.js"), Encoder);
+assert.strictEqual(require("@dagher/kafkajs/src/protocol/decoder.js"), Decoder);
+for (const [oldName, newName, publicName] of [
+  ["error", "error"],
+  ["request", "request"],
+  ["crc32", "crc32"],
+  ["acl-operation-types", "acl_operation_types", "AclOperationTypes"],
+  ["acl-permission-types", "acl_permission_types", "AclPermissionTypes"],
+  ["acl-resource-types", "acl_resource_types", "AclResourceTypes"],
+  ["config-resource-types", "config_resource_types", "ConfigResourceTypes"],
+  ["config-source", "config_source", "ConfigSource"],
+  ["resource-pattern-types", "resource_pattern_types", "ResourcePatternTypes"],
+  ["coordinatorTypes", "coordinator_types"],
+  ["isolationLevel", "isolation_level"],
+  ["timestampTypes", "timestamp_types"],
+]) {
+  const { default: implementation } = await import("@dagher/kafkajs/src/protocol/" + newName + ".mjs");
+  assert.strictEqual(require("@dagher/kafkajs/src/protocol/" + oldName + ".js"), implementation);
+  if (publicName) assert.strictEqual(commonjs[publicName], implementation);
+}
 for (const [name, value] of Object.entries(errors)) {
   assert.strictEqual(namedErrors[name], value);
   assert.strictEqual(commonjs[name], value);

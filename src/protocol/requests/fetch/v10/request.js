@@ -1,4 +1,4 @@
-const ISOLATION_LEVEL = require("../../../isolationLevel");
+const ISOLATION_LEVEL = require("../../../isolation_level.mjs").default;
 const requestV9 = require("../v9/request");
 
 /**

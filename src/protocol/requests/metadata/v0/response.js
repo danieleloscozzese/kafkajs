@@ -1,5 +1,5 @@
-const Decoder = require("../../../decoder");
-const { failure, createErrorFromCode } = require("../../../error");
+const Decoder = require("../../../decoder.mjs").default;
+const { failure, createErrorFromCode } = require("../../../error.mjs").default;
 
 /**
  * Metadata Response (Version: 0) => [brokers] [topic_metadata]

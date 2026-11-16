@@ -1,6 +1,6 @@
 const createSocket = require("./socket");
-const createRequest = require("../protocol/request");
-const Decoder = require("../protocol/decoder");
+const createRequest = require("../protocol/request.mjs").default;
+const Decoder = require("../protocol/decoder.mjs").default;
 const { KafkaJSConnectionError, KafkaJSConnectionClosedError } = require("../errors.mjs").default;
 const { INT_32_MAX_VALUE } = require("../constants.mjs").default;
 const getEnv = require("../env");

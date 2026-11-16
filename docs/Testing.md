@@ -22,6 +22,10 @@ All utility implementations and their unit tests are native ESM. Their original
 function, class, and integer-constant identity. Broker and coordinator tests
 that replace the shuffle helper register its ESM mock before loading callers.
 
+Protocol foundation tests retain the existing wire vectors and add explicit
+framing, CRC32, signed-int64 and mixed-module identity checks. Run them with
+`npm run jest -- --runInBand --testPathPatterns='src/protocol/'`.
+
 For development, it is usually more convenient to boot the containers yourself, and then keep the tests running in watch mode. After you have booted the containers as described in [Running Kafka](ContributionGuide.md#running-kafka), you can run `npm run test:local:watch`. `jest`'s interactive mode will allow you select which tests to run.
 
 ## Logging

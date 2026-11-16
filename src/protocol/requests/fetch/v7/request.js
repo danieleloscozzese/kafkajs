@@ -1,6 +1,6 @@
-const Encoder = require("../../../encoder");
+const Encoder = require("../../../encoder.mjs").default;
 const { Fetch: apiKey } = require("../../apiKeys");
-const ISOLATION_LEVEL = require("../../../isolationLevel");
+const ISOLATION_LEVEL = require("../../../isolation_level.mjs").default;
 
 /**
  * Sessions are only used by followers

@@ -1,4 +1,4 @@
-const Encoder = require("../../../encoder");
+const Encoder = require("../../../encoder.mjs").default;
 const { Heartbeat: apiKey } = require("../../apiKeys");
 
 /**

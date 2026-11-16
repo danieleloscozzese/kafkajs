@@ -1,5 +1,5 @@
-const Decoder = require("../../../decoder");
-const { failure, createErrorFromCode, failIfVersionNotSupported } = require("../../../error");
+const Decoder = require("../../../decoder.mjs").default;
+const { failure, createErrorFromCode, failIfVersionNotSupported } = require("../../../error.mjs").default;
 
 /**
  * SyncGroup Response (Version: 0) => error_code member_assignment

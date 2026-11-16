@@ -1,6 +1,6 @@
 const { describe, test, expect, beforeEach, it, jest } = require("@jest/globals");
 
-const Decoder = require("../../protocol/decoder");
+const Decoder = require("../../protocol/decoder.mjs").default;
 const { newLogger } = require("testHelpers");
 const scram256AuthenticatorProvider = require("./scram256.js");
 const { SCRAM, DIGESTS } = require("./scram.js");

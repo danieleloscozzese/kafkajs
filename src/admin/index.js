@@ -12,12 +12,12 @@ const {
   KafkaJSDeleteTopicRecordsError,
   KafkaJSAggregateError,
 } = require("../errors.mjs").default;
-const { staleMetadata } = require("../protocol/error");
-const CONFIG_RESOURCE_TYPES = require("../protocol/config-resource-types");
-const ACL_RESOURCE_TYPES = require("../protocol/acl-resource-types");
-const ACL_OPERATION_TYPES = require("../protocol/acl-operation-types");
-const ACL_PERMISSION_TYPES = require("../protocol/acl-permission-types");
-const RESOURCE_PATTERN_TYPES = require("../protocol/resource-pattern-types");
+const { staleMetadata } = require("../protocol/error.mjs").default;
+const CONFIG_RESOURCE_TYPES = require("../protocol/config_resource_types.mjs").default;
+const ACL_RESOURCE_TYPES = require("../protocol/acl_resource_types.mjs").default;
+const ACL_OPERATION_TYPES = require("../protocol/acl_operation_types.mjs").default;
+const ACL_PERMISSION_TYPES = require("../protocol/acl_permission_types.mjs").default;
+const RESOURCE_PATTERN_TYPES = require("../protocol/resource_pattern_types.mjs").default;
 const { EARLIEST_OFFSET, LATEST_OFFSET } = require("../constants.mjs").default;
 
 const { CONNECT, DISCONNECT } = events;

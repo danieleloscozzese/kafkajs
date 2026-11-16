@@ -1,6 +1,6 @@
-const Decoder = require("../../../decoder");
+const Decoder = require("../../../decoder.mjs").default;
 const { KafkaJSDeleteTopicRecordsError } = require("../../../../errors.mjs").default;
-const { failure, createErrorFromCode } = require("../../../error");
+const { failure, createErrorFromCode } = require("../../../error.mjs").default;
 
 /**
  * DeleteRecords Response (Version: 0) => throttle_time_ms [topics]

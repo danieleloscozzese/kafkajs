@@ -1,6 +1,6 @@
 const responseV0 = require("../v0/response");
 
-const Decoder = require("../../../decoder");
+const Decoder = require("../../../decoder.mjs").default;
 
 /**
  * ListGroups Response (Version: 1) => error_code [groups]
