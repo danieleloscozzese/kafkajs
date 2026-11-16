@@ -113,7 +113,7 @@ unsafe intermediate state.
 
 | PR | Scope | Depends on | Completion gate |
 | --- | --- | --- | --- |
-| 1 | Establish reproducible baseline and compatibility inventory | None | Failures classified; declared runtime and API expectations recorded. |
+| 1 | Record baseline and compatibility constraints (complete) | None | Plan-only checkpoint; existing CI provides runtime feedback. |
 | 2 | Repair package entry points and add packed-consumer contract tests | 1 | Native import and require work from an installed tarball. |
 | 3 | Make lint, Jest, type checks, and CI module-aware | 2 | A representative ESM test and existing CommonJS tests pass together. |
 | 4 | Prove single-source ESM distribution and migration boundaries | 3 | Mixed-consumer identity, extensions, types, and synchronous APIs pass. |
@@ -125,29 +125,23 @@ unsafe intermediate state.
 | 10 | Ratchet JSDoc and simplify measured maintenance hotspots | 9 | Checked-JS scope grows without public API or performance regression. |
 | 11 | Expand broker coverage and refresh integration infrastructure | 3 | Legacy and selected modern broker lanes pass reproducibly. |
 | 12 | Finish examples, packaging, migration docs, and release | 10, 11 | Clean install, complete matrix, and release checklist pass. |
+| 13 | Revisit idle-timer optimisation and test-harness reliability | 12 | Optional post-stack follow-up; measured benefit and focused regressions. |
 
-### PR 1: baseline and invariants
+### PR 1: baseline and invariants (complete)
 
-Record a baseline from `npm ci`, lint, declaration checks, and the complete
-Kafka-backed suite. Separate missing infrastructure from actual test failures.
-Capture Node/npm versions, broker images, test counts, elapsed time, and
-intermittent failures in the PR evidence. Repair blocking baseline defects in
-small prerequisite commits, rather than bundling them into conversions.
+Step 1 is complete as a documentation-only checkpoint. The repository evidence
+and compatibility decisions above define the starting baseline. Existing CI
+provides test feedback; local test execution, new characterization tests, and
+performance measurements are not prerequisites for this step.
 
-Inventory public exports from `types/index.d.ts`, docs, examples, and runtime
-entry points. Include `logLevel`, error constructors, assigners, partitioners,
-codec registration, authentication providers, and supported import forms.
-Record any pre-existing mismatch and the intended upstream-compatible contract.
+There are no runtime, test, or configuration changes in this PR. Preserve the
+fork's existing non-negative throttle-delay clamp. Defer the additional
+idle-timer optimisation and related harness work to PR 13 rather than blocking
+the module-migration stack.
 
-Add focused characterization tests around the fork's throttle-delay clamp:
-past/zero/future throttle deadlines, pending/non-pending queues, an existing
-scheduled check, in-flight saturation, and destroy/late-callback behaviour.
-Assert that computed timer delays never become negative and that requests
-still progress. Do not blindly clamp all timers or change timeout precedence.
-
-Establish reproducible cold-load, throughput, latency, memory, and shutdown
-measurements before changing hot paths. Keep benchmark infrastructure small;
-results must identify broker setup, payloads, concurrency, and sample variation.
+Detailed package-export probes belong to PR 2; compiler-option and declaration
+CI repairs belong to PR 3. No broader runtime or performance claim is implied
+by closing this planning checkpoint.
 
 ### PR 2: repair the consumer-facing package boundary
 
@@ -336,10 +330,29 @@ behaviour requires an explicit breaking-change decision. Publish a prerelease
 only through the authorised release workflow; test representative applications
 from the packed/published artefact before a stable release.
 
+### PR 13: deferred timer optimisation and harness reliability
+
+After the core stack, reassess whether avoiding idle request-queue timer checks
+has enough measured benefit to justify a separate change. Preserve the original
+non-negative throttle-delay clamp and timeout precedence. If the optimisation
+is retained, cover idle/expired throttles, pending requests, in-flight saturation,
+rescheduling, and teardown with focused regressions before changing behaviour.
+
+Investigate the CI intermittency observed during step 1 separately: coordinator
+readiness during group setup, topic metadata propagation, wall-clock timing
+assertions in lock tests, and valid Kafka 2.4 idempotent-retry timestamps.
+Do not introduce broad retries, weaken assertions, or disable suites to mask
+failures. Keep harness repairs separate from runtime optimisation.
+
+This follow-up is planned here only; it is not implemented by step 1 and is not
+a prerequisite for PRs 2-12.
+
 ## Validation and merge policy
 
-Run the smallest relevant tests during development, then the required gates
-before merging. Current commands, to be maintained by PR 3 as discovery changes:
+Use CI as the required test feedback and merge gate. Local test execution is
+optional and may be used for diagnosis, but is not a prerequisite. CI currently
+provisions Kafka through `scripts/testWithKafka.sh`. Relevant local commands,
+to be maintained by PR 3 as discovery changes:
 
 ```sh
 npm ci
@@ -350,10 +363,10 @@ npm test
 npm pack --dry-run
 ```
 
-The request-queue selector is an example, not a substitute for each PR's affected
-tests; broker-backed cases still need their documented environment. `npm test`
-currently provisions Kafka through `scripts/testWithKafka.sh`. Tarball contents
-from `--dry-run` are not a substitute for installing and executing a real tarball.
+The request-queue selector is an example for optional local diagnosis. CI remains
+responsible for reporting suite results, including broker-backed cases.
+Tarball contents from `--dry-run` are not a substitute for installing and
+executing a real tarball.
 
 | Change type | Required evidence |
 | --- | --- |
@@ -364,11 +377,12 @@ from `--dry-run` are not a substitute for installing and executing a real tarbal
 | Hot-path refactor | Correctness gates plus repeatable before/after performance measurements. |
 | Release candidate | Full runtime/broker matrix, complete tests, tarball audit, representative application smoke tests. |
 
-Freeze benchmark scenarios in PR 1. Initially flag repeatable regressions over
-5% in throughput or p95 latency, or 10% in cold-load time/RSS, for investigation;
-these are proposed review budgets, not measured current results. Compare at
-least five runs on the same setup, report variability, and agree revised budgets
-before accepting a known regression rather than moving thresholds afterward.
+Define benchmark scenarios when a change to a hot path makes performance evidence
+necessary. Initially flag repeatable regressions over 5% in throughput or p95
+latency, or 10% in cold-load time/RSS, for investigation; these are proposed
+review budgets, not measured current results. Compare at least five runs on the
+same setup, report variability, and agree revised budgets before accepting a
+known regression rather than moving thresholds afterward.
 
 Each PR description should state its parent/dependencies, paths migrated,
 behavioural changes (normally none), exact validation evidence, unresolved
