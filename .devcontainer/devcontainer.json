@@ -5,12 +5,13 @@
   "features": {
     "ghcr.io/devcontainers/features/github-cli": "1",
     "ghcr.io/devcontainers/features/docker-in-docker:4": {
-      "dockerDashComposeVersion": "v2"
+      "moby": false,
+      "dockerDashComposeVersion": "none"
     }
   },
 
   "postCreateCommand": {
-    "docker": "docker compose version",
+    "docker": "sudo apt-get update && sudo apt-get install -y docker-compose-plugin",
     "npm": "npm ci"
   }
 }
