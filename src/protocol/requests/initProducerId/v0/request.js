@@ -1,17 +1,1 @@
-const Encoder = require("../../../encoder.mjs").default;
-const { InitProducerId: apiKey } = require("../../api_keys.mjs").default;
-
-/**
- * InitProducerId Request (Version: 0) => transactional_id transaction_timeout_ms
- *   transactional_id => NULLABLE_STRING
- *   transaction_timeout_ms => INT32
- */
-
-module.exports = ({ transactionalId, transactionTimeout }) => ({
-  apiKey,
-  apiVersion: 0,
-  apiName: "InitProducerId",
-  encode: async () => {
-    return new Encoder().writeString(transactionalId).writeInt32(transactionTimeout);
-  },
-});
+module.exports = require("./request.mjs").default;
