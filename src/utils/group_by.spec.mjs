@@ -1,6 +1,8 @@
-const { describe, expect, it } = require("@jest/globals");
+import { describe, expect, it } from "@jest/globals";
+import { createRequire } from "node:module";
+import groupBy from "./group_by.mjs";
 
-const groupBy = require("./groupBy");
+const require = createRequire(import.meta.url);
 
 describe("Utils > groupBy", () => {
   it("group items by the function return", async () => {
@@ -37,5 +39,21 @@ describe("Utils > groupBy", () => {
     ]);
 
     await expect(groupBy(input, groupFn)).resolves.toEqual(output);
+  });
+
+  it("preserves group insertion order and propagates mapper errors", async () => {
+    const groups = await groupBy([3, 2, 1], (item) => item % 2);
+    expect([...groups.keys()]).toEqual([1, 0]);
+
+    const error = new Error("mapper failed");
+    await expect(
+      groupBy([1], () => {
+        throw error;
+      }),
+    ).rejects.toBe(error);
+  });
+
+  it("shares the implementation with the CommonJS compatibility path", () => {
+    expect(require("./groupBy.js")).toBe(groupBy);
   });
 });

@@ -1,7 +1,7 @@
 const Broker = require("../broker");
 const createRetry = require("../retry");
 const shuffle = require("../utils/shuffle");
-const arrayDiff = require("../utils/arrayDiff");
+const arrayDiff = require("../utils/array_diff.mjs").default;
 const { KafkaJSBrokerNotFound, KafkaJSProtocolError } = require("../errors");
 
 const { keys, assign, values } = Object;
