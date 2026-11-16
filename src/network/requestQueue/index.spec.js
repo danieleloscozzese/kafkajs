@@ -2,7 +2,7 @@ const { describe, expect, beforeEach, it, jest } = require("@jest/globals");
 
 jest.setTimeout(3000);
 
-const sleep = require("../../utils/sleep.js");
+const sleep = require("../../utils/sleep.mjs").default;
 const { newLogger } = require("testHelpers");
 const InstrumentationEventEmitter = require("../../instrumentation/emitter.mjs").default;
 const events = require("../instrumentationEvents.js");

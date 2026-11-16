@@ -1,5 +1,5 @@
 const { EventEmitter } = require("events");
-const Long = require("../utils/long");
+const Long = require("../utils/long.mjs").default;
 const createRetry = require("../retry");
 const { isKafkaJSError, isRebalancing } = require("../errors.mjs").default;
 

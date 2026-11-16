@@ -1,8 +1,8 @@
 const { expect, beforeEach, it, describe, afterEach, jest } = require("@jest/globals");
 
 const seq = require("../utils/seq.mjs").default;
-const waitFor = require("../utils/waitFor");
-const sleep = require("../utils/sleep");
+const waitFor = require("../utils/wait_for.mjs").default;
+const sleep = require("../utils/sleep.mjs").default;
 const createFetcher = require("./fetcher");
 const createWorkerQueue = require("./workerQueue");
 const createWorker = require("./worker");

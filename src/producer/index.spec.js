@@ -41,7 +41,7 @@ const {
 } = require("testHelpers");
 const createRetrier = require("../retry/index.js");
 const { KafkaJSNonRetriableError } = require("../errors.mjs").default;
-const sleep = require("../utils/sleep.js");
+const sleep = require("../utils/sleep.mjs").default;
 
 describe("Producer", () => {
   let topicName, producer, consumer;

@@ -6,8 +6,8 @@ const { INT_32_MAX_VALUE } = require("../constants.mjs").default;
 const getEnv = require("../env");
 const RequestQueue = require("./requestQueue");
 const { CONNECTION_STATUS, CONNECTED_STATUS } = require("./connectionStatus");
-const sharedPromiseTo = require("../utils/sharedPromiseTo");
-const Long = require("../utils/long");
+const sharedPromiseTo = require("../utils/shared_promise_to.mjs").default;
+const Long = require("../utils/long.mjs").default;
 const SASLAuthenticator = require("../broker/saslAuthenticator");
 const apiKeys = require("../protocol/requests/apiKeys");
 

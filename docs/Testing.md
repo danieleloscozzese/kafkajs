@@ -17,6 +17,11 @@ For a broker-free test, for example, run `npm run jest -- --runInBand --runTests
 
 The npm Jest commands enable Node's experimental VM modules support for native `.mjs` tests; use them rather than invoking Jest directly. Jest transforms are disabled: CommonJS mocks must be registered before requiring their subject, and ESM mocks must be registered with `jest.unstable_mockModule` before dynamically importing their subject. Protocol request and response modules are preloaded in both CommonJS and ESM formats.
 
+All utility implementations and their unit tests are native ESM. Their original
+`.js` paths remain compatibility shims; packed-consumer checks cover shared
+function, class, and integer-constant identity. Broker and coordinator tests
+that replace the shuffle helper register its ESM mock before loading callers.
+
 For development, it is usually more convenient to boot the containers yourself, and then keep the tests running in watch mode. After you have booted the containers as described in [Running Kafka](ContributionGuide.md#running-kafka), you can run `npm run test:local:watch`. `jest`'s interactive mode will allow you select which tests to run.
 
 ## Logging

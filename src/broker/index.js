@@ -1,9 +1,9 @@
-const Lock = require("../utils/lock");
+const Lock = require("../utils/lock.mjs").default;
 const { Types: Compression } = require("../protocol/message/compression");
 const { requests, lookup } = require("../protocol/requests");
 const { KafkaJSNonRetriableError } = require("../errors.mjs").default;
 const apiKeys = require("../protocol/requests/apiKeys");
-const shuffle = require("../utils/shuffle");
+const shuffle = require("../utils/shuffle.mjs").default;
 
 const PRIVATE = {
   SEND_REQUEST: Symbol("private:Broker:sendRequest"),

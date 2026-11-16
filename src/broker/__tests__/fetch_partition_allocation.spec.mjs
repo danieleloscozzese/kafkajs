@@ -1,11 +1,12 @@
-const { describe, test, expect, beforeEach, jest } = require("@jest/globals");
+import { describe, test, expect, beforeEach, jest } from "@jest/globals";
 
-jest.mock("../../utils/shuffle", () => jest.fn());
+const mockShuffle = jest.fn();
+jest.unstable_mockModule("../../utils/shuffle.mjs", () => ({ default: mockShuffle }));
 
-const Broker = require("../index.js");
-const mockShuffle = require("../../utils/shuffle.js");
+const { default: Broker } = await import("../index.js");
 
-const { createConnectionPool, newLogger } = require("testHelpers");
+const { default: helpers } = await import("testHelpers");
+const { createConnectionPool, newLogger } = helpers;
 
 const minBytes = 1;
 const maxBytes = 10485760; // 10MB

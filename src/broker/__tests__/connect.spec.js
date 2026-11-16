@@ -10,7 +10,7 @@ const {
   saslEntries,
 } = require("testHelpers");
 
-const Long = require("../../utils/long.js");
+const Long = require("../../utils/long.mjs").default;
 const Broker = require("../index.js");
 
 describe("Broker > connect", () => {

@@ -9,7 +9,7 @@ const {
   KafkaJSNonRetriableError,
 } = require("../../errors.mjs").default;
 
-const sleep = require("../../utils/sleep.js");
+const sleep = require("../../utils/sleep.mjs").default;
 const {
   secureRandom,
   createCluster,

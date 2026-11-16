@@ -1,6 +1,6 @@
-const { describe, beforeEach, it, expect, jest } = require("@jest/globals");
+import { describe, beforeEach, it, expect, jest } from "@jest/globals";
 
-const sharedPromiseTo = require("./sharedPromiseTo");
+import sharedPromiseTo from "./shared_promise_to.mjs";
 
 describe("Utils > sharedPromiseTo", () => {
   let resolvePromise1, rejectPromise1, sharedPromise1, asyncFunction;

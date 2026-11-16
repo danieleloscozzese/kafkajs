@@ -1,7 +1,7 @@
 const { describe, expect, beforeEach, it, jest } = require("@jest/globals");
 
-const Long = require("../../../utils/long");
-const sleep = require("../../../utils/sleep");
+const Long = require("../../../utils/long.mjs").default;
+const sleep = require("../../../utils/sleep.mjs").default;
 const OffsetManager = require("../index");
 
 describe("Consumer > OffsetMananger > commitOffsetsIfNecessary", () => {

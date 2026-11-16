@@ -1,8 +1,8 @@
-const sleep = require("../utils/sleep");
-const websiteUrl = require("../utils/websiteUrl");
+const sleep = require("../utils/sleep.mjs").default;
+const websiteUrl = require("../utils/website_url.mjs").default;
 const arrayDiff = require("../utils/array_diff.mjs").default;
 const createRetry = require("../retry");
-const sharedPromiseTo = require("../utils/sharedPromiseTo");
+const sharedPromiseTo = require("../utils/shared_promise_to.mjs").default;
 
 const OffsetManager = require("./offsetManager");
 const Batch = require("./batch");

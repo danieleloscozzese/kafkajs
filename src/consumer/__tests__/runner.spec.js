@@ -4,7 +4,7 @@ const Runner = require("../runner");
 const Batch = require("../batch");
 const InstrumentationEventEmitter = require("../../instrumentation/emitter.mjs").default;
 const { newLogger, secureRandom, waitFor } = require("testHelpers");
-const sleep = require("../../utils/sleep.js");
+const sleep = require("../../utils/sleep.mjs").default;
 const {
   KafkaJSProtocolError,
   KafkaJSNotImplemented,

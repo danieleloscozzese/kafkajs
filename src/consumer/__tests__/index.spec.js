@@ -11,8 +11,8 @@ const {
 } = require("testHelpers");
 const createConsumer = require("../index.js");
 const createProducer = require("../../producer/index.js");
-const sleep = require("../../utils/sleep.js");
-const waitFor = require("../../utils/waitFor.js");
+const sleep = require("../../utils/sleep.mjs").default;
+const waitFor = require("../../utils/wait_for.mjs").default;
 const uniq = require("../../utils/uniq.mjs").default;
 
 describe("Consumer", () => {

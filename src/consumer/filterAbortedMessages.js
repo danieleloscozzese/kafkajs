@@ -1,4 +1,4 @@
-const Long = require("../utils/long");
+const Long = require("../utils/long.mjs").default;
 const ABORTED_MESSAGE_KEY = Buffer.from([0, 0, 0, 0]);
 
 const isAbortMarker = ({ key }) => {

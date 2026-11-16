@@ -1,4 +1,1 @@
-module.exports = (timeInMs) =>
-  new Promise((resolve) => {
-    setTimeout(resolve, timeInMs);
-  });
+module.exports = require("./sleep.mjs").default;

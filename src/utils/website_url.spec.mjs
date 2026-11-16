@@ -1,6 +1,6 @@
-const { describe, expect, it } = require("@jest/globals");
+import { describe, expect, it } from "@jest/globals";
 
-const websiteUrl = require("./websiteUrl");
+import websiteUrl from "./website_url.mjs";
 
 describe("Utils > websiteUrl", () => {
   it.each([["docs/faq"], ["/docs/faq"]])("generates links to the website", (path) => {
