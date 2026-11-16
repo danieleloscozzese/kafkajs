@@ -8,22 +8,21 @@ const sleep = (value) => waitFor((delay) => delay >= value);
 describe("Utils > Lock", () => {
   it("allows only one resource at a time", async () => {
     const lock = new Lock({ timeout: 1000 });
-    const resource = jest.fn();
-    const callResource = async () => {
-      try {
-        await lock.acquire();
-        resource(Date.now());
-        await sleep(50);
-      } finally {
-        await lock.release();
-      }
-    };
+    const acquired = [];
 
-    await Promise.all([callResource(), callResource(), callResource()]);
-    const calls = resource.mock.calls.flat();
-    expect(calls.length).toEqual(3);
-    expect(calls[1] - calls[0]).toBeGreaterThanOrEqual(50);
-    expect(calls[2] - calls[1]).toBeGreaterThanOrEqual(50);
+    await lock.acquire();
+    const second = lock.acquire().then(() => acquired.push("second"));
+    const third = lock.acquire().then(() => acquired.push("third"));
+    expect(acquired).toEqual([]);
+
+    await lock.release();
+    await second;
+    expect(acquired).toEqual(["second"]);
+
+    await lock.release();
+    await third;
+    expect(acquired).toEqual(["second", "third"]);
+    await lock.release();
   });
 
   it("throws an error if the lock cannot be acquired within a period", async () => {
