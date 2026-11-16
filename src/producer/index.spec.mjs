@@ -9,18 +9,19 @@ let initProducerIdSpy;
 let sendOffsetsSpy;
 const retrySpy = jest.fn(actualCreateRetry);
 
-jest.mock("./eosManager", () => {
-  return (...args) => {
-    const eosManager = jest.requireActual("./eosManager")(...args);
+jest.unstable_mockModule("../retry/index.mjs", () => ({ default: retrySpy }));
+const { default: actualCreateEosManager } = await import("./eosManager/index.mjs");
+
+jest.unstable_mockModule("./eosManager/index.mjs", () => ({
+  default: (...args) => {
+    const eosManager = actualCreateEosManager(...args);
 
     initProducerIdSpy = jest.spyOn(eosManager, "initProducerId");
     sendOffsetsSpy = jest.spyOn(eosManager, "sendOffsets");
 
     return eosManager;
-  };
-});
-
-jest.unstable_mockModule("../retry/index.mjs", () => ({ default: retrySpy }));
+  },
+}));
 
 const { default: createProducer } = await import("./index.js");
 const { default: createConsumer } = await import("../consumer/index.js");

@@ -1,9 +1,12 @@
-const { describe, test, expect, beforeEach, jest } = require("@jest/globals");
+import { describe, test, expect, beforeEach, jest } from "@jest/globals";
+import createEosManager from "./index.mjs";
+import errors from "../../errors.mjs";
+import COORDINATOR_TYPES from "../../protocol/coordinator_types.mjs";
+import { INT_32_MAX_VALUE } from "../../constants.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { newLogger } = testHelpers;
 
-const { newLogger } = require("testHelpers");
-const createEosManager = require(".");
-const { KafkaJSNonRetriableError } = require("../../errors.mjs").default;
-const COORDINATOR_TYPES = require("../../protocol/coordinator_types.mjs").default;
+const { KafkaJSNonRetriableError } = errors;
 
 describe("Producer > eosManager", () => {
   const topic = "topic-name";
@@ -77,6 +80,41 @@ describe("Producer > eosManager", () => {
 
     await eosManager.initProducerId();
     expect(eosManager.getSequence(topic, 1)).toEqual(0); // Sequences reset by initProducerId
+  });
+
+  test("preserves int64 producer IDs and rotates at the existing exact sequence boundary", async () => {
+    const id = "9007199254740993";
+    broker.initProducerId.mockReturnValue({ producerId: id, producerEpoch: 2 });
+    const manager = createEosManager({ logger: newLogger(), cluster });
+    await manager.initProducerId();
+    expect(manager.getProducerId()).toBe(id);
+    manager.updateSequence(topic, 0, INT_32_MAX_VALUE - 1);
+    expect(manager.getSequence(topic, 0)).toBe(INT_32_MAX_VALUE - 1);
+    manager.updateSequence(topic, 0, 1);
+    expect(manager.getSequence(topic, 0)).toBe(0);
+  });
+
+  test("serializes requests per broker without locking unrelated brokers", async () => {
+    const manager = createEosManager({ logger: newLogger(), cluster });
+    await manager.initProducerId();
+    const first = { nodeId: 1 };
+    const other = { nodeId: 2 };
+    await manager.acquireBrokerLock(first);
+    let acquired = false;
+    const waiting = manager.acquireBrokerLock(first).then(() => {
+      acquired = true;
+    });
+    try {
+      await manager.acquireBrokerLock(other);
+      await new Promise((resolve) => setImmediate(resolve));
+      expect(acquired).toBe(false);
+    } finally {
+      manager.releaseBrokerLock(first);
+      await waiting;
+      manager.releaseBrokerLock(first);
+      manager.releaseBrokerLock(other);
+    }
+    expect(acquired).toBe(true);
   });
 
   describe("if transactional=true", () => {

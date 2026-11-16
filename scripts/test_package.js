@@ -240,6 +240,9 @@ import BrokerPool from "@dagher/kafkajs/src/cluster/broker_pool.mjs";
 import createConnectionPoolBuilder from "@dagher/kafkajs/src/cluster/connection_pool_builder.mjs";
 import SASLAuthenticator from "@dagher/kafkajs/src/broker/saslAuthenticator/index.mjs";
 import nativePartitioners from "@dagher/kafkajs/src/producer/partitioners/index.mjs";
+import createEosManager from "@dagher/kafkajs/src/producer/eosManager/index.mjs";
+import createTransactionStateMachine from "@dagher/kafkajs/src/producer/eosManager/transaction_state_machine.mjs";
+import transactionStates from "@dagher/kafkajs/src/producer/eosManager/transaction_states.mjs";
 ${protocolFamilies
   .map(
     ([family], index) =>
@@ -344,6 +347,28 @@ const seedPool = await builder.build();
 assert(seedPool instanceof ConnectionPool);
 await seedPool.destroy();
 await cluster.disconnect();
+assert.strictEqual(require("@dagher/kafkajs/src/producer/eosManager/index.js"), createEosManager);
+assert.strictEqual(require("@dagher/kafkajs/src/producer/eosManager/transactionStateMachine.js"), createTransactionStateMachine);
+assert.strictEqual(require("@dagher/kafkajs/src/producer/eosManager/transactionStates.js"), transactionStates);
+const transactionState = createTransactionStateMachine({ logger: connectionOptions.logger });
+assert.equal(transactionState.state(), transactionStates.UNINITIALIZED);
+transactionState.transitionTo(transactionStates.READY);
+assert.equal(transactionState.state(), transactionStates.READY);
+const eosManager = createEosManager({
+  logger: connectionOptions.logger,
+  cluster: {
+    refreshMetadataIfNecessary: async () => {},
+    findControllerBroker: async () => ({
+      initProducerId: async () => ({ producerId: "9007199254740993", producerEpoch: 1 }),
+    }),
+  },
+});
+assert.equal(eosManager.then, undefined);
+assert.equal(eosManager.isInitialized(), false);
+await eosManager.initProducerId();
+assert.equal(eosManager.getProducerId(), "9007199254740993");
+assert.equal(eosManager.getSequence("packed", 0), 0);
+assert.throws(() => eosManager.beginTransaction(), commonjs.KafkaJSNonRetriableError);
 assert.strictEqual(require("@dagher/kafkajs/src/broker/saslAuthenticator/index.js"), SASLAuthenticator);
 assert.equal(SASLAuthenticator.name, "SASLAuthenticator");
 for (const [oldName, newName] of [

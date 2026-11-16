@@ -92,6 +92,13 @@ including falsy keys, explicit partitions, unavailable leaders and per-topic
 round-robin counters. Fresh Node processes verify each entropy backend and
 the exact 65536-byte limit; the Node crypto fallback stays conditional.
 
+The EOS manager and transaction state machine are native ESM. Their suites
+cover all legal/illegal transitions, event ordering, synchronous/asynchronous
+guards, exact sequence rollover, int64 producer IDs and per-broker locks.
+The producer suite registers the retry mock before importing the real EOS
+factory, then registers its EOS wrapper before loading the producer. This
+preserves both retry observations and transaction spies without transpilation.
+
 For development, it is usually more convenient to boot the containers yourself, and then keep the tests running in watch mode. After you have booted the containers as described in [Running Kafka](ContributionGuide.md#running-kafka), you can run `npm run test:local:watch`. `jest`'s interactive mode will allow you select which tests to run.
 
 ## Logging
