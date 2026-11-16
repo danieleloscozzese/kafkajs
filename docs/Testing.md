@@ -5,7 +5,13 @@ title: Testing
 
 We rely on a suite of largely integration tests, using `jest` as a test runner.
 
-To run all the tests a single time without having booted any containers, run `npm test`. This will lint the code, boot all the containers, run all the tests and then tear down the containers. Run `npm run test:pack` to verify the installed package tarball from a clean consumer directory.
+CI uses Node.js 24 and npm. Run `npm ci` to install the locked dependencies.
+
+To run all the tests a single time without having booted any containers, run `npm test`. This will lint the code, boot all the containers, run all the tests and then tear down the containers. Run `npm run test:types` to check the declarations and `npm run test:pack` to verify the installed package tarball from a clean consumer directory. Neither check requires Kafka.
+
+For a broker-free test, for example, run `npm run jest -- --runInBand --runTestsByPath src/utils/arrayDiff.spec.js`. Many other tests require Kafka even when selected individually.
+
+The npm Jest commands enable Node's experimental VM modules support for native `.mjs` tests; use them rather than invoking Jest directly. Jest transforms are disabled: CommonJS mocks must be registered before requiring their subject, and ESM mocks must be registered with `jest.unstable_mockModule` before dynamically importing their subject. Protocol request and response modules are preloaded in both CommonJS and ESM formats.
 
 For development, it is usually more convenient to boot the containers yourself, and then keep the tests running in watch mode. After you have booted the containers as described in [Running Kafka](ContributionGuide.md#running-kafka), you can run `npm run test:local:watch`. `jest`'s interactive mode will allow you select which tests to run.
 

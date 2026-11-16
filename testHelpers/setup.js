@@ -40,6 +40,6 @@ const path = require("path");
 // Protocol files are imported on demand depending on the APIs supported by Kafka,
 // but this behavior doesn't help Jest. Therefore, all files are eagerly imported
 // when running tests
-globSync("src/protocol/requests/**/v*/@(request|response).js")
+globSync("src/protocol/requests/**/v*/@(request|response).@(js|cjs)")
   .map((file) => path.resolve(file))
   .map(require);

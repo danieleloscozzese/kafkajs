@@ -1,11 +1,11 @@
-const { describe, test, expect } = require("@jest/globals");
+const { describe, test, expect, jest } = require("@jest/globals");
+
+jest.mock("./v0/request");
+jest.mock("./v1/request");
 
 const initProducerId = require("./index");
 const requestV0 = require("./v0/request");
 const requestV1 = require("./v1/request");
-
-jest.mock("./v0/request");
-jest.mock("./v1/request");
 
 describe("Protocol > Requests > InitProducerId", () => {
   [requestV0, requestV1].forEach((request, version) => {
