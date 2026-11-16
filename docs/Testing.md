@@ -29,16 +29,19 @@ framing, CRC32, signed-int64 and mixed-module identity checks. Run them with
 Message-set, record-batch and compression implementations are also native ESM.
 Their JSON fixtures use explicit import attributes, and compression tests
 exercise codec registration through the CommonJS path and use it in ESM record
-encoding and decoding. Gzip is imported statically; codec factories remain
-synchronous and the registry remains shared and mutable.
+encoding and decoding. Gzip retains its original lazy loading through
+`createRequire`; codec factories remain synchronous and the registry remains
+shared and mutable.
 
-API-version, metadata, produce, fetch, list-offset, group-coordination,
-offset-commit/fetch, transaction, topic/configuration administration, and
-partition-reassignment request implementations and tests use native ESM.
+All versioned request families, their lookup registry, and fixture tests use
+native ESM, including ACL/group administration and SASL wire requests.
 Their version registries retain explicit, synchronous lazy loads through
 `createRequire`: eagerly importing every version exceeded the cold-start
 budget. Only the selected version and its dependencies load on invocation;
 no transpilation or asynchronous factory API is introduced.
+Packed-consumer tests observe actual native module loads through Node's
+synchronous loader hooks, rather than relying on the CommonJS cache to track
+ESM dependencies. SASL mechanism frames and providers migrate with authentication.
 
 For development, it is usually more convenient to boot the containers yourself, and then keep the tests running in watch mode. After you have booted the containers as described in [Running Kafka](ContributionGuide.md#running-kafka), you can run `npm run test:local:watch`. `jest`'s interactive mode will allow you select which tests to run.
 

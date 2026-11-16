@@ -1,5 +1,7 @@
 import { KafkaJSNotImplemented } from "../../../errors.mjs";
-import Gzip from "./gzip.mjs";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
 
 const COMPRESSION_CODEC_MASK = 0x07;
 
@@ -12,7 +14,7 @@ const Types = {
 };
 
 const Codecs = {
-  [Types.GZIP]: () => Gzip,
+  [Types.GZIP]: () => require("./gzip.mjs").default,
   [Types.Snappy]: () => {
     throw new KafkaJSNotImplemented("Snappy compression not implemented");
   },

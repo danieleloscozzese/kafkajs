@@ -33,6 +33,14 @@ const protocolFamilies = [
   ["alterConfigs", [0, 1]],
   ["alterPartitionReassignments", [0]],
   ["listPartitionReassignments", [0]],
+  ["describeAcls", [0, 1]],
+  ["createAcls", [0, 1]],
+  ["deleteAcls", [0, 1]],
+  ["describeGroups", [0, 1, 2]],
+  ["listGroups", [0, 1, 2]],
+  ["deleteGroups", [0, 1]],
+  ["saslHandshake", [0, 1]],
+  ["saslAuthenticate", [0, 1]],
 ];
 
 fs.mkdirSync(consumerDir);
@@ -151,19 +159,35 @@ assert.equal(packageExports.CompressionTypes.GZIP, 1);
   fs.writeFileSync(
     path.join(consumerDir, "lazy_protocols.cjs"),
     `const assert = require("node:assert/strict");
+const { registerHooks } = require("node:module");
+const { pathToFileURL } = require("node:url");
+const loaded = new Set();
+const hooks = registerHooks({
+  load(url, context, nextLoad) {
+    loaded.add(url);
+    return nextLoad(url, context);
+  },
+});
+const kafka = require("@dagher/kafkajs");
+assert(loaded.has(pathToFileURL(require.resolve("@dagher/kafkajs/src/protocol/requests/api_keys.mjs")).href));
+const gzipUrl = pathToFileURL(require.resolve("@dagher/kafkajs/src/protocol/message/compression/gzip.mjs")).href;
+assert(!loaded.has(gzipUrl));
+assert.equal(typeof kafka.CompressionCodecs[kafka.CompressionTypes.GZIP]().compress, "function");
+assert(loaded.has(gzipUrl));
 for (const [family, versions] of ${JSON.stringify(protocolFamilies)}) {
   const prefix = "@dagher/kafkajs/src/protocol/requests/" + family;
   const registry = require(prefix + "/index.js");
-  const first = require.resolve(prefix + "/v" + versions[0] + "/request.mjs");
-  const last = require.resolve(prefix + "/v" + versions.at(-1) + "/request.mjs");
-  assert.equal(require.cache[first], undefined);
-  assert.equal(require.cache[last], undefined);
+  const urls = versions.map(version => ["request", "response"].map(kind =>
+    pathToFileURL(require.resolve(prefix + "/v" + version + "/" + kind + ".mjs")).href,
+  ));
+  for (const url of urls.flat()) assert(!loaded.has(url), "Prematurely loaded " + url);
   const result = registry.protocol({ version: versions[0] })({ topics: [] });
   assert.equal(result.request.apiVersion, versions[0]);
   assert.equal(result.then, undefined);
-  assert(require.cache[first]);
-  if (first !== last) assert.equal(require.cache[last], undefined);
+  for (const url of urls[0]) assert(loaded.has(url), "Selected module not loaded: " + url);
+  for (const url of urls.slice(1).flat()) assert(!loaded.has(url), "Unused version loaded: " + url);
 }
+hooks.deregister();
 `,
   );
   fs.writeFileSync(
@@ -201,6 +225,7 @@ import Encoder from "@dagher/kafkajs/src/protocol/encoder.mjs";
 import Decoder from "@dagher/kafkajs/src/protocol/decoder.mjs";
 import compression from "@dagher/kafkajs/src/protocol/message/compression/index.mjs";
 import apiKeys from "@dagher/kafkajs/src/protocol/requests/api_keys.mjs";
+import protocols from "@dagher/kafkajs/src/protocol/requests/index.mjs";
 ${protocolFamilies
   .map(
     ([family], index) =>
@@ -289,6 +314,7 @@ assert.strictEqual(commonjs.CompressionCodecs[99](), codec());
 assert.strictEqual(compression.Codecs, CompressionCodecs);
 assert.strictEqual(compression.lookupCodec(99), codec());
 assert.strictEqual(require("@dagher/kafkajs/src/protocol/requests/apiKeys.js"), apiKeys);
+assert.strictEqual(require("@dagher/kafkajs/src/protocol/requests/index.js"), protocols);
 assert.strictEqual(
   require("@dagher/kafkajs/src/protocol/requests/fetch/v4/decodeMessages.js"),
   (await import("@dagher/kafkajs/src/protocol/requests/fetch/v4/decode_messages.mjs")).default,
