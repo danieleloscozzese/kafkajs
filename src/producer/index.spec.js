@@ -22,7 +22,7 @@ jest.mock("../retry", () => {
 });
 
 const { randomUUID } = require("node:crypto");
-const InstrumentationEventEmitter = require("../instrumentation/emitter.js");
+const InstrumentationEventEmitter = require("../instrumentation/emitter.mjs").default;
 const createProducer = require("./index.js");
 const createConsumer = require("../consumer/index.js");
 const {

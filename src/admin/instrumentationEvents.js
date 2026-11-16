@@ -1,6 +1,6 @@
 const swapObject = require("../utils/swap_object.mjs").default;
 const networkEvents = require("../network/instrumentationEvents");
-const InstrumentationEventType = require("../instrumentation/eventType");
+const InstrumentationEventType = require("../instrumentation/event_type.mjs").default;
 const adminType = InstrumentationEventType("admin");
 
 const events = {

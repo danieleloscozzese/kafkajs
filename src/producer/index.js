@@ -1,7 +1,7 @@
 const createRetry = require("../retry");
 const { CONNECTION_STATUS } = require("../network/connectionStatus");
 const { DefaultPartitioner } = require("./partitioners/");
-const InstrumentationEventEmitter = require("../instrumentation/emitter");
+const InstrumentationEventEmitter = require("../instrumentation/emitter.mjs").default;
 const createEosManager = require("./eosManager");
 const createMessageProducer = require("./messageProducer");
 const { events, wrap: wrapEvent, unwrap: unwrapEvent } = require("./instrumentationEvents");

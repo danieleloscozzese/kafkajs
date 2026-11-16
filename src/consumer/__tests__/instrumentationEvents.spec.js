@@ -1,6 +1,6 @@
 const { describe, test, expect, beforeEach, afterEach, it, jest } = require("@jest/globals");
 
-const InstrumentationEventEmitter = require("../../instrumentation/emitter");
+const InstrumentationEventEmitter = require("../../instrumentation/emitter.mjs").default;
 const createProducer = require("../../producer");
 const createConsumer = require("../index");
 
