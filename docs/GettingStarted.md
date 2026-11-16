@@ -4,22 +4,16 @@ title: Getting Started
 sidebar_label: Getting Started
 ---
 
-Install KafkaJS using [`yarn`](https://yarnpkg.com/en/package/kafkajs):
+Install KafkaJS from [npm](https://www.npmjs.com/package/@dagher/kafkajs):
 
 ```bash
-yarn add kafkajs
-```
-
-Or [`npm`](https://www.npmjs.com/package/kafkajs):
-
-```bash
-npm install kafkajs
+npm install @dagher/kafkajs
 ```
 
 Let's start by instantiating the KafkaJS client by pointing it towards at least one broker:
 
 ```javascript
-const { Kafka } = require('kafkajs')
+const { Kafka } = require('@dagher/kafkajs')
 
 const kafka = new Kafka({
   clientId: 'my-app',
