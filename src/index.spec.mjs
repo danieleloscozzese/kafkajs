@@ -1,17 +1,17 @@
-const { describe, test, expect, it, jest } = require("@jest/globals");
+import { describe, test, expect, it, jest } from "@jest/globals";
+import ISOLATION_LEVEL from "./protocol/isolation_level.mjs";
 
 // Explicit factories avoid automock evaluating the mixed module graph.
 jest.mock("./producer", () => jest.fn());
 jest.mock("./consumer", () => jest.fn());
 jest.mock("./admin", () => jest.fn());
-jest.mock("./cluster", () => jest.fn());
+const Cluster = jest.fn();
+jest.unstable_mockModule("./cluster/index.mjs", () => ({ default: Cluster }));
 
-const Client = require("./index");
-const createProducer = require("./producer");
-const createConsumer = require("./consumer");
-const createAdmin = require("./admin");
-const Cluster = require("./cluster");
-const ISOLATION_LEVEL = require("./protocol/isolation_level.mjs").default;
+const { default: Client } = await import("./index.js");
+const { default: createProducer } = await import("./producer/index.js");
+const { default: createConsumer } = await import("./consumer/index.js");
+const { default: createAdmin } = await import("./admin/index.js");
 
 describe("Client", () => {
   it("gives access to its logger", () => {

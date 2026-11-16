@@ -65,6 +65,15 @@ and administration cases are retained. Remaining CommonJS test helpers load
 after native subjects to avoid test-only linking cycles; installed-package
 tests still exercise static mixed imports.
 
+Cluster, broker-pool and connection-pool-builder implementations and suites
+are native ESM, retaining metadata, offset and shared-connection contracts.
+Seed-provider cases check ordered rotation, wraparound, fresh async lookups,
+explicit destinations and non-retriable invalid results. The client suite
+registers its native Cluster mock before importing the CommonJS client and
+keeps explicit factories for the remaining CommonJS collaborators.
+Protocol preloading also completes the native request registry before the
+mixed Cluster/SASL graph links; production loading remains unchanged.
+
 For development, it is usually more convenient to boot the containers yourself, and then keep the tests running in watch mode. After you have booted the containers as described in [Running Kafka](ContributionGuide.md#running-kafka), you can run `npm run test:local:watch`. `jest`'s interactive mode will allow you select which tests to run.
 
 ## Logging

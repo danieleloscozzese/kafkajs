@@ -1,6 +1,6 @@
-const { describe, test, expect, beforeEach, afterEach, jest } = require("@jest/globals");
-
-const { createCluster, secureRandom, createTopic } = require("testHelpers");
+import { describe, test, expect, beforeEach, afterEach, jest } from "@jest/globals";
+const { default: testHelpers } = await import("testHelpers");
+const { createCluster, secureRandom, createTopic } = testHelpers;
 
 describe("Cluster > addTargetTopic", () => {
   let cluster;

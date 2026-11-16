@@ -235,6 +235,9 @@ import createSocket from "@dagher/kafkajs/src/network/socket.mjs";
 import createSocketFactory from "@dagher/kafkajs/src/network/socket_factory.mjs";
 import getEnv from "@dagher/kafkajs/src/env.mjs";
 import Broker from "@dagher/kafkajs/src/broker/index.mjs";
+import Cluster from "@dagher/kafkajs/src/cluster/index.mjs";
+import BrokerPool from "@dagher/kafkajs/src/cluster/broker_pool.mjs";
+import createConnectionPoolBuilder from "@dagher/kafkajs/src/cluster/connection_pool_builder.mjs";
 ${protocolFamilies
   .map(
     ([family], index) =>
@@ -305,6 +308,21 @@ assert(broker.connectionPool instanceof ConnectionPool);
 assert.equal(broker.isConnected(), false);
 assert.throws(() => broker.lookupRequest(), /Broker not connected/);
 await broker.disconnect();
+assert.strictEqual(require("@dagher/kafkajs/src/cluster/index.js"), Cluster);
+assert.strictEqual(require("@dagher/kafkajs/src/cluster/brokerPool.js"), BrokerPool);
+assert.strictEqual(require("@dagher/kafkajs/src/cluster/connectionPoolBuilder.js"), createConnectionPoolBuilder);
+assert.equal(Cluster.name, "Cluster");
+assert.equal(BrokerPool.name, "BrokerPool");
+const cluster = new Cluster({ ...connectionOptions, brokers: ["localhost:9092"] });
+assert(cluster.brokerPool instanceof BrokerPool);
+assert.equal(cluster.isConnected(), false);
+assert.equal(cluster.targetTopics.size, 0);
+const builder = createConnectionPoolBuilder({ ...connectionOptions, brokers: ["localhost:9092"] });
+assert.equal(builder.then, undefined);
+const seedPool = await builder.build();
+assert(seedPool instanceof ConnectionPool);
+await seedPool.destroy();
+await cluster.disconnect();
 for (const [oldPath, newPath] of [
   ["retry/defaults", "retry/defaults"],
   ["retry/defaults.test", "retry/defaults_test"],

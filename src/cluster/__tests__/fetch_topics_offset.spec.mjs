@@ -1,14 +1,7 @@
-const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
-
-const {
-  createCluster,
-  secureRandom,
-  createTopic,
-  createModPartitioner,
-  newLogger,
-} = require("testHelpers");
-
-const createProducer = require("../../producer/index.js");
+import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
+const { default: testHelpers } = await import("testHelpers");
+const { default: createProducer } = await import("../../producer/index.js");
+const { createCluster, secureRandom, createTopic, createModPartitioner, newLogger } = testHelpers;
 
 describe("Cluster > fetchTopicsOffset", () => {
   let cluster, topic, producer;

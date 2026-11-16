@@ -1,19 +1,10 @@
-const { describe, test, expect, beforeEach, afterEach, jest } = require("@jest/globals");
+import { describe, test, expect, beforeEach, afterEach, jest } from "@jest/globals";
+import Broker from "../../broker/index.mjs";
+import errors from "../../errors.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { createCluster, secureRandom, createTopic, createConnectionPool, newLogger } = testHelpers;
 
-const {
-  createCluster,
-  secureRandom,
-  createTopic,
-  createConnectionPool,
-  newLogger,
-} = require("testHelpers");
-
-const Broker = require("../../broker/index.mjs").default;
-const {
-  KafkaJSLockTimeout,
-  KafkaJSConnectionError,
-  KafkaJSBrokerNotFound,
-} = require("../../errors.mjs").default;
+const { KafkaJSLockTimeout, KafkaJSConnectionError, KafkaJSBrokerNotFound } = errors;
 
 describe("Cluster > findBroker", () => {
   let cluster, topic;

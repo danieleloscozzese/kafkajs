@@ -1,16 +1,13 @@
-const { describe, test, expect, beforeEach, afterEach, it, jest } = require("@jest/globals");
-
-const {
-  createConnectionBuilder,
-  plainTextBrokers,
-  createConnectionPool,
-  newLogger,
-  secureRandom,
-} = require("testHelpers");
-const { KafkaJSProtocolError, KafkaJSConnectionError } = require("../../errors.mjs").default;
-const { createErrorFromCode, errorCodes } = require("../../protocol/error.mjs").default;
-const BrokerPool = require("../brokerPool.js");
-const Broker = require("../../broker/index.mjs").default;
+import { describe, test, expect, beforeEach, afterEach, it, jest } from "@jest/globals";
+import errors from "../../errors.mjs";
+import protocolErrors from "../../protocol/error.mjs";
+import BrokerPool from "../broker_pool.mjs";
+import Broker from "../../broker/index.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { createConnectionBuilder, plainTextBrokers, createConnectionPool, newLogger, secureRandom } =
+  testHelpers;
+const { KafkaJSProtocolError, KafkaJSConnectionError } = errors;
+const { createErrorFromCode, errorCodes } = protocolErrors;
 
 describe("Cluster > BrokerPool", () => {
   let topicName, brokerPool;

@@ -1,9 +1,11 @@
-const { describe, test, expect, beforeEach, it, jest } = require("@jest/globals");
+import { describe, test, expect, beforeEach, it, jest } from "@jest/globals";
+import connectionPoolBuilder from "../connection_pool_builder.mjs";
+import ConnectionPool from "../../network/connection_pool.mjs";
+import errors from "../../errors.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { newLogger } = testHelpers;
 
-const { newLogger } = require("testHelpers");
-const connectionPoolBuilder = require("../connectionPoolBuilder.js");
-const ConnectionPool = require("../../network/connection_pool.mjs").default;
-const { KafkaJSConnectionError, KafkaJSNonRetriableError } = require("../../errors.mjs").default;
+const { KafkaJSConnectionError, KafkaJSNonRetriableError } = errors;
 
 describe("Cluster > ConnectionBuilder", () => {
   let builder;
@@ -28,7 +30,7 @@ describe("Cluster > ConnectionBuilder", () => {
     });
   });
 
-  test("creates a new connection using a random broker", async () => {
+  test("creates a new connection from the seed broker list", async () => {
     const connectionPool = await builder.build();
     expect(connectionPool).toBeInstanceOf(ConnectionPool);
     expect(connectionPool.host).toBeOneOf(["host.test", "host2.test", "host3.test"]);
@@ -41,14 +43,14 @@ describe("Cluster > ConnectionBuilder", () => {
     expect(connectionPool.socketFactory).toBe(socketFactory);
   });
 
-  test("when called without host and port iterates throught the seed brokers", async () => {
+  test("rotates through the seed brokers in order and wraps around", async () => {
     const connections = [];
-    for (let i = 0; i < brokers.length; i++) {
+    for (let i = 0; i <= brokers.length; i++) {
       const { host, port } = await builder.build();
       connections.push(`${host}:${port}`);
     }
 
-    expect(connections).toIncludeSameMembers(brokers);
+    expect(connections).toEqual([...brokers, brokers[0]]);
   });
 
   test("accepts overrides for host, port and rack", async () => {
@@ -108,7 +110,7 @@ describe("Cluster > ConnectionBuilder", () => {
     );
   });
 
-  it("throws an KafkaJSConnectionError if brokers is function and returning null", async () => {
+  it("rejects a null broker-provider result as non-retriable", async () => {
     await expect(
       connectionPoolBuilder({
         socketFactory,
@@ -119,7 +121,11 @@ describe("Cluster > ConnectionBuilder", () => {
         connectionTimeout,
         logger,
       }).build(),
-    ).rejects.toEqual(new KafkaJSConnectionError("Failed to connect: brokers should not be null"));
+    ).rejects.toMatchObject({
+      name: "KafkaJSNonRetriableError",
+      retriable: false,
+      message: "Failed to connect: brokers should not be null",
+    });
   });
 
   it("throws an KafkaJSConnectionError if brokers is function crashes", async () => {
@@ -172,5 +178,19 @@ describe("Cluster > ConnectionBuilder", () => {
     expect(connectionPool).toBeInstanceOf(ConnectionPool);
     expect(connectionPool.host).toBe("host.test");
     expect(connectionPool.port).toBe(7777);
+  });
+
+  it("refreshes async broker providers for seeds and bypasses them for explicit destinations", async () => {
+    const provider = jest
+      .fn()
+      .mockResolvedValueOnce(["first.test:7777"])
+      .mockResolvedValueOnce(["second.test:7778"]);
+    const builder = connectionPoolBuilder({ brokers: provider, socketFactory, logger });
+    expect((await builder.build()).host).toBe("first.test");
+    expect((await builder.build()).host).toBe("second.test");
+    const destination = await builder.build({ host: "override.test", port: 7779 });
+    expect(destination.host).toBe("override.test");
+    expect(destination.port).toBe(7779);
+    expect(provider).toHaveBeenCalledTimes(2);
   });
 });
