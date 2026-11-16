@@ -86,6 +86,12 @@ the broker connection-lock budget; it is not a deadline for arbitrary provider
 code. SASL protocol requests retain ordinary request-queue timeouts. Tests
 characterize these existing boundaries without introducing new deadlines.
 
+Producer partitioners and their existing Java-derived hash vectors are native
+ESM. Both legacy and default factories run the shared assignment cases,
+including falsy keys, explicit partitions, unavailable leaders and per-topic
+round-robin counters. Fresh Node processes verify each entropy backend and
+the exact 65536-byte limit; the Node crypto fallback stays conditional.
+
 For development, it is usually more convenient to boot the containers yourself, and then keep the tests running in watch mode. After you have booted the containers as described in [Running Kafka](ContributionGuide.md#running-kafka), you can run `npm run test:local:watch`. `jest`'s interactive mode will allow you select which tests to run.
 
 ## Logging

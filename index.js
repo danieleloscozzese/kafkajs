@@ -1,7 +1,7 @@
 const errors = require("./src/errors.mjs").default;
 
 exports.Kafka = require("./src");
-exports.Partitioners = require("./src/producer/partitioners");
+exports.Partitioners = require("./src/producer/partitioners/index.mjs").default;
 exports.PartitionAssigners = require("./src/consumer/assigners");
 exports.AssignerProtocol = require("./src/consumer/assignerProtocol");
 exports.CompressionTypes = require("./src/protocol/message/compression/index.mjs").default.Types;
