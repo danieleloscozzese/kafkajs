@@ -1,7 +1,7 @@
 const BrokerPool = require("./brokerPool");
 const Lock = require("../utils/lock.mjs").default;
 const sharedPromiseTo = require("../utils/shared_promise_to.mjs").default;
-const createRetry = require("../retry");
+const createRetry = require("../retry/index.mjs").default;
 const connectionPoolBuilder = require("./connectionPoolBuilder");
 const { EARLIEST_OFFSET, LATEST_OFFSET } = require("../constants.mjs").default;
 const {

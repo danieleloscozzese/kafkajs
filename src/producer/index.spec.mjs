@@ -1,8 +1,13 @@
-const { describe, test, expect, beforeEach, afterEach, it, jest } = require("@jest/globals");
+import { describe, test, expect, beforeEach, afterEach, it, jest } from "@jest/globals";
+import { randomUUID } from "node:crypto";
+import InstrumentationEventEmitter from "../instrumentation/emitter.mjs";
+import actualCreateRetry from "../retry/index.mjs";
+import { KafkaJSNonRetriableError } from "../errors.mjs";
+import sleep from "../utils/sleep.mjs";
 
 let initProducerIdSpy;
 let sendOffsetsSpy;
-let retrySpy;
+const retrySpy = jest.fn(actualCreateRetry);
 
 jest.mock("./eosManager", () => {
   return (...args) => {
@@ -15,16 +20,11 @@ jest.mock("./eosManager", () => {
   };
 });
 
-jest.mock("../retry", () => {
-  const spy = jest.fn().mockImplementation(jest.requireActual("../retry"));
-  retrySpy = spy;
-  return spy;
-});
+jest.unstable_mockModule("../retry/index.mjs", () => ({ default: retrySpy }));
 
-const { randomUUID } = require("node:crypto");
-const InstrumentationEventEmitter = require("../instrumentation/emitter.mjs").default;
-const createProducer = require("./index.js");
-const createConsumer = require("../consumer/index.js");
+const { default: createProducer } = await import("./index.js");
+const { default: createConsumer } = await import("../consumer/index.js");
+const { default: helpers } = await import("testHelpers");
 const {
   secureRandom,
   connectionOpts,
@@ -38,10 +38,8 @@ const {
   testIfKafkaAtLeast_0_11,
   createTopic,
   waitForMessages,
-} = require("testHelpers");
-const createRetrier = require("../retry/index.js");
-const { KafkaJSNonRetriableError } = require("../errors.mjs").default;
-const sleep = require("../utils/sleep.mjs").default;
+} = helpers;
+const { default: createRetrier } = await import("../retry/index.mjs");
 
 describe("Producer", () => {
   let topicName, producer, consumer;

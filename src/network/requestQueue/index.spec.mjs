@@ -1,13 +1,15 @@
-const { describe, expect, beforeEach, it, jest } = require("@jest/globals");
-
+import { describe, expect, beforeEach, afterEach, it, jest } from "@jest/globals";
+import sleep from "../../utils/sleep.mjs";
+import InstrumentationEventEmitter from "../../instrumentation/emitter.mjs";
+import events from "../instrumentation_events.mjs";
+import RequestQueue from "./index.mjs";
+import errors from "../../errors.mjs";
 jest.setTimeout(3000);
 
-const sleep = require("../../utils/sleep.mjs").default;
-const { newLogger } = require("testHelpers");
-const InstrumentationEventEmitter = require("../../instrumentation/emitter.mjs").default;
-const events = require("../instrumentationEvents.js");
-const RequestQueue = require("./index.js");
-const { KafkaJSInvariantViolation } = require("../../errors.mjs").default;
+const { default: testHelpers } = await import("testHelpers");
+const { newLogger } = testHelpers;
+
+const { KafkaJSInvariantViolation } = errors;
 
 describe("Network > RequestQueue", () => {
   let requestQueue;
@@ -31,6 +33,127 @@ describe("Network > RequestQueue", () => {
 
   beforeEach(() => {
     requestQueue = createRequestQueue();
+  });
+
+  afterEach(() => {
+    requestQueue.destroy();
+  });
+
+  describe("deterministic scheduling contracts", () => {
+    beforeEach(() => {
+      jest.useFakeTimers({ now: 1000 });
+    });
+
+    afterEach(() => {
+      requestQueue.destroy();
+      jest.clearAllTimers();
+      jest.restoreAllMocks();
+      jest.useRealTimers();
+    });
+
+    it.each([
+      [-1, 0],
+      [900, 0],
+      [1500, 500],
+    ])("clamps the timer delay for throttle deadline %s", (deadline, expected) => {
+      const schedule = jest.spyOn(globalThis, "setTimeout");
+      requestQueue.throttledUntil = deadline;
+      requestQueue.scheduleCheckPendingRequests();
+      const timer = requestQueue.throttleCheckTimeoutId;
+      requestQueue.scheduleCheckPendingRequests();
+      expect(schedule).toHaveBeenCalledTimes(1);
+      expect(schedule).toHaveBeenCalledWith(expect.any(Function), expected);
+      expect(requestQueue.throttleCheckTimeoutId).toBe(timer);
+      requestQueue.destroy();
+      expect(jest.getTimerCount()).toBe(0);
+    });
+
+    it.each([
+      [undefined, 50],
+      [0, 50],
+      [20, 50],
+      [100, 100],
+    ])("preserves timeout precedence for request override %s", (requestTimeout, expected) => {
+      const request = requestQueue.createSocketRequest({
+        entry: createEntry(),
+        expectResponse: true,
+        sendRequest: jest.fn(),
+        requestTimeout,
+      });
+      expect(request.requestTimeout).toBe(expected);
+    });
+
+    it("uses the existing pending-check interval when an in-flight slot is full", () => {
+      requestQueue = createRequestQueue({ maxInFlightRequests: 1 });
+      const schedule = jest.spyOn(globalThis, "setTimeout");
+      for (let index = 0; index < 2; index++) {
+        requestQueue.push({
+          entry: createEntry(),
+          expectResponse: true,
+          sendRequest: jest.fn(),
+        });
+      }
+      expect(schedule).toHaveBeenCalledWith(expect.any(Function), 10);
+      expect(requestQueue.inflight.size).toBe(1);
+      expect(requestQueue.pending).toHaveLength(1);
+    });
+
+    it("settles timeouts once, advances FIFO, and ignores a late response", async () => {
+      const emitter = new InstrumentationEventEmitter();
+      const timedOut = jest.fn();
+      emitter.addListener(events.NETWORK_REQUEST_TIMEOUT, timedOut);
+      requestQueue = createRequestQueue({
+        maxInFlightRequests: 1,
+        enforceRequestTimeout: true,
+        instrumentationEmitter: emitter,
+      });
+      requestQueue.scheduleRequestTimeoutCheck();
+      const first = { entry: createEntry(), expectResponse: true, sendRequest: jest.fn() };
+      const second = { entry: createEntry(), expectResponse: true, sendRequest: jest.fn() };
+      requestQueue.push(first);
+      requestQueue.push(second);
+      const drained = requestQueue.waitForPendingRequests();
+
+      await jest.advanceTimersByTimeAsync(50);
+      expect(first.entry.reject).not.toHaveBeenCalled();
+      await jest.advanceTimersByTimeAsync(50);
+      expect(first.entry.reject).toHaveBeenCalledTimes(1);
+      expect(first.entry.reject).toHaveBeenCalledWith(
+        expect.objectContaining({
+          name: "KafkaJSRequestTimeoutError",
+        }),
+      );
+      expect(timedOut).toHaveBeenCalledTimes(1);
+      expect(second.sendRequest).toHaveBeenCalledTimes(1);
+      requestQueue.fulfillRequest({
+        correlationId: first.entry.correlationId,
+        payload: null,
+        size: 0,
+      });
+      expect(first.entry.resolve).not.toHaveBeenCalled();
+      requestQueue.fulfillRequest({
+        correlationId: second.entry.correlationId,
+        payload: null,
+        size: 0,
+      });
+      await drained;
+      expect(second.entry.resolve).toHaveBeenCalledTimes(1);
+      expect(requestQueue.inflight.size).toBe(0);
+      expect(requestQueue.pending).toHaveLength(0);
+    });
+
+    it("clears scheduled work on destroy without sending a throttled request", async () => {
+      requestQueue = createRequestQueue({ enforceRequestTimeout: true });
+      requestQueue.scheduleRequestTimeoutCheck();
+      requestQueue.maybeThrottle(500);
+      const sendRequest = jest.fn();
+      requestQueue.push({ entry: createEntry(), expectResponse: true, sendRequest });
+      requestQueue.destroy();
+      expect(jest.getTimerCount()).toBe(0);
+      await jest.advanceTimersByTimeAsync(1000);
+      expect(sendRequest).not.toHaveBeenCalled();
+      requestQueue.rejectAll(new Error("connection closed"));
+    });
   });
 
   describe("#waitForPendingRequests", () => {

@@ -2,7 +2,7 @@ const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals
 
 const Broker = require("../index");
 const createProducer = require("../../producer");
-const createRetrier = require("../../retry");
+const createRetrier = require("../../retry/index.mjs").default;
 
 const {
   secureRandom,

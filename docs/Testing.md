@@ -43,6 +43,15 @@ Packed-consumer tests observe actual native module loads through Node's
 synchronous loader hooks, rather than relying on the CommonJS cache to track
 ESM dependencies. SASL mechanism frames and providers migrate with authentication.
 
+Retry, request-queue/socket-request classes, network event names, and connection
+status constants use native ESM with original-path shims. Broker-free tests
+cover retry jitter/backoff/error classification and deterministic queue timer,
+FIFO, timeout precedence, late-response, and teardown contracts. The fork's
+non-negative throttle-delay clamp is retained; idle-timer optimisation remains
+deferred. The queue suite destroys its own timers after each case.
+The producer suite uses a native ESM retry mock registered before loading the
+CommonJS caller; its existing logger snapshot is retained under the renamed test.
+
 For development, it is usually more convenient to boot the containers yourself, and then keep the tests running in watch mode. After you have booted the containers as described in [Running Kafka](ContributionGuide.md#running-kafka), you can run `npm run test:local:watch`. `jest`'s interactive mode will allow you select which tests to run.
 
 ## Logging

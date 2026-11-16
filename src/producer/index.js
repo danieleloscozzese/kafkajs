@@ -1,5 +1,5 @@
-const createRetry = require("../retry");
-const { CONNECTION_STATUS } = require("../network/connectionStatus");
+const createRetry = require("../retry/index.mjs").default;
+const { CONNECTION_STATUS } = require("../network/connection_status.mjs").default;
 const { DefaultPartitioner } = require("./partitioners/");
 const InstrumentationEventEmitter = require("../instrumentation/emitter.mjs").default;
 const createEosManager = require("./eosManager");

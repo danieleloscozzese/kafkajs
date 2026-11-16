@@ -226,6 +226,9 @@ import Decoder from "@dagher/kafkajs/src/protocol/decoder.mjs";
 import compression from "@dagher/kafkajs/src/protocol/message/compression/index.mjs";
 import apiKeys from "@dagher/kafkajs/src/protocol/requests/api_keys.mjs";
 import protocols from "@dagher/kafkajs/src/protocol/requests/index.mjs";
+import createRetry from "@dagher/kafkajs/src/retry/index.mjs";
+import RequestQueue from "@dagher/kafkajs/src/network/requestQueue/index.mjs";
+import SocketRequest from "@dagher/kafkajs/src/network/requestQueue/socket_request.mjs";
 ${protocolFamilies
   .map(
     ([family], index) =>
@@ -264,6 +267,33 @@ assert.strictEqual(require("@dagher/kafkajs/src/errors.js"), errors);
 assert.strictEqual(require("@dagher/kafkajs/src/constants.js"), constants);
 assert.strictEqual(require("@dagher/kafkajs/src/protocol/encoder.js"), Encoder);
 assert.strictEqual(require("@dagher/kafkajs/src/protocol/decoder.js"), Decoder);
+assert.strictEqual(require("@dagher/kafkajs/src/retry/index.js"), createRetry);
+assert.strictEqual(require("@dagher/kafkajs/src/network/requestQueue/index.js"), RequestQueue);
+assert.strictEqual(require("@dagher/kafkajs/src/network/requestQueue/socketRequest.js"), SocketRequest);
+assert.equal(RequestQueue.name, "RequestQueue");
+assert.equal(SocketRequest.name, "SocketRequest");
+for (const [oldPath, newPath] of [
+  ["retry/defaults", "retry/defaults"],
+  ["retry/defaults.test", "retry/defaults_test"],
+  ["network/connectionStatus", "network/connection_status"],
+  ["network/instrumentationEvents", "network/instrumentation_events"],
+]) {
+  const { default: implementation } = await import("@dagher/kafkajs/src/" + newPath + ".mjs");
+  assert.strictEqual(require("@dagher/kafkajs/src/" + oldPath + ".js"), implementation);
+}
+assert.equal(await createRetry({ initialRetryTime: 0, factor: 0 })(async () => "retried"), "retried");
+const queue = new RequestQueue({
+  requestTimeout: 50, maxInFlightRequests: 1, enforceRequestTimeout: false,
+  clientId: "packed-consumer", broker: "localhost:9092", logger: { debug() {}, warn() {} },
+});
+let resolved = 0;
+queue.push({
+  entry: { correlationId: 0, resolve: () => { resolved++; }, reject: error => { throw error; } },
+  sendRequest() {}, expectResponse: false,
+});
+assert.equal(resolved, 1);
+assert.equal(queue.inflight.size, 0);
+queue.destroy();
 for (const [oldName, newName, publicName] of [
   ["error", "error"],
   ["request", "request"],
@@ -339,6 +369,18 @@ for (const [index, [family, versions]] of ${JSON.stringify(protocolFamilies)}.en
 `,
   );
 
+  fs.writeFileSync(
+    path.join(consumerDir, "retry_defaults.mjs"),
+    `import assert from "node:assert/strict";
+import createRetry from "@dagher/kafkajs/src/retry/index.mjs";
+const expected = process.env.NODE_ENV === "test" ? 50 : 300;
+await createRetry({ factor: 0, retries: 0 })(async (_bail, retryCount, retryTime) => {
+  assert.equal(retryCount, 0);
+  assert.equal(retryTime, expected);
+});
+`,
+  );
+
   for (const file of [
     "require.cjs",
     "static-import.mjs",
@@ -349,6 +391,14 @@ for (const [index, [family, versions]] of ${JSON.stringify(protocolFamilies)}.en
     execFileSync(process.execPath, [path.join(consumerDir, file)], {
       cwd: consumerDir,
       stdio: "inherit",
+    });
+  }
+
+  for (const mode of ["production", "test"]) {
+    execFileSync(process.execPath, [path.join(consumerDir, "retry_defaults.mjs")], {
+      cwd: consumerDir,
+      stdio: "inherit",
+      env: { ...process.env, NODE_ENV: mode },
     });
   }
 
