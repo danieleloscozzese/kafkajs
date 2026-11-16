@@ -11,7 +11,7 @@ const createConsumer = require("./consumer");
 const createAdmin = require("./admin");
 const ISOLATION_LEVEL = require("./protocol/isolationLevel");
 const defaultSocketFactory = require("./network/socketFactory");
-const once = require("./utils/once");
+const once = require("./utils/once.mjs").default;
 const websiteUrl = require("./utils/websiteUrl");
 
 const PRIVATE = {
