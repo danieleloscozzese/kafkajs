@@ -11,7 +11,7 @@ Issues are tracked in [Github](https://github.com/tulios/kafkajs/issues). For fi
 
 The following chapters will get you set up with a working development environment and teach you how to run the tests. If you are already familiar with the project setup, here's the gist:
 
-With `docker`, `docker-compose` and npm available:
+With Docker Engine, Docker Compose v2, and npm available:
 
 ```sh
 npm ci

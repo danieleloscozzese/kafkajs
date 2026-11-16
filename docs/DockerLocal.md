@@ -5,7 +5,7 @@ title: Running Kafka in Development
 
 The following configuration will be used in the examples listed here. For more complete and up-to-date documentation, see [wurstmeister/kafka-docker](https://github.com/wurstmeister/kafka-docker).
 
-To run this Kafka configuration, [`docker`](https://docs.docker.com/) with [`docker-compose`](https://docs.docker.com/compose/install/) is required.
+To run this Kafka configuration, [`docker`](https://docs.docker.com/) with [Docker Compose v2](https://docs.docker.com/compose/install/) is required.
 
 Save the following file as `docker-compose.yml` in the root of your project.
 
@@ -36,7 +36,7 @@ Now run:
 
 ```sh
 export HOST_IP=$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)
-docker-compose up
+docker compose up
 ```
 
 > Note: To understand why `HOST_IP` is required, see the [kafka-docker connectivity guide](https://github.com/wurstmeister/kafka-docker/wiki/Connectivity)
