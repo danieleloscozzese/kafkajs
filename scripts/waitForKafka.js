@@ -63,7 +63,7 @@ waitForNode(kafka3ContainerId);
 
 console.log("\nAll nodes up:");
 console.log(
-  execSync(`docker compose -f "${process.env.COMPOSE_FILE}" ps`, {
+  execSync(`docker-compose -f "${process.env.COMPOSE_FILE}" ps`, {
     encoding: "utf8",
   }).trimEnd(),
 );

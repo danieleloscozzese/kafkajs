@@ -31,7 +31,7 @@ describe("waitForKafka", () => {
     );
     expect(commands).toEqual(
       expect.arrayContaining([
-        expect.stringContaining("docker compose"),
+        expect.stringContaining("docker-compose"),
         expect.stringContaining("kafka-consumer-groups"),
       ]),
     );

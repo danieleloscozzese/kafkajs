@@ -3,7 +3,7 @@ id: development-environment
 title: Development Environment
 ---
 
-When developing KafkaJS, we run a Kafka cluster in a similar way to what is described in [Running Kafka in Development](DockerLocal.md), using [`docker`](https://docs.docker.com/) and the [`docker compose`](https://docs.docker.com/compose/install/) plugin. Before you proceed, make sure both are available.
+When developing KafkaJS, we run a Kafka cluster in a similar way to what is described in [Running Kafka in Development](DockerLocal.md), using [`docker`](https://docs.docker.com/) and `docker-compose`. Before you proceed, make sure both are available.
 
 Install the project dependencies with `npm ci` and run the test suite with `npm test`.
 
@@ -20,7 +20,7 @@ For testing KafkaJS we use a multi-broker Kafka cluster as well as Zookeeper for
 This boots the Kafka cluster using the canonical `docker-compose.yml` file. To inspect the running cluster, run:
 
 ```sh
-$ docker compose -f docker-compose.yml ps
+$ docker-compose -f docker-compose.yml ps
 NAME      COMMAND          STATE   PORTS
 ...
 ```
