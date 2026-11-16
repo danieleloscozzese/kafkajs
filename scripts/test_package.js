@@ -34,7 +34,10 @@ try {
   ]) {
     assert(files.includes(requiredFile), `Tarball is missing ${requiredFile}`);
   }
-  assert(!files.some((file) => /\.spec\.js$/.test(file)), "Tarball includes spec files");
+  assert(
+    !files.some((file) => /\.spec\.(?:[cm]?js|jsx)$/.test(file)),
+    "Tarball includes spec files",
+  );
   assert(
     !files.some((file) => /\/(fixtures|testHelpers|scripts)\//.test(file)),
     "Tarball includes test-only files",

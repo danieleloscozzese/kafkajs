@@ -12,7 +12,7 @@ const {
   waitFor,
   waitForMessages,
   waitForConsumerToJoinGroup,
-} = require("../../testHelpers/index.js");
+} = require("testHelpers");
 
 describe("Consumer", () => {
   /**

@@ -5,6 +5,9 @@ coverage/
 yarn-error.log
 yarn.lock
 **/*.spec.js
+**/*.spec.mjs
+**/*.spec.cjs
+**/*.spec.jsx
 !src/retry/defaults.test.js
 __tests__
 __snapshots__
