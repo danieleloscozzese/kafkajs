@@ -33,7 +33,8 @@ encoding and decoding. Gzip is imported statically; codec factories remain
 synchronous and the registry remains shared and mutable.
 
 API-version, metadata, produce, fetch, list-offset, group-coordination,
-offset-commit/fetch, and transaction request implementations and tests use native ESM.
+offset-commit/fetch, transaction, topic/configuration administration, and
+partition-reassignment request implementations and tests use native ESM.
 Their version registries retain explicit, synchronous lazy loads through
 `createRequire`: eagerly importing every version exceeded the cold-start
 budget. Only the selected version and its dependencies load on invocation;

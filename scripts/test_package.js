@@ -25,6 +25,14 @@ const protocolFamilies = [
   ["addOffsetsToTxn", [0, 1]],
   ["endTxn", [0, 1]],
   ["txnOffsetCommit", [0, 1]],
+  ["createTopics", [0, 1, 2, 3]],
+  ["deleteTopics", [0, 1]],
+  ["createPartitions", [0, 1]],
+  ["deleteRecords", [0, 1]],
+  ["describeConfigs", [0, 1, 2]],
+  ["alterConfigs", [0, 1]],
+  ["alterPartitionReassignments", [0]],
+  ["listPartitionReassignments", [0]],
 ];
 
 fs.mkdirSync(consumerDir);
