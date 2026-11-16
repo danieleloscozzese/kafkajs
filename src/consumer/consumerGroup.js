@@ -1,6 +1,6 @@
 const sleep = require("../utils/sleep");
 const websiteUrl = require("../utils/websiteUrl");
-const arrayDiff = require("../utils/arrayDiff");
+const arrayDiff = require("../utils/array_diff.mjs").default;
 const createRetry = require("../retry");
 const sharedPromiseTo = require("../utils/sharedPromiseTo");
 

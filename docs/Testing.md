@@ -13,7 +13,7 @@ To run all the tests a single time without having booted any containers, run `np
 
 Declaration tests use relative imports and Node type references; they do not need TypeScript's deprecated `baseUrl` option. Keep deprecation diagnostics enabled.
 
-For a broker-free test, for example, run `npm run jest -- --runInBand --runTestsByPath src/utils/arrayDiff.spec.js`. Many other tests require Kafka even when selected individually.
+For a broker-free test, for example, run `npm run jest -- --runInBand --runTestsByPath src/utils/array_diff.spec.mjs`. Many other tests require Kafka even when selected individually.
 
 The npm Jest commands enable Node's experimental VM modules support for native `.mjs` tests; use them rather than invoking Jest directly. Jest transforms are disabled: CommonJS mocks must be registered before requiring their subject, and ESM mocks must be registered with `jest.unstable_mockModule` before dynamically importing their subject. Protocol request and response modules are preloaded in both CommonJS and ESM formats.
 

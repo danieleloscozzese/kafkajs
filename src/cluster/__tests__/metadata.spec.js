@@ -1,6 +1,7 @@
 const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
 
 const { createCluster, secureRandom, createTopic } = require("testHelpers");
+const waitFor = require("../../utils/waitFor");
 
 describe("Cluster > metadata", () => {
   let cluster, topic1, topic2, topic3;
@@ -31,10 +32,30 @@ describe("Cluster > metadata", () => {
   });
 
   test("returns metadata for all topics", async () => {
+    await cluster.refreshMetadata();
+    const nodeIds = cluster.brokerPool.getNodeIds();
+    const expectedTopics = [topic1, topic2, topic3];
+
+    // Topic creation can finish before every broker has received its metadata.
+    await waitFor(
+      async () => {
+        const responses = await Promise.all(
+          nodeIds.map(async (nodeId) => {
+            const broker = await cluster.brokerPool.findBroker({ nodeId });
+            return broker.metadata([]);
+          }),
+        );
+        return responses.every(({ topicMetadata }) =>
+          expectedTopics.every((topic) => topicMetadata.some((entry) => entry.topic === topic)),
+        );
+      },
+      { timeoutMessage: "Timed out waiting for topic metadata on every broker" },
+    );
+
     const response = await cluster.metadata({ topics: [] });
     expect(response.topicMetadata.length).toBeGreaterThanOrEqual(3);
 
     const topics = response.topicMetadata.map(({ topic }) => topic).sort();
-    expect(topics).toEqual(expect.arrayContaining([topic1, topic2, topic3].sort()));
+    expect(topics).toEqual(expect.arrayContaining(expectedTopics.sort()));
   });
 });

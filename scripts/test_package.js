@@ -32,6 +32,10 @@ try {
     "package/src/index.js",
     "package/src/utils/once.js",
     "package/src/utils/once.mjs",
+    "package/src/utils/arrayDiff.js",
+    "package/src/utils/array_diff.mjs",
+    "package/src/utils/groupBy.js",
+    "package/src/utils/group_by.mjs",
     "package/types/index.d.ts",
   ]) {
     assert(files.includes(requiredFile), `Tarball is missing ${requiredFile}`);
@@ -103,6 +107,8 @@ import {
   CompressionCodecs,
 } from "@dagher/kafkajs/index.mjs";
 import once from "@dagher/kafkajs/src/utils/once.mjs";
+import arrayDiff from "@dagher/kafkajs/src/utils/array_diff.mjs";
+import groupBy from "@dagher/kafkajs/src/utils/group_by.mjs";
 
 const require = createRequire(import.meta.url);
 const commonjs = require("@dagher/kafkajs");
@@ -111,6 +117,8 @@ assert.strictEqual(Partitioners, commonjs.Partitioners);
 assert.strictEqual(KafkaJSError, commonjs.KafkaJSError);
 assert(new commonjs.KafkaJSError("shared constructor") instanceof KafkaJSError);
 assert.strictEqual(require("@dagher/kafkajs/src/utils/once.js"), once);
+assert.strictEqual(require("@dagher/kafkajs/src/utils/arrayDiff.js"), arrayDiff);
+assert.strictEqual(require("@dagher/kafkajs/src/utils/groupBy.js"), groupBy);
 
 const codec = () => "registered through ESM";
 CompressionCodecs[99] = codec;
