@@ -5,7 +5,9 @@ title: Testing
 
 We rely on a suite of largely integration tests, using `jest` as a test runner.
 
-CI uses Node.js 24 and npm. Run `npm ci` to install the locked dependencies.
+CI uses Node.js 24 and npm. Jest requires Node.js 24.9 or later for its
+CommonJS-to-ESM interop; package consumers require Node.js 24.1 or later.
+Run `npm ci` to install the locked dependencies.
 
 To run all the tests a single time without having booted any containers, run `npm test`. This will lint the code, boot all the containers, run all the tests and then tear down the containers. Run `npm run test:types` to check the declarations and `npm run test:pack` to verify the installed package tarball from a clean consumer directory. Neither check requires Kafka.
 
