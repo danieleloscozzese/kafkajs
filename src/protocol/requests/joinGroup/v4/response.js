@@ -1,6 +1,6 @@
 const { decode } = require("../v3/response");
 const { KafkaJSMemberIdRequired } = require("../../../../errors.mjs").default;
-const { failure, createErrorFromCode, errorCodes } = require("../../../error");
+const { failure, createErrorFromCode, errorCodes } = require("../../../error.mjs").default;
 
 /**
  * JoinGroup Response (Version: 4) => throttle_time_ms error_code generation_id group_protocol leader_id member_id [members]

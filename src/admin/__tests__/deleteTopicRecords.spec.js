@@ -22,7 +22,7 @@ const {
   KafkaJSNonRetriableError,
   KafkaJSMetadataNotLoaded,
 } = require("../../errors.mjs").default;
-const { createErrorFromCode, errorCodes } = require("../../protocol/error.js");
+const { createErrorFromCode, errorCodes } = require("../../protocol/error.mjs").default;
 
 const { assign } = Object;
 

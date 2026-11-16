@@ -1,7 +1,7 @@
 const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
 
 const Broker = require("../index");
-const COORDINATOR_TYPES = require("../../protocol/coordinatorTypes");
+const COORDINATOR_TYPES = require("../../protocol/coordinator_types.mjs").default;
 const { KafkaJSProtocolError } = require("../../errors.mjs").default;
 const {
   secureRandom,

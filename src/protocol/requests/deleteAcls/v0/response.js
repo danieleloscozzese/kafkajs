@@ -1,5 +1,5 @@
-const Decoder = require("../../../decoder");
-const { failure, createErrorFromCode } = require("../../../error");
+const Decoder = require("../../../decoder.mjs").default;
+const { failure, createErrorFromCode } = require("../../../error.mjs").default;
 
 /**
  * DeleteAcls Response (Version: 0) => throttle_time_ms [filter_responses]

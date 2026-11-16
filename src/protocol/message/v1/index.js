@@ -1,5 +1,5 @@
-const Encoder = require("../../encoder");
-const crc32 = require("../../crc32");
+const Encoder = require("../../encoder.mjs").default;
+const crc32 = require("../../crc32.mjs").default;
 const { Types: Compression, COMPRESSION_CODEC_MASK } = require("../compression");
 
 /**

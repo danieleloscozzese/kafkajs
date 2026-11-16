@@ -2,7 +2,7 @@ const { describe, test, expect, beforeEach, afterEach, jest } = require("@jest/g
 
 const createAdmin = require("../index");
 const { KafkaJSProtocolError } = require("../../errors.mjs").default;
-const { createErrorFromCode } = require("../../protocol/error");
+const { createErrorFromCode } = require("../../protocol/error.mjs").default;
 
 const { secureRandom, createCluster, newLogger } = require("testHelpers");
 

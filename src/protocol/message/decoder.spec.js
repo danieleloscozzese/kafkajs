@@ -1,7 +1,7 @@
 const { describe, test, expect } = require("@jest/globals");
 
-const Encoder = require("../encoder");
-const Decoder = require("../decoder");
+const Encoder = require("../encoder.mjs").default;
+const Decoder = require("../decoder.mjs").default;
 const MessageDecoder = require("./decoder");
 
 const MessageV0 = require("./v0/index.js");

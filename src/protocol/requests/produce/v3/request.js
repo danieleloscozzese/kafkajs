@@ -1,5 +1,5 @@
 const Long = require("../../../../utils/long.mjs").default;
-const Encoder = require("../../../encoder");
+const Encoder = require("../../../encoder.mjs").default;
 const { Produce: apiKey } = require("../../apiKeys");
 const { Types } = require("../../../message/compression");
 const Record = require("../../../recordBatch/record/v0");

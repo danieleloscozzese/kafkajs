@@ -1,6 +1,6 @@
 /* eslint no-unused-vars: ["error", { "varsIgnorePattern": "_" }] */
 
-const Decoder = require("../../../decoder");
+const Decoder = require("../../../decoder.mjs").default;
 
 const ENTRY_REGEX = /^([rsiev])=(.*)$/;
 

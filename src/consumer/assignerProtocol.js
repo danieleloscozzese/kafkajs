@@ -1,5 +1,5 @@
-const Encoder = require("../protocol/encoder");
-const Decoder = require("../protocol/decoder");
+const Encoder = require("../protocol/encoder.mjs").default;
+const Decoder = require("../protocol/decoder.mjs").default;
 
 const MemberMetadata = {
   /**

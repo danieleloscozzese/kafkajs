@@ -1,6 +1,6 @@
-const Decoder = require("../../../decoder");
+const Decoder = require("../../../decoder.mjs").default;
 const { parse: parseV0 } = require("../v0/response");
-const { DEFAULT_CONFIG } = require("../../../config-source");
+const { DEFAULT_CONFIG } = require("../../../config_source.mjs").default;
 
 /**
  * DescribeConfigs Response (Version: 1) => throttle_time_ms [resources]

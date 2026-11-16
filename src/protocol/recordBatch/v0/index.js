@@ -1,5 +1,5 @@
 const Long = require("../../../utils/long.mjs").default;
-const Encoder = require("../../encoder");
+const Encoder = require("../../encoder.mjs").default;
 const crc32C = require("../crc32C");
 const {
   Types: Compression,

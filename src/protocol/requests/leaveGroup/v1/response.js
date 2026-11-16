@@ -1,5 +1,5 @@
-const Decoder = require("../../../decoder");
-const { failIfVersionNotSupported } = require("../../../error");
+const Decoder = require("../../../decoder.mjs").default;
+const { failIfVersionNotSupported } = require("../../../error.mjs").default;
 const { parse: parseV0 } = require("../v0/response");
 
 /**

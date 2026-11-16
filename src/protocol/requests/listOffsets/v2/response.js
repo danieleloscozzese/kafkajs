@@ -1,5 +1,5 @@
-const Decoder = require("../../../decoder");
-const { failure, createErrorFromCode } = require("../../../error");
+const Decoder = require("../../../decoder.mjs").default;
+const { failure, createErrorFromCode } = require("../../../error.mjs").default;
 
 /**
  * ListOffsets Response (Version: 2) => throttle_time_ms [responses]

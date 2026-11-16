@@ -1,4 +1,4 @@
-const Decoder = require("../../../decoder");
+const Decoder = require("../../../decoder.mjs").default;
 const { parse: parseV3 } = require("../v3/response");
 
 /**

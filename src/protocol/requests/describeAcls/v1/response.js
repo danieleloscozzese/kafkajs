@@ -1,5 +1,5 @@
 const { parse } = require("../v0/response");
-const Decoder = require("../../../decoder");
+const Decoder = require("../../../decoder.mjs").default;
 
 /**
  * Starting in version 1, on quota violation, brokers send out responses before throttling.

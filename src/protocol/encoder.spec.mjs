@@ -1,10 +1,10 @@
 /* eslint-disable no-loss-of-precision */
-const { describe, test, expect, it } = require("@jest/globals");
+import { describe, test, expect, it } from "@jest/globals";
 
-const Long = require("../utils/long.mjs").default;
+import Long from "../utils/long.mjs";
 
-const Encoder = require("./encoder.js");
-const Decoder = require("./decoder.js");
+import Encoder from "./encoder.mjs";
+import Decoder from "./decoder.mjs";
 
 const MAX_SAFE_POSITIVE_SIGNED_INT = 2147483647;
 const MIN_SAFE_NEGATIVE_SIGNED_INT = -2147483648;

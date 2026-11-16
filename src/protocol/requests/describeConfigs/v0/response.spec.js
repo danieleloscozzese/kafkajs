@@ -1,7 +1,7 @@
 const { describe, test, expect, it } = require("@jest/globals");
 
 const { decode, parse } = require("./response");
-const ConfigSource = require("../../../config-source");
+const ConfigSource = require("../../../config_source.mjs").default;
 
 describe("Protocol > Requests > DescribeConfigs > v0", () => {
   test("response", async () => {

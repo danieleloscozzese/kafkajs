@@ -11,7 +11,7 @@ const {
   KafkaJSTopicMetadataNotLoaded,
   KafkaJSGroupCoordinatorNotFound,
 } = require("../errors.mjs").default;
-const COORDINATOR_TYPES = require("../protocol/coordinatorTypes");
+const COORDINATOR_TYPES = require("../protocol/coordinator_types.mjs").default;
 
 const { keys } = Object;
 

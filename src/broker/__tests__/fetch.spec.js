@@ -15,7 +15,7 @@ const {
   generateMessages,
 } = require("testHelpers");
 const { Types: Compression } = require("../../protocol/message/compression/index.js");
-const ISOLATION_LEVEL = require("../../protocol/isolationLevel.js");
+const ISOLATION_LEVEL = require("../../protocol/isolation_level.mjs").default;
 
 const minBytes = 1;
 const maxBytes = 10485760; // 10MB

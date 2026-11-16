@@ -1,7 +1,7 @@
 const { describe, test, expect, beforeEach } = require("@jest/globals");
 
 const RequestV2Protocol = require("./request");
-const Decoder = require("../../../decoder");
+const Decoder = require("../../../decoder.mjs").default;
 const MessageSetDecoder = require("../../../messageSet/decoder");
 const { Types } = require("../../../message/compression");
 

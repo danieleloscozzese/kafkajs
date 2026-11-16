@@ -1,7 +1,7 @@
-const Decoder = require("../../../decoder");
-const Encoder = require("../../../encoder");
+const Decoder = require("../../../decoder.mjs").default;
+const Encoder = require("../../../encoder.mjs").default;
 const { parse: parseV0 } = require("../v0/response");
-const { failIfVersionNotSupported } = require("../../../error");
+const { failIfVersionNotSupported } = require("../../../error.mjs").default;
 
 /**
  * SaslAuthenticate Response (Version: 1) => error_code error_message sasl_auth_bytes

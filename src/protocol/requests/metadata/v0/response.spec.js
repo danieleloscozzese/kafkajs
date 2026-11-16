@@ -1,7 +1,7 @@
 const { describe, test, expect, beforeEach } = require("@jest/globals");
 
-const Encoder = require("../../../encoder");
-const { createErrorFromCode } = require("../../../error");
+const Encoder = require("../../../encoder.mjs").default;
+const { createErrorFromCode } = require("../../../error.mjs").default;
 const response = require("./response");
 
 describe("Protocol > Requests > Metadata > v0", () => {

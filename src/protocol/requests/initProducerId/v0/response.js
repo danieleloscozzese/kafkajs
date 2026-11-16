@@ -1,5 +1,5 @@
-const Decoder = require("../../../decoder");
-const { failure, createErrorFromCode, failIfVersionNotSupported } = require("../../../error");
+const Decoder = require("../../../decoder.mjs").default;
+const { failure, createErrorFromCode, failIfVersionNotSupported } = require("../../../error.mjs").default;
 
 /**
  * InitProducerId Response (Version: 0) => throttle_time_ms error_code producer_id producer_epoch

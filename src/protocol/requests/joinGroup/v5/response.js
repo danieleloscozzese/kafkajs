@@ -1,11 +1,11 @@
-const Decoder = require("../../../decoder");
+const Decoder = require("../../../decoder.mjs").default;
 const { KafkaJSMemberIdRequired } = require("../../../../errors.mjs").default;
 const {
   failure,
   createErrorFromCode,
   errorCodes,
   failIfVersionNotSupported,
-} = require("../../../error");
+} = require("../../../error.mjs").default;
 
 /**
  * JoinGroup Response (Version: 5) => throttle_time_ms error_code generation_id group_protocol leader_id member_id [members]

@@ -1,11 +1,11 @@
-const Decoder = require("../../../decoder");
-const Encoder = require("../../../encoder");
+const Decoder = require("../../../decoder.mjs").default;
+const Encoder = require("../../../encoder.mjs").default;
 const {
   failure,
   createErrorFromCode,
   failIfVersionNotSupported,
   errorCodes,
-} = require("../../../error");
+} = require("../../../error.mjs").default;
 
 const { KafkaJSProtocolError } = require("../../../../errors.mjs").default;
 const SASL_AUTHENTICATION_FAILED = 58;

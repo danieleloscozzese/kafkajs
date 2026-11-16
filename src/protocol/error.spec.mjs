@@ -1,6 +1,6 @@
-const { describe, expect, it } = require("@jest/globals");
+import { describe, expect, it } from "@jest/globals";
 
-const { errorCodes, createErrorFromCode } = require("./error");
+import { errorCodes, createErrorFromCode } from "./error.mjs";
 
 describe("Protocol > error", () => {
   describe("#createErrorFromCode", () => {

@@ -1,8 +1,8 @@
 const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
 
 const { createConnectionPool, connectionOpts, secureRandom, newLogger } = require("testHelpers");
-const CONFIG_RESOURCE_TYPES = require("../../protocol/config-resource-types");
-const ConfigSource = require("../../protocol/config-source");
+const CONFIG_RESOURCE_TYPES = require("../../protocol/config_resource_types.mjs").default;
+const ConfigSource = require("../../protocol/config_source.mjs").default;
 const Broker = require("../index");
 
 const sortByConfigName = (array) => array.sort((a, b) => a.configName.localeCompare(b.configName));

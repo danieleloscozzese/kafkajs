@@ -2,7 +2,7 @@ const { describe, expect, beforeEach, it, jest } = require("@jest/globals");
 
 const OffsetManager = require("../index");
 const InstrumentationEventEmitter = require("../../../instrumentation/emitter.mjs").default;
-const { createErrorFromCode } = require("../../../protocol/error");
+const { createErrorFromCode } = require("../../../protocol/error.mjs").default;
 const NOT_COORDINATOR_FOR_GROUP_CODE = 16;
 
 describe("Consumer > OffsetMananger > commitOffsets", () => {

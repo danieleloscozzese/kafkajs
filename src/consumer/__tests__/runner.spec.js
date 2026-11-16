@@ -10,7 +10,7 @@ const {
   KafkaJSNotImplemented,
   KafkaJSNumberOfRetriesExceeded,
 } = require("../../errors.mjs").default;
-const { createErrorFromCode } = require("../../protocol/error.js");
+const { createErrorFromCode } = require("../../protocol/error.mjs").default;
 
 const UNKNOWN = -1;
 const REBALANCE_IN_PROGRESS = 27;

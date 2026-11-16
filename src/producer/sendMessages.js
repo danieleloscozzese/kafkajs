@@ -1,5 +1,5 @@
 const { KafkaJSMetadataNotLoaded } = require("../errors.mjs").default;
-const { staleMetadata } = require("../protocol/error");
+const { staleMetadata } = require("../protocol/error.mjs").default;
 const groupMessagesPerPartition = require("./groupMessagesPerPartition");
 const createTopicData = require("./createTopicData");
 const responseSerializer = require("./responseSerializer");

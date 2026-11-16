@@ -1,4 +1,4 @@
-const ISOLATION_LEVEL = require("../../isolationLevel");
+const ISOLATION_LEVEL = require("../../isolation_level.mjs").default;
 
 // For normal consumers, use -1
 const REPLICA_ID = -1;
