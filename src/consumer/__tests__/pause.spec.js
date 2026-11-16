@@ -9,6 +9,7 @@ const {
   createCluster,
   createTopic,
   newLogger,
+  waitFor,
   waitForMessages,
   waitForConsumerToJoinGroup,
 } = require("../../testHelpers/index.js");
@@ -246,6 +247,7 @@ describe("Consumer", () => {
         eachBatchAutoResolve: false,
       });
       await waitForConsumerToJoinGroup(consumer);
+      await waitFor(() => consumer.paused().length === 2, { ignoreTimeout: false });
       await waitForMessages(messagesConsumed, { number: 5 });
       expect(consumer.paused()).toContainEqual({ topic: topics[0], partitions: [0] });
       expect(consumer.paused()).toContainEqual({ topic: topics[1], partitions: [1] });
