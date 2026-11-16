@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { JoinGroup: apiKey } = require("../../apiKeys");
+const { JoinGroup: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * Version 5 adds group_instance_id to identify members across restarts.

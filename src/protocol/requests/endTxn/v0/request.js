@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { EndTxn: apiKey } = require("../../apiKeys");
+const { EndTxn: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * EndTxn Request (Version: 0) => transactional_id producer_id producer_epoch transaction_result

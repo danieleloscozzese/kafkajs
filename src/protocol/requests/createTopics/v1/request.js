@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { CreateTopics: apiKey } = require("../../apiKeys");
+const { CreateTopics: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  *CreateTopics Request (Version: 1) => [create_topic_requests] timeout validate_only

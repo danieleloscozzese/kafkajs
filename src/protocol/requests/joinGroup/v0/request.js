@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { JoinGroup: apiKey } = require("../../apiKeys");
+const { JoinGroup: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * JoinGroup Request (Version: 0) => group_id session_timeout member_id protocol_type [group_protocols]

@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { AlterConfigs: apiKey } = require("../../apiKeys");
+const { AlterConfigs: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * AlterConfigs Request (Version: 0) => [resources] validate_only

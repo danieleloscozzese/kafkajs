@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { DeleteGroups: apiKey } = require("../../apiKeys");
+const { DeleteGroups: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * DeleteGroups Request (Version: 0) => [groups_names]

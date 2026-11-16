@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { Heartbeat: apiKey } = require("../../apiKeys");
+const { Heartbeat: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * Version 3 adds group_instance_id to indicate member identity across restarts.

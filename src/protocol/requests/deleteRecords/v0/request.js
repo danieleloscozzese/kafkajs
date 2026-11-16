@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { DeleteRecords: apiKey } = require("../../apiKeys");
+const { DeleteRecords: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * DeleteRecords Request (Version: 0) => [topics] timeout_ms

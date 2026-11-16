@@ -1,10 +1,12 @@
-const { describe, test, expect } = require("@jest/globals");
-
-const { decode, parse } = require("./response");
+import { describe, test, expect } from "@jest/globals";
+import responseModule from "./response.mjs";
+import responseFixtureV5 from "../fixtures/v5_response.json" with { type: "json" };
+import offlineReplicasV5 from "../fixtures/v5_offline_replicas_response.json" with { type: "json" };
+const { decode, parse } = responseModule;
 
 describe("Protocol > Requests > Metadata > v5", () => {
   test("response", async () => {
-    const data = await decode(Buffer.from(require("../fixtures/v5_response.json")));
+    const data = await decode(Buffer.from(responseFixtureV5));
     expect(data).toEqual({
       throttleTime: 0,
       brokers: [
@@ -52,9 +54,7 @@ describe("Protocol > Requests > Metadata > v5", () => {
   });
 
   test("response with offline replicas", async () => {
-    const data = await decode(
-      Buffer.from(require("../fixtures/v5_offline_replicas_response.json")),
-    );
+    const data = await decode(Buffer.from(offlineReplicasV5));
 
     expect(data).toEqual({
       throttleTime: 0,

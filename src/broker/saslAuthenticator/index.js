@@ -1,5 +1,5 @@
 const { requests, lookup } = require("../../protocol/requests");
-const apiKeys = require("../../protocol/requests/apiKeys");
+const apiKeys = require("../../protocol/requests/api_keys.mjs").default;
 const plainAuthenticatorProvider = require("./plain");
 const scram256AuthenticatorProvider = require("./scram256");
 const scram512AuthenticatorProvider = require("./scram512");

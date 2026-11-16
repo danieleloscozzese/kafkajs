@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { TxnOffsetCommit: apiKey } = require("../../apiKeys");
+const { TxnOffsetCommit: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * TxnOffsetCommit Request (Version: 0) => transactional_id group_id producer_id producer_epoch [topics]

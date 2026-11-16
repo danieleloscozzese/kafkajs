@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { AlterPartitionReassignments: apiKey } = require("../../apiKeys");
+const { AlterPartitionReassignments: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * AlterPartitionReassignments Request (Version: 0) => timeout_ms [topics] TAG_BUFFER

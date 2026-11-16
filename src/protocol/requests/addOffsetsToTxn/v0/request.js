@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { AddOffsetsToTxn: apiKey } = require("../../apiKeys");
+const { AddOffsetsToTxn: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * AddOffsetsToTxn Request (Version: 0) => transactional_id producer_id producer_epoch group_id

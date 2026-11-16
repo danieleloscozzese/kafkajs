@@ -32,6 +32,12 @@ exercise codec registration through the CommonJS path and use it in ESM record
 encoding and decoding. Gzip is imported statically; codec factories remain
 synchronous and the registry remains shared and mutable.
 
+API-version and metadata request implementations and tests use native ESM.
+Their version registries retain explicit, synchronous lazy loads through
+`createRequire`: eagerly importing every version exceeded the cold-start
+budget. Only the selected version and its dependencies load on invocation;
+no transpilation or asynchronous factory API is introduced.
+
 For development, it is usually more convenient to boot the containers yourself, and then keep the tests running in watch mode. After you have booted the containers as described in [Running Kafka](ContributionGuide.md#running-kafka), you can run `npm run test:local:watch`. `jest`'s interactive mode will allow you select which tests to run.
 
 ## Logging

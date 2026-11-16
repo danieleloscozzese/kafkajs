@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { SaslHandshake: apiKey } = require("../../apiKeys");
+const { SaslHandshake: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * SaslHandshake Request (Version: 0) => mechanism

@@ -9,7 +9,7 @@ const { CONNECTION_STATUS, CONNECTED_STATUS } = require("./connectionStatus");
 const sharedPromiseTo = require("../utils/shared_promise_to.mjs").default;
 const Long = require("../utils/long.mjs").default;
 const SASLAuthenticator = require("../broker/saslAuthenticator");
-const apiKeys = require("../protocol/requests/apiKeys");
+const apiKeys = require("../protocol/requests/api_keys.mjs").default;
 
 const requestInfo = ({ apiName, apiKey, apiVersion }) =>
   `${apiName}(key: ${apiKey}, version: ${apiVersion})`;

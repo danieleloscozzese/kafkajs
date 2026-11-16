@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { ListOffsets: apiKey } = require("../../apiKeys");
+const { ListOffsets: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * ListOffsets Request (Version: 2) => replica_id isolation_level [topics]

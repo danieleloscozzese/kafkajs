@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { OffsetCommit: apiKey } = require("../../apiKeys");
+const { OffsetCommit: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * Version 5 removes retention_time, as this is controlled by a broker setting

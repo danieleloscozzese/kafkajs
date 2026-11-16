@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { CreateAcls: apiKey } = require("../../apiKeys");
+const { CreateAcls: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * CreateAcls Request (Version: 0) => [creations]

@@ -1,5 +1,5 @@
 const Encoder = require("../../../encoder.mjs").default;
-const { DescribeAcls: apiKey } = require("../../apiKeys");
+const { DescribeAcls: apiKey } = require("../../api_keys.mjs").default;
 
 /**
  * DescribeAcls Request (Version: 1) => resource_type resource_name resource_pattern_type_filter principal host operation permission_type
