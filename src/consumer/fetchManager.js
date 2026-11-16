@@ -1,4 +1,4 @@
-const seq = require("../utils/seq");
+const seq = require("../utils/seq.mjs").default;
 const createFetcher = require("./fetcher");
 const createWorker = require("./worker");
 const createWorkerQueue = require("./workerQueue");

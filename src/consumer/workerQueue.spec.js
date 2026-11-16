@@ -3,7 +3,7 @@ const { describe, expect, beforeEach, it, jest } = require("@jest/globals");
 const createWorkerQueue = require("./workerQueue");
 const createWorker = require("./worker");
 const Batch = require("./batch");
-const seq = require("../utils/seq");
+const seq = require("../utils/seq.mjs").default;
 
 describe("WorkerQueue", () => {
   const batches = seq(
