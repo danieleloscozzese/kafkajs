@@ -30,6 +30,10 @@ try {
     "package/index.js",
     "package/index.mjs",
     "package/src/index.js",
+    "package/src/loggers/index.js",
+    "package/src/loggers/index.mjs",
+    "package/src/loggers/console.js",
+    "package/src/loggers/console.mjs",
     "package/src/instrumentation/emitter.js",
     "package/src/instrumentation/emitter.mjs",
     "package/src/instrumentation/event.js",
@@ -130,6 +134,8 @@ import uniq from "@dagher/kafkajs/src/utils/uniq.mjs";
 import InstrumentationEvent from "@dagher/kafkajs/src/instrumentation/event.mjs";
 import InstrumentationEventEmitter from "@dagher/kafkajs/src/instrumentation/emitter.mjs";
 import instrumentationEventType from "@dagher/kafkajs/src/instrumentation/event_type.mjs";
+import loggers, { LEVELS } from "@dagher/kafkajs/src/loggers/index.mjs";
+import LoggerConsole from "@dagher/kafkajs/src/loggers/console.mjs";
 
 const require = createRequire(import.meta.url);
 const commonjs = require("@dagher/kafkajs");
@@ -147,6 +153,9 @@ assert.strictEqual(require("@dagher/kafkajs/src/utils/uniq.js"), uniq);
 assert.strictEqual(require("@dagher/kafkajs/src/instrumentation/event.js"), InstrumentationEvent);
 assert.strictEqual(require("@dagher/kafkajs/src/instrumentation/emitter.js"), InstrumentationEventEmitter);
 assert.strictEqual(require("@dagher/kafkajs/src/instrumentation/eventType.js"), instrumentationEventType);
+assert.strictEqual(require("@dagher/kafkajs/src/loggers/index.js"), loggers);
+assert.strictEqual(require("@dagher/kafkajs/src/loggers/console.js"), LoggerConsole);
+assert.strictEqual(commonjs.LEVELS, LEVELS);
 
 const codec = () => "registered through ESM";
 CompressionCodecs[99] = codec;
