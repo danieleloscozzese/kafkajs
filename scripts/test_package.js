@@ -8,11 +8,18 @@ const root = path.resolve(__dirname, "..");
 const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "kafkajs-pack-consumer-"));
 const consumerDir = path.join(tempDir, "consumer");
 const protocolFamilies = [
-  ["apiVersions", 3],
-  ["metadata", 7],
-  ["produce", 8],
-  ["fetch", 12],
-  ["listOffsets", 4],
+  ["apiVersions", [0, 1, 2]],
+  ["metadata", [0, 1, 2, 3, 4, 5, 6]],
+  ["produce", [0, 1, 2, 3, 4, 5, 6, 7]],
+  ["fetch", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]],
+  ["listOffsets", [0, 1, 2, 3]],
+  ["findCoordinator", [0, 1, 2]],
+  ["joinGroup", [0, 1, 2, 3, 4, 5]],
+  ["heartbeat", [0, 1, 2, 3]],
+  ["leaveGroup", [0, 1, 2, 3]],
+  ["syncGroup", [0, 1, 2, 3]],
+  ["offsetCommit", [0, 1, 2, 3, 4, 5]],
+  ["offsetFetch", [1, 2, 3, 4]],
 ];
 
 fs.mkdirSync(consumerDir);
@@ -131,18 +138,18 @@ assert.equal(packageExports.CompressionTypes.GZIP, 1);
   fs.writeFileSync(
     path.join(consumerDir, "lazy_protocols.cjs"),
     `const assert = require("node:assert/strict");
-for (const [family, versionCount] of ${JSON.stringify(protocolFamilies)}) {
+for (const [family, versions] of ${JSON.stringify(protocolFamilies)}) {
   const prefix = "@dagher/kafkajs/src/protocol/requests/" + family;
   const registry = require(prefix + "/index.js");
-  const first = require.resolve(prefix + "/v0/request.mjs");
-  const last = require.resolve(prefix + "/v" + (versionCount - 1) + "/request.mjs");
+  const first = require.resolve(prefix + "/v" + versions[0] + "/request.mjs");
+  const last = require.resolve(prefix + "/v" + versions.at(-1) + "/request.mjs");
   assert.equal(require.cache[first], undefined);
   assert.equal(require.cache[last], undefined);
-  const result = registry.protocol({ version: 0 })({ topics: [] });
-  assert.equal(result.request.apiVersion, 0);
+  const result = registry.protocol({ version: versions[0] })({ topics: [] });
+  assert.equal(result.request.apiVersion, versions[0]);
   assert.equal(result.then, undefined);
   assert(require.cache[first]);
-  assert.equal(require.cache[last], undefined);
+  if (first !== last) assert.equal(require.cache[last], undefined);
 }
 `,
   );
@@ -180,12 +187,13 @@ import constants, * as namedConstants from "@dagher/kafkajs/src/constants.mjs";
 import Encoder from "@dagher/kafkajs/src/protocol/encoder.mjs";
 import Decoder from "@dagher/kafkajs/src/protocol/decoder.mjs";
 import compression from "@dagher/kafkajs/src/protocol/message/compression/index.mjs";
-import apiVersions from "@dagher/kafkajs/src/protocol/requests/apiVersions/index.mjs";
-import metadata from "@dagher/kafkajs/src/protocol/requests/metadata/index.mjs";
 import apiKeys from "@dagher/kafkajs/src/protocol/requests/api_keys.mjs";
-import produce from "@dagher/kafkajs/src/protocol/requests/produce/index.mjs";
-import fetch from "@dagher/kafkajs/src/protocol/requests/fetch/index.mjs";
-import listOffsets from "@dagher/kafkajs/src/protocol/requests/listOffsets/index.mjs";
+${protocolFamilies
+  .map(
+    ([family], index) =>
+      `import protocol${index} from "@dagher/kafkajs/src/protocol/requests/${family}/index.mjs";`,
+  )
+  .join("\n")}
 
 const require = createRequire(import.meta.url);
 const commonjs = require("@dagher/kafkajs");
@@ -267,21 +275,19 @@ CompressionCodecs[99] = codec;
 assert.strictEqual(commonjs.CompressionCodecs[99](), codec());
 assert.strictEqual(compression.Codecs, CompressionCodecs);
 assert.strictEqual(compression.lookupCodec(99), codec());
-assert.strictEqual(require("@dagher/kafkajs/src/protocol/requests/apiVersions/index.js"), apiVersions);
-assert.strictEqual(require("@dagher/kafkajs/src/protocol/requests/metadata/index.js"), metadata);
 assert.strictEqual(require("@dagher/kafkajs/src/protocol/requests/apiKeys.js"), apiKeys);
-assert.strictEqual(require("@dagher/kafkajs/src/protocol/requests/produce/index.js"), produce);
-assert.strictEqual(require("@dagher/kafkajs/src/protocol/requests/fetch/index.js"), fetch);
-assert.strictEqual(require("@dagher/kafkajs/src/protocol/requests/listOffsets/index.js"), listOffsets);
 assert.strictEqual(
   require("@dagher/kafkajs/src/protocol/requests/fetch/v4/decodeMessages.js"),
   (await import("@dagher/kafkajs/src/protocol/requests/fetch/v4/decode_messages.mjs")).default,
 );
-for (const [family, versionCount] of ${JSON.stringify(protocolFamilies)}) {
+const staticProtocols = [${protocolFamilies.map((_, index) => `protocol${index}`).join(", ")}];
+for (const [index, [family, versions]] of ${JSON.stringify(protocolFamilies)}.entries()) {
   const prefix = "@dagher/kafkajs/src/protocol/requests/" + family;
   const { default: registry } = await import(prefix + "/index.mjs");
   assert.strictEqual(require(prefix + "/index.js"), registry);
-  for (let version = 0; version < versionCount; version++) {
+  assert.strictEqual(staticProtocols[index], registry);
+  assert.deepEqual(registry.versions, versions.map(String));
+  for (const version of versions) {
     const protocol = registry.protocol({ version })({ topics: [] });
     assert.equal(protocol.request.apiVersion, version);
     for (const kind of ["request", "response"]) {

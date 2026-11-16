@@ -5,6 +5,13 @@ import Metadata from "./metadata/index.mjs";
 import Produce from "./produce/index.mjs";
 import Fetch from "./fetch/index.mjs";
 import ListOffsets from "./listOffsets/index.mjs";
+import GroupCoordinator from "./findCoordinator/index.mjs";
+import JoinGroup from "./joinGroup/index.mjs";
+import Heartbeat from "./heartbeat/index.mjs";
+import LeaveGroup from "./leaveGroup/index.mjs";
+import SyncGroup from "./syncGroup/index.mjs";
+import OffsetCommit from "./offsetCommit/index.mjs";
+import OffsetFetch from "./offsetFetch/index.mjs";
 import apiKeys from "./api_keys.mjs";
 
 const require = createRequire(import.meta.url);
@@ -17,7 +24,19 @@ describe("Protocol registries", () => {
     expect(require("./apiKeys.js")).toBe(apiKeys);
     expect(requests.requests.ApiVersions).toBe(ApiVersions);
     expect(requests.requests.Metadata).toBe(Metadata);
-    for (const [name, registry] of Object.entries({ Produce, Fetch, ListOffsets })) {
+    expect(require("./findCoordinator/index.js")).toBe(GroupCoordinator);
+    expect(requests.requests.GroupCoordinator).toBe(GroupCoordinator);
+    for (const [name, registry] of Object.entries({
+      Produce,
+      Fetch,
+      ListOffsets,
+      JoinGroup,
+      Heartbeat,
+      LeaveGroup,
+      SyncGroup,
+      OffsetCommit,
+      OffsetFetch,
+    })) {
       const directory = name[0].toLowerCase() + name.slice(1);
       expect(require(`./${directory}/index.js`)).toBe(registry);
       expect(requests.requests[name]).toBe(registry);
@@ -30,6 +49,13 @@ describe("Protocol registries", () => {
     [Produce, apiKeys.Produce, ["0", "1", "2", "3", "4", "5", "6", "7"]],
     [Fetch, apiKeys.Fetch, ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"]],
     [ListOffsets, apiKeys.ListOffsets, ["0", "1", "2", "3"]],
+    [GroupCoordinator, apiKeys.GroupCoordinator, ["0", "1", "2"]],
+    [JoinGroup, apiKeys.JoinGroup, ["0", "1", "2", "3", "4", "5"]],
+    [Heartbeat, apiKeys.Heartbeat, ["0", "1", "2", "3"]],
+    [LeaveGroup, apiKeys.LeaveGroup, ["0", "1", "2", "3"]],
+    [SyncGroup, apiKeys.SyncGroup, ["0", "1", "2", "3"]],
+    [OffsetCommit, apiKeys.OffsetCommit, ["0", "1", "2", "3", "4", "5"]],
+    [OffsetFetch, apiKeys.OffsetFetch, ["1", "2", "3", "4"]],
   ])("returns synchronous factories for each advertised version", (registry, apiKey, versions) => {
     expect(registry.versions).toEqual(versions);
     expect(registry.protocol({ version: 99 })).toBeUndefined();
@@ -60,5 +86,30 @@ describe("Protocol registries", () => {
     );
     expect(factory({ topics: ["test"] }).request.apiVersion).toBe(3);
     expect(Metadata.protocol({ version: 99 })).toBeUndefined();
+  });
+
+  it.each([
+    [undefined, 6000],
+    [2000, 7000],
+    [0, 6000],
+    [Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER],
+  ])(
+    "preserves join-group timeout precedence for rebalanceTimeout %s",
+    (rebalanceTimeout, expected) => {
+      for (const version of JoinGroup.versions) {
+        const result = JoinGroup.protocol({ version })({ sessionTimeout: 1000, rebalanceTimeout });
+        expect(result.requestTimeout).toBe(version === "0" ? 6000 : expected);
+      }
+    },
+  );
+
+  it.each([
+    [undefined, false],
+    ["", false],
+    ["member", true],
+  ])("preserves join-group response logging for member %s", (memberId, expected) => {
+    for (const version of [4, 5]) {
+      expect(JoinGroup.protocol({ version })({ memberId }).logResponseError).toBe(expected);
+    }
   });
 });
