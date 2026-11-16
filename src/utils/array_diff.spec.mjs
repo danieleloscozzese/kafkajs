@@ -1,6 +1,8 @@
-const { describe, it, expect } = require("@jest/globals");
+import { describe, it, expect } from "@jest/globals";
+import { createRequire } from "node:module";
+import arrayDiff from "./array_diff.mjs";
 
-const arrayDiff = require("./arrayDiff");
+const require = createRequire(import.meta.url);
 
 describe("Utils > arrayDiff", () => {
   it("returns the elements in A that are not in B", () => {
@@ -24,5 +26,13 @@ describe("Utils > arrayDiff", () => {
     const a = [1, 2, 3];
     const b = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     expect(arrayDiff(a, b)).toEqual([]);
+  });
+
+  it("preserves indexOf semantics, order, and duplicates", () => {
+    expect(arrayDiff([NaN, 2, 1, 2], [NaN, 1])).toEqual([NaN, 2, 2]);
+  });
+
+  it("shares the implementation with the CommonJS compatibility path", () => {
+    expect(require("./arrayDiff.js")).toBe(arrayDiff);
   });
 });

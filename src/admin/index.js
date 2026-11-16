@@ -1,6 +1,6 @@
 const createRetry = require("../retry");
 const waitFor = require("../utils/waitFor");
-const groupBy = require("../utils/groupBy");
+const groupBy = require("../utils/group_by.mjs").default;
 const createConsumer = require("../consumer");
 const InstrumentationEventEmitter = require("../instrumentation/emitter");
 const { events, wrap: wrapEvent, unwrap: unwrapEvent } = require("./instrumentationEvents");
