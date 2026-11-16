@@ -29,6 +29,13 @@ jobs:
         run: npm ci --quiet
         timeout-minutes: 5
 
+      - name: "Check declarations"
+        run: npm run test:types
+
+      - name: "Check packed consumer contracts"
+        run: npm run test:pack
+        timeout-minutes: 5
+
       - name: "Test the package"
         run: npm test
         timeout-minutes: 20
