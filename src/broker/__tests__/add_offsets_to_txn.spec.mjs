@@ -1,22 +1,17 @@
-const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
+import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
+import Broker from "../index.mjs";
+import COORDINATOR_TYPES from "../../protocol/coordinator_types.mjs";
+import errors from "../../errors.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { secureRandom, createConnectionPool, newLogger, retryProtocol } = testHelpers;
+const { KafkaJSProtocolError } = errors;
 
-const Broker = require("../index");
-const COORDINATOR_TYPES = require("../../protocol/coordinator_types.mjs").default;
-const { KafkaJSProtocolError } = require("../../errors.mjs").default;
-const {
-  secureRandom,
-  createTopic,
-  createConnectionPool,
-  newLogger,
-  retryProtocol,
-} = require("testHelpers");
-
-describe("Broker > AddPartitionsToTxn", () => {
-  let broker, seedBroker, transactionalId, producerId, producerEpoch, topicName;
+describe("Broker > AddOffsetsToTxn", () => {
+  let broker, seedBroker, transactionalId, producerId, producerEpoch, consumerGroupId;
 
   beforeEach(async () => {
-    transactionalId = `producer-group-id-${secureRandom()}`;
-    topicName = `test-topic-${secureRandom()}`;
+    transactionalId = `transactional-id-${secureRandom()}`;
+    consumerGroupId = `group-id-${secureRandom()}`;
 
     seedBroker = new Broker({
       connectionPool: createConnectionPool(),
@@ -24,7 +19,6 @@ describe("Broker > AddPartitionsToTxn", () => {
     });
 
     await seedBroker.connect();
-    await createTopic({ topic: topicName, partitions: 4 });
 
     const {
       coordinator: { host, port },
@@ -58,49 +52,46 @@ describe("Broker > AddPartitionsToTxn", () => {
   });
 
   test("request", async () => {
-    const result = await broker.addPartitionsToTxn({
+    const result = await broker.addOffsetsToTxn({
       transactionalId,
       producerId,
       producerEpoch,
-      topics: [
-        {
-          topic: topicName,
-          partitions: [1, 2],
-        },
-      ],
+      groupId: consumerGroupId,
     });
 
     expect(result).toEqual({
       clientSideThrottleTime: expect.optional(0),
       throttleTime: 0,
-      errors: [
-        {
-          topic: topicName,
-          partitionErrors: [
-            { errorCode: 0, partition: 1 },
-            { errorCode: 0, partition: 2 },
-          ],
-        },
-      ],
+      errorCode: 0,
     });
   });
 
-  test("throws for invalid producer id", async () => {
+  test("throws for incorrect producer id", async () => {
     await expect(
-      broker.addPartitionsToTxn({
+      broker.addOffsetsToTxn({
         transactionalId,
-        producerId: "123456789",
+        producerId: 12345,
         producerEpoch,
-        topics: [
-          {
-            topic: topicName,
-            partitions: [1, 2],
-          },
-        ],
+        groupId: consumerGroupId,
       }),
     ).rejects.toEqual(
       new KafkaJSProtocolError(
         "The producer attempted to use a producer id which is not currently assigned to its transactional id",
+      ),
+    );
+  });
+
+  test("throws for incorrect producer epoch", async () => {
+    await expect(
+      broker.addOffsetsToTxn({
+        transactionalId,
+        producerId,
+        producerEpoch: producerEpoch + 1,
+        groupId: consumerGroupId,
+      }),
+    ).rejects.toEqual(
+      new KafkaJSProtocolError(
+        "Producer attempted an operation with an old epoch. Either there is a newer producer with the same transactionalId, or the producer's transaction has been expired by the broker",
       ),
     );
   });

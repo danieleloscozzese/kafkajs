@@ -1,16 +1,11 @@
-const { describe, test, expect, beforeEach, afterEach, it } = require("@jest/globals");
+import { describe, test, expect, beforeEach, afterEach, it } from "@jest/globals";
+import ConfigResourceTypes from "../../protocol/config_resource_types.mjs";
+import Broker from "../index.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { default: createAdmin } = await import("../../admin/index.js");
+const { createCluster, createConnectionPool, connectionOpts, secureRandom, newLogger } =
+  testHelpers;
 
-const {
-  createCluster,
-  createConnectionPool,
-  connectionOpts,
-  secureRandom,
-  newLogger,
-} = require("testHelpers");
-const ConfigResourceTypes = require("../../protocol/config_resource_types.mjs").default;
-const createAdmin = require("../../admin");
-
-const Broker = require("../index.js");
 const topicNameComparator = (a, b) => a.topic.localeCompare(b.topic);
 
 describe("Broker > createTopics", () => {

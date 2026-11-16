@@ -1,10 +1,13 @@
-const { describe, test, expect, beforeEach, afterEach, jest } = require("@jest/globals");
-
-const { createConnectionPool, connectionOpts, newLogger } = require("testHelpers");
-const { KafkaJSProtocolError, KafkaJSNonRetriableError } = require("../../errors.mjs").default;
-const { createErrorFromCode } = require("../../protocol/error.mjs").default;
-const { requests } = require("../../protocol/requests/index.mjs").default;
-const Broker = require("../index.js");
+import { describe, test, expect, beforeEach, afterEach, jest } from "@jest/globals";
+import errors from "../../errors.mjs";
+import protocolErrors from "../../protocol/error.mjs";
+import requests0 from "../../protocol/requests/index.mjs";
+import Broker from "../index.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { createConnectionPool, connectionOpts, newLogger } = testHelpers;
+const { KafkaJSProtocolError, KafkaJSNonRetriableError } = errors;
+const { createErrorFromCode } = protocolErrors;
+const { requests } = requests0;
 
 const UNSUPPORTED_VERSION_CODE = 35;
 

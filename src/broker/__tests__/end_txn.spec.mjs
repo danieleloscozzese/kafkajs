@@ -1,15 +1,10 @@
-const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
-
-const Broker = require("../index");
-const COORDINATOR_TYPES = require("../../protocol/coordinator_types.mjs").default;
-const {
-  secureRandom,
-  createConnectionPool,
-  newLogger,
-  retryProtocol,
-  createTopic,
-} = require("testHelpers");
-const { KafkaJSProtocolError } = require("../../errors.mjs").default;
+import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
+import Broker from "../index.mjs";
+import COORDINATOR_TYPES from "../../protocol/coordinator_types.mjs";
+import errors from "../../errors.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { secureRandom, createConnectionPool, newLogger, retryProtocol, createTopic } = testHelpers;
+const { KafkaJSProtocolError } = errors;
 
 describe("Broker > EndTxn", () => {
   let transactionBroker, seedBroker, transactionalId, producerId, producerEpoch, topicName;

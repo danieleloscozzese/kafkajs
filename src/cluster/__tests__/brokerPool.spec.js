@@ -10,7 +10,7 @@ const {
 const { KafkaJSProtocolError, KafkaJSConnectionError } = require("../../errors.mjs").default;
 const { createErrorFromCode, errorCodes } = require("../../protocol/error.mjs").default;
 const BrokerPool = require("../brokerPool.js");
-const Broker = require("../../broker/index.js");
+const Broker = require("../../broker/index.mjs").default;
 
 describe("Cluster > BrokerPool", () => {
   let topicName, brokerPool;

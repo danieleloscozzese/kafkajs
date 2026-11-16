@@ -1,8 +1,8 @@
-const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
-
-const Broker = require("../index");
-const { createConnectionPool, newLogger, retryProtocol, secureRandom } = require("testHelpers");
-const COORDINATOR_TYPES = require("../../protocol/coordinator_types.mjs").default;
+import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
+import Broker from "../index.mjs";
+import COORDINATOR_TYPES from "../../protocol/coordinator_types.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { createConnectionPool, newLogger, retryProtocol, secureRandom } = testHelpers;
 
 describe("Broker > InitProducerId", () => {
   let broker, seedBroker, transactionalId;

@@ -1,10 +1,11 @@
-const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
+import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
+import Broker from "../index.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { default: assignerProtocol } = await import("../../consumer/assignerProtocol.js");
+const { secureRandom, createConnectionPool, newLogger, retryProtocol } = testHelpers;
+const { MemberMetadata, MemberAssignment } = assignerProtocol;
 
-const Broker = require("../index");
-const { MemberMetadata, MemberAssignment } = require("../../consumer/assignerProtocol");
-const { secureRandom, createConnectionPool, newLogger, retryProtocol } = require("testHelpers");
-
-describe("Broker > LeaveGroup", () => {
+describe("Broker > SyncGroup", () => {
   let topicName, groupId, seedBroker, groupCoordinator;
 
   beforeEach(async () => {
@@ -55,19 +56,18 @@ describe("Broker > LeaveGroup", () => {
     });
 
     const groupAssignment = [{ memberId, memberAssignment }];
-    await groupCoordinator.syncGroup({
+    const response = await groupCoordinator.syncGroup({
       groupId,
       generationId,
       memberId,
       groupAssignment,
     });
 
-    const response = await groupCoordinator.leaveGroup({ groupId, memberId });
     expect(response).toEqual({
       clientSideThrottleTime: expect.optional(0),
       throttleTime: 0,
       errorCode: 0,
-      members: [{ errorCode: 0, memberId, groupInstanceId: null }],
+      memberAssignment,
     });
   });
 });

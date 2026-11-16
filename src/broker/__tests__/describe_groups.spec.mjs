@@ -1,14 +1,8 @@
-const { describe, test, expect, beforeEach, afterEach, jest } = require("@jest/globals");
-
-const Broker = require("../index");
-const {
-  secureRandom,
-  createConnectionPool,
-  newLogger,
-  retryProtocol,
-  createCluster,
-} = require("testHelpers");
-const createConsumer = require("../../consumer/index.js");
+import { describe, test, expect, beforeEach, afterEach, jest } from "@jest/globals";
+import Broker from "../index.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { default: createConsumer } = await import("../../consumer/index.js");
+const { secureRandom, createConnectionPool, newLogger, retryProtocol, createCluster } = testHelpers;
 
 describe("Broker > DescribeGroups", () => {
   let groupId, topicName, seedBroker, broker, cluster, consumer;

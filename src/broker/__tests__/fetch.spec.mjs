@@ -1,9 +1,10 @@
-const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
-
-const Broker = require("../index");
-const createProducer = require("../../producer");
-const createRetrier = require("../../retry/index.mjs").default;
-
+import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
+import Broker from "../index.mjs";
+import createRetrier from "../../retry/index.mjs";
+import compression0 from "../../protocol/message/compression/index.mjs";
+import ISOLATION_LEVEL from "../../protocol/isolation_level.mjs";
+const { default: createProducer } = await import("../../producer/index.js");
+const { default: testHelpers } = await import("testHelpers");
 const {
   secureRandom,
   createConnectionPool,
@@ -13,9 +14,8 @@ const {
   retryProtocol,
   testIfKafkaAtLeast_0_11,
   generateMessages,
-} = require("testHelpers");
-const { Types: Compression } = require("../../protocol/message/compression/index.mjs").default;
-const ISOLATION_LEVEL = require("../../protocol/isolation_level.mjs").default;
+} = testHelpers;
+const { Types: Compression } = compression0;
 
 const minBytes = 1;
 const maxBytes = 10485760; // 10MB

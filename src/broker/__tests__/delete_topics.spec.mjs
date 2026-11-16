@@ -1,8 +1,8 @@
-const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
+import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
+import Broker from "../index.mjs";
+const { default: testHelpers } = await import("testHelpers");
+const { createConnectionPool, connectionOpts, secureRandom, newLogger } = testHelpers;
 
-const { createConnectionPool, connectionOpts, secureRandom, newLogger } = require("testHelpers");
-
-const Broker = require("../index.js");
 const topicNameComparator = (a, b) => a.topic.localeCompare(b.topic);
 
 describe("Broker > deleteTopics", () => {

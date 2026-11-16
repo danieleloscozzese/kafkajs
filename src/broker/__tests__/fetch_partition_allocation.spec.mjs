@@ -3,7 +3,7 @@ import { describe, test, expect, beforeEach, jest } from "@jest/globals";
 const mockShuffle = jest.fn();
 jest.unstable_mockModule("../../utils/shuffle.mjs", () => ({ default: mockShuffle }));
 
-const { default: Broker } = await import("../index.js");
+const { default: Broker } = await import("../index.mjs");
 
 const { default: helpers } = await import("testHelpers");
 const { createConnectionPool, newLogger } = helpers;

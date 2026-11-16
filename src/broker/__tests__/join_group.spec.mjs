@@ -1,8 +1,9 @@
-const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
-
-const Broker = require("../index");
-const { MemberMetadata } = require("../../consumer/assignerProtocol");
-const { secureRandom, createConnectionPool, newLogger, retryProtocol } = require("testHelpers");
+import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
+import Broker from "../index.mjs";
+const { default: assignerProtocol } = await import("../../consumer/assignerProtocol.js");
+const { default: testHelpers } = await import("testHelpers");
+const { MemberMetadata } = assignerProtocol;
+const { secureRandom, createConnectionPool, newLogger, retryProtocol } = testHelpers;
 
 describe("Broker > JoinGroup", () => {
   let groupId, topicName, seedBroker, broker;

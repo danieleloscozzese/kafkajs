@@ -1,5 +1,7 @@
-const { describe, test, expect, beforeEach, afterEach } = require("@jest/globals");
-
+import { describe, test, expect, beforeEach, afterEach } from "@jest/globals";
+import Long from "../../utils/long.mjs";
+import Broker from "../index.mjs";
+const { default: testHelpers } = await import("testHelpers");
 const {
   createConnectionPool,
   connectionOpts,
@@ -8,10 +10,7 @@ const {
   newLogger,
   testIfKafkaAtLeast_1_1_0,
   saslEntries,
-} = require("testHelpers");
-
-const Long = require("../../utils/long.mjs").default;
-const Broker = require("../index.js");
+} = testHelpers;
 
 describe("Broker > connect", () => {
   let broker, connectionPool;

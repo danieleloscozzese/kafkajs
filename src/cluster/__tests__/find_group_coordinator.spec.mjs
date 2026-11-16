@@ -6,7 +6,7 @@ jest.unstable_mockModule("../../utils/shuffle.mjs", () => ({
   default: jest.fn((brokers) => brokers.sort((a, b) => a > b)),
 }));
 
-const { default: Broker } = await import("../../broker/index.js");
+const { default: Broker } = await import("../../broker/index.mjs");
 const { default: helpers } = await import("testHelpers");
 const { createCluster, secureRandom } = helpers;
 
