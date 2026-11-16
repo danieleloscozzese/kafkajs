@@ -1,3 +1,1 @@
-const { keys } = Object;
-module.exports = (object) =>
-  keys(object).reduce((result, key) => ({ ...result, [object[key]]: key }), {});
+module.exports = require("./swap_object.mjs").default;

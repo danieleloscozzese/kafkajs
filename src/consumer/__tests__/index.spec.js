@@ -13,7 +13,7 @@ const createConsumer = require("../index.js");
 const createProducer = require("../../producer/index.js");
 const sleep = require("../../utils/sleep.js");
 const waitFor = require("../../utils/waitFor.js");
-const uniq = require("../../utils/uniq.js");
+const uniq = require("../../utils/uniq.mjs").default;
 
 describe("Consumer", () => {
   let topicName, groupId, consumer, consumer2, producer;

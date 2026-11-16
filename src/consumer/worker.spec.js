@@ -2,7 +2,7 @@ const { describe, expect, beforeEach, it, jest } = require("@jest/globals");
 
 const createWorker = require("./worker");
 const Batch = require("./batch");
-const seq = require("../utils/seq");
+const seq = require("../utils/seq.mjs").default;
 
 const createBatch = (partition) =>
   new Batch("test-topic", 0, {
