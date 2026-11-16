@@ -7,6 +7,13 @@ const path = require("node:path");
 const root = path.resolve(__dirname, "..");
 const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "kafkajs-pack-consumer-"));
 const consumerDir = path.join(tempDir, "consumer");
+const protocolFamilies = [
+  ["apiVersions", 3],
+  ["metadata", 7],
+  ["produce", 8],
+  ["fetch", 12],
+  ["listOffsets", 4],
+];
 
 fs.mkdirSync(consumerDir);
 fs.writeFileSync(
@@ -15,11 +22,10 @@ fs.writeFileSync(
 );
 
 try {
-  const packOutput = execFileSync(
-    "npm",
-    ["pack", "--json", "--pack-destination", tempDir],
-    { cwd: root, encoding: "utf8" },
-  );
+  const packOutput = execFileSync("npm", ["pack", "--json", "--pack-destination", tempDir], {
+    cwd: root,
+    encoding: "utf8",
+  });
   const [{ filename }] = JSON.parse(packOutput);
   const tarball = path.join(tempDir, filename);
   const files = execFileSync("tar", ["-tzf", tarball], { encoding: "utf8" })
@@ -87,21 +93,11 @@ try {
 
   execFileSync(
     "npm",
-    [
-      "install",
-      "--no-package-lock",
-      "--ignore-scripts",
-      "--no-audit",
-      "--no-fund",
-      tarball,
-    ],
+    ["install", "--no-package-lock", "--ignore-scripts", "--no-audit", "--no-fund", tarball],
     { cwd: consumerDir, stdio: "inherit" },
   );
 
-  const packageJson = require(path.join(
-    consumerDir,
-    "node_modules/@dagher/kafkajs/package.json",
-  ));
+  const packageJson = require(path.join(consumerDir, "node_modules/@dagher/kafkajs/package.json"));
   assert.equal(packageJson.main, "index.js");
   assert.equal(packageJson.module, "index.mjs");
   assert.equal(packageJson.types, "types/index.d.ts");
@@ -135,11 +131,11 @@ assert.equal(packageExports.CompressionTypes.GZIP, 1);
   fs.writeFileSync(
     path.join(consumerDir, "lazy_protocols.cjs"),
     `const assert = require("node:assert/strict");
-for (const [family, latest] of [["apiVersions", 2], ["metadata", 6]]) {
+for (const [family, versionCount] of ${JSON.stringify(protocolFamilies)}) {
   const prefix = "@dagher/kafkajs/src/protocol/requests/" + family;
   const registry = require(prefix + "/index.js");
   const first = require.resolve(prefix + "/v0/request.mjs");
-  const last = require.resolve(prefix + "/v" + latest + "/request.mjs");
+  const last = require.resolve(prefix + "/v" + (versionCount - 1) + "/request.mjs");
   assert.equal(require.cache[first], undefined);
   assert.equal(require.cache[last], undefined);
   const result = registry.protocol({ version: 0 })({ topics: [] });
@@ -187,6 +183,9 @@ import compression from "@dagher/kafkajs/src/protocol/message/compression/index.
 import apiVersions from "@dagher/kafkajs/src/protocol/requests/apiVersions/index.mjs";
 import metadata from "@dagher/kafkajs/src/protocol/requests/metadata/index.mjs";
 import apiKeys from "@dagher/kafkajs/src/protocol/requests/api_keys.mjs";
+import produce from "@dagher/kafkajs/src/protocol/requests/produce/index.mjs";
+import fetch from "@dagher/kafkajs/src/protocol/requests/fetch/index.mjs";
+import listOffsets from "@dagher/kafkajs/src/protocol/requests/listOffsets/index.mjs";
 
 const require = createRequire(import.meta.url);
 const commonjs = require("@dagher/kafkajs");
@@ -271,7 +270,14 @@ assert.strictEqual(compression.lookupCodec(99), codec());
 assert.strictEqual(require("@dagher/kafkajs/src/protocol/requests/apiVersions/index.js"), apiVersions);
 assert.strictEqual(require("@dagher/kafkajs/src/protocol/requests/metadata/index.js"), metadata);
 assert.strictEqual(require("@dagher/kafkajs/src/protocol/requests/apiKeys.js"), apiKeys);
-for (const [family, versionCount] of [["apiVersions", 3], ["metadata", 7]]) {
+assert.strictEqual(require("@dagher/kafkajs/src/protocol/requests/produce/index.js"), produce);
+assert.strictEqual(require("@dagher/kafkajs/src/protocol/requests/fetch/index.js"), fetch);
+assert.strictEqual(require("@dagher/kafkajs/src/protocol/requests/listOffsets/index.js"), listOffsets);
+assert.strictEqual(
+  require("@dagher/kafkajs/src/protocol/requests/fetch/v4/decodeMessages.js"),
+  (await import("@dagher/kafkajs/src/protocol/requests/fetch/v4/decode_messages.mjs")).default,
+);
+for (const [family, versionCount] of ${JSON.stringify(protocolFamilies)}) {
   const prefix = "@dagher/kafkajs/src/protocol/requests/" + family;
   const { default: registry } = await import(prefix + "/index.mjs");
   assert.strictEqual(require(prefix + "/index.js"), registry);
@@ -324,14 +330,7 @@ void error;
 
   const tsc = path.join(root, "node_modules/typescript/bin/tsc");
   const typeRoots = path.join(root, "node_modules/@types");
-  const commonOptions = [
-    "--noEmit",
-    "--strict",
-    "--types",
-    "node",
-    "--typeRoots",
-    typeRoots,
-  ];
+  const commonOptions = ["--noEmit", "--strict", "--types", "node", "--typeRoots", typeRoots];
   execFileSync(
     process.execPath,
     [

@@ -32,7 +32,8 @@ exercise codec registration through the CommonJS path and use it in ESM record
 encoding and decoding. Gzip is imported statically; codec factories remain
 synchronous and the registry remains shared and mutable.
 
-API-version and metadata request implementations and tests use native ESM.
+API-version, metadata, produce, fetch, and list-offset request implementations
+and tests use native ESM.
 Their version registries retain explicit, synchronous lazy loads through
 `createRequire`: eagerly importing every version exceeded the cold-start
 budget. Only the selected version and its dependencies load on invocation;
