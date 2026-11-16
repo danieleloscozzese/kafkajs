@@ -17,6 +17,14 @@ import AddPartitionsToTxn from "./addPartitionsToTxn/index.mjs";
 import AddOffsetsToTxn from "./addOffsetsToTxn/index.mjs";
 import EndTxn from "./endTxn/index.mjs";
 import TxnOffsetCommit from "./txnOffsetCommit/index.mjs";
+import CreateTopics from "./createTopics/index.mjs";
+import DeleteTopics from "./deleteTopics/index.mjs";
+import CreatePartitions from "./createPartitions/index.mjs";
+import DeleteRecords from "./deleteRecords/index.mjs";
+import DescribeConfigs from "./describeConfigs/index.mjs";
+import AlterConfigs from "./alterConfigs/index.mjs";
+import AlterPartitionReassignments from "./alterPartitionReassignments/index.mjs";
+import ListPartitionReassignments from "./listPartitionReassignments/index.mjs";
 import apiKeys from "./api_keys.mjs";
 
 const require = createRequire(import.meta.url);
@@ -46,6 +54,14 @@ describe("Protocol registries", () => {
       AddOffsetsToTxn,
       EndTxn,
       TxnOffsetCommit,
+      CreateTopics,
+      DeleteTopics,
+      CreatePartitions,
+      DeleteRecords,
+      DescribeConfigs,
+      AlterConfigs,
+      AlterPartitionReassignments,
+      ListPartitionReassignments,
     })) {
       const directory = name[0].toLowerCase() + name.slice(1);
       expect(require(`./${directory}/index.js`)).toBe(registry);
@@ -71,6 +87,14 @@ describe("Protocol registries", () => {
     [AddOffsetsToTxn, apiKeys.AddOffsetsToTxn, ["0", "1"]],
     [EndTxn, apiKeys.EndTxn, ["0", "1"]],
     [TxnOffsetCommit, apiKeys.TxnOffsetCommit, ["0", "1"]],
+    [CreateTopics, apiKeys.CreateTopics, ["0", "1", "2", "3"]],
+    [DeleteTopics, apiKeys.DeleteTopics, ["0", "1"]],
+    [CreatePartitions, apiKeys.CreatePartitions, ["0", "1"]],
+    [DeleteRecords, apiKeys.DeleteRecords, ["0", "1"]],
+    [DescribeConfigs, apiKeys.DescribeConfigs, ["0", "1", "2"]],
+    [AlterConfigs, apiKeys.AlterConfigs, ["0", "1"]],
+    [AlterPartitionReassignments, apiKeys.AlterPartitionReassignments, ["0"]],
+    [ListPartitionReassignments, apiKeys.ListPartitionReassignments, ["0"]],
   ])("returns synchronous factories for each advertised version", (registry, apiKey, versions) => {
     expect(registry.versions).toEqual(versions);
     expect(registry.protocol({ version: 99 })).toBeUndefined();
@@ -102,6 +126,30 @@ describe("Protocol registries", () => {
     expect(factory({ topics: ["test"] }).request.apiVersion).toBe(3);
     expect(Metadata.protocol({ version: 99 })).toBeUndefined();
   });
+
+  it.each([0, 1])(
+    "keeps delete-record v%s errors scoped to their request offsets",
+    async (version) => {
+      const offsets = ["42", "9007199254740993"];
+      const responses = offsets.map(
+        (offset) =>
+          DeleteRecords.protocol({ version })({
+            topics: [{ topic: "test", partitions: [{ partition: 0, offset }] }],
+          }).response,
+      );
+      expect(responses[0]).not.toBe(responses[1]);
+      for (const [index, response] of responses.entries()) {
+        await expect(
+          response.parse({
+            topics: [{ topic: "test", partitions: [{ partition: 0, errorCode: 1 }] }],
+          }),
+        ).rejects.toMatchObject({
+          name: "KafkaJSDeleteTopicRecordsError",
+          partitions: [{ partition: 0, offset: offsets[index], error: { code: 1 } }],
+        });
+      }
+    },
+  );
 
   it.each([
     [undefined, 6000],
