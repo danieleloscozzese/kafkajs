@@ -45,7 +45,7 @@ describe("Admin", () => {
       );
     });
 
-    const sendMessages = async (n) => {
+    const sendMessages = async (n, timestamp) => {
       await admin.connect();
       await producer.connect();
 
@@ -53,17 +53,17 @@ describe("Admin", () => {
         .fill()
         .map(() => {
           const value = secureRandom();
-          return { key: `key-${value}`, value: `value-${value}` };
+          return { key: `key-${value}`, value: `value-${value}`, timestamp: `${timestamp}` };
         });
 
       await producer.send({ acks: 1, topic: topicName, messages });
     };
 
     test("returns the offsets from timestamp", async () => {
-      await sendMessages(10);
       const fromTimestamp = Date.now();
-      await sendMessages(10);
-      const futureTimestamp = Date.now();
+      await sendMessages(10, fromTimestamp - 1000);
+      await sendMessages(10, fromTimestamp + 1000);
+      const futureTimestamp = fromTimestamp + 2000;
       const offsetsFromTimestamp = await admin.fetchTopicOffsetsByTimestamp(
         topicName,
         fromTimestamp,
