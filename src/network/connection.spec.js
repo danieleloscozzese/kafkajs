@@ -177,21 +177,25 @@ describe("Network > Connection", () => {
 
     test("respect the requestTimeout", async () => {
       const protocol = apiVersions();
+      const socketFactory = ({ onConnect }) => {
+        const socket = new EventEmitter();
+        socket.write = jest.fn();
+        socket.end = jest.fn();
+        socket.unref = jest.fn();
+        setImmediate(onConnect);
+        return socket;
+      };
       connection = new Connection(
         connectionOpts({
           requestTimeout: 50,
           enforceRequestTimeout: true,
+          socketFactory,
         }),
       );
-      const originalProcessData = connection.processData;
-
-      connection.processData = async (data) => {
-        await sleep(100);
-        originalProcessData.apply(connection, [data]);
-      };
 
       await connection.connect();
       await expect(connection.send(protocol)).rejects.toThrow(KafkaJSRequestTimeoutError);
+      expect(connection.socket.write).toHaveBeenCalledTimes(1);
     });
 
     test("throttles the request queue", async () => {

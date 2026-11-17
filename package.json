@@ -3,9 +3,13 @@
   "version": "2.2.8",
   "description": "A modern Apache Kafka client for node.js",
   "author": "Daniel Arthur Gallagher <him@danielarthurgallagher.dev>",
-  "module": "index.mjs",
+  "main": "index.js",
   "type": "commonjs",
-  "types": "types/index.d.ts",
+  "exports": {
+    "require": "./index.js",
+    "import": "./index.mjs"
+  },
+  "types": "./types/index.d.ts",
   "license": "MIT",
   "keywords": [
     "kafka",
@@ -22,9 +26,9 @@
   "bugs": {
     "url": "https://github.com/danieleloscozzese/kafkajs"
   },
-  "homepage": "https://kafka.js.org",
   "scripts": {
     "jest": "export KAFKA_VERSION=${KAFKA_VERSION:='2.4'} && NODE_ENV=test echo \"KAFKA_VERSION: ${KAFKA_VERSION}\" && KAFKAJS_DEBUG_PROTOCOL_BUFFERS=1 jest",
+    "test:pack": "node scripts/test_package.js",
     "test:local": "jest --detectOpenHandles",
     "test:local:watch": "npm run test:local --watch",
     "test": "npm run lint && JEST_JUNIT_OUTPUT_NAME=test-report.xml ./scripts/testWithKafka.sh 'npx jest --ci --maxWorkers=4 --no-watchman --forceExit'",
@@ -69,5 +73,5 @@
       "git add"
     ]
   },
-  "packageManager": "npm@12.2.1+sha512.6ca0a6151553fc107e60f1186d9c10d57508dcde6de31292a54d4cc4e8e8ef3de25b3281274657442d7115d10df930bb3794ddcb0681cdfd9d317189abf7b63d"
+  "packageManager": "npm@12.2.2+sha512.2a09606d9c9a71fee31fe147b8d46a56e0b3422f15848d9aec9f3b231e3716c3d3b99a065a62175c6759b4150e03bf6fc0bf8825112a511573ba903b3ec41370"
 }
