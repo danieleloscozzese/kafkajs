@@ -41,7 +41,7 @@ describe("Network > Connection", () => {
 
       test("rejects the Promise in case of errors", async () => {
         connection.host = invalidHost;
-        const messagePattern = /Connection error: getaddrinfo ENOTFOUND kafkajs.test/;
+        const messagePattern = /Connection error: getaddrinfo (ENOTFOUND|EAI_AGAIN) kafkajs\.test/;
         await expect(connection.connect()).rejects.toThrow(messagePattern);
         expect(connection.isConnected()).toEqual(false);
       });
