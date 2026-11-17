@@ -1,8 +1,8 @@
 const { describe, expect, beforeEach, afterEach, it, jest } = require("@jest/globals");
 
-const createProducer = require("../../producer");
+const createProducer = require("../../producer/index.js");
 const createConsumer = require("../index");
-const { KafkaJSNonRetriableError } = require("../../errors");
+const { KafkaJSNonRetriableError } = require("../../errors.js");
 
 const {
   secureRandom,
@@ -12,11 +12,11 @@ const {
   waitFor,
   waitForMessages,
   waitForConsumerToJoinGroup,
-} = require("../../testHelpers/index.js");
+} = require("../../../testHelpers/index.js");
 
 describe("Consumer", () => {
   /**
-   * @type {import('../../../types').Consumer}
+   * @type {import('../../../types/index.js').Consumer}
    */
   let consumer;
   let groupId, producer, topics;

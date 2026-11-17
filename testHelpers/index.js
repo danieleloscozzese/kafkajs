@@ -1,15 +1,15 @@
+const { execSync } = require("node:child_process");
 const fs = require("node:fs");
 const crypto = require("node:crypto");
 
 const { test } = require("@jest/globals");
 
-const { execSync } = require("node:child_process");
 const semver = require("semver");
-const Cluster = require("../src/cluster");
-const waitFor = require("../src/utils/waitFor");
-const connectionBuilder = require("../src/cluster/connectionPoolBuilder");
-const ConnectionPool = require("../src/network/connectionPool");
-const defaultSocketFactory = require("../src/network/socketFactory");
+const Cluster = require("../src/cluster/index.js");
+const waitFor = require("../src/utils/waitFor.js");
+const connectionBuilder = require("../src/cluster/connectionPoolBuilder.js");
+const ConnectionPool = require("../src/network/connectionPool.js");
+const defaultSocketFactory = require("../src/network/socketFactory.js");
 const socketFactory = defaultSocketFactory();
 
 const {
