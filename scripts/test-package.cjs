@@ -15,11 +15,10 @@ fs.writeFileSync(
 );
 
 try {
-  const packOutput = execFileSync(
-    "npm",
-    ["pack", "--json", "--pack-destination", tempDir],
-    { cwd: root, encoding: "utf8" },
-  );
+  const packOutput = execFileSync("npm", ["pack", "--json", "--pack-destination", tempDir], {
+    cwd: root,
+    encoding: "utf8",
+  });
   const [{ filename }] = JSON.parse(packOutput);
   const tarball = path.join(tempDir, filename);
   const files = execFileSync("tar", ["-tzf", tarball], { encoding: "utf8" })
@@ -42,24 +41,15 @@ try {
 
   execFileSync(
     "npm",
-    [
-      "install",
-      "--no-package-lock",
-      "--ignore-scripts",
-      "--no-audit",
-      "--no-fund",
-      tarball,
-    ],
+    ["install", "--no-package-lock", "--ignore-scripts", "--no-audit", "--no-fund", tarball],
     { cwd: consumerDir, stdio: "inherit" },
   );
 
-  const packageJson = require(path.join(
-    consumerDir,
-    "node_modules/@dagher/kafkajs/package.json",
-  ));
-  assert.equal(packageJson.main, "index.js");
-  assert.equal(packageJson.module, "index.mjs");
-  assert.equal(packageJson.types, "types/index.d.ts");
+  const packageJson = require(path.join(consumerDir, "node_modules/@dagher/kafkajs/package.json"));
+  assert.equal(packageJson.main, "./index.js");
+  assert.equal(packageJson.exports.require, packageJson.main);
+  assert.equal(packageJson.exports.import, "./index.mjs");
+  assert.equal(packageJson.types, "./types/index.d.ts");
 
   fs.writeFileSync(
     path.join(consumerDir, "require.cjs"),
@@ -146,14 +136,7 @@ void error;
 
   const tsc = path.join(root, "node_modules/typescript/bin/tsc");
   const typeRoots = path.join(root, "node_modules/@types");
-  const commonOptions = [
-    "--noEmit",
-    "--strict",
-    "--types",
-    "node",
-    "--typeRoots",
-    typeRoots,
-  ];
+  const commonOptions = ["--noEmit", "--strict", "--types", "node", "--typeRoots", typeRoots];
   execFileSync(
     process.execPath,
     [

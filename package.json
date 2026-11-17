@@ -3,7 +3,7 @@
   "version": "2.2.8",
   "description": "A modern Apache Kafka client for node.js",
   "author": "Daniel Arthur Gallagher <him@danielarthurgallagher.dev>",
-  "main": "index.js",
+  "main": "./index.js",
   "type": "commonjs",
   "exports": {
     "require": "./index.js",
@@ -28,7 +28,7 @@
   },
   "scripts": {
     "jest": "export KAFKA_VERSION=${KAFKA_VERSION:='2.4'} && NODE_ENV=test echo \"KAFKA_VERSION: ${KAFKA_VERSION}\" && KAFKAJS_DEBUG_PROTOCOL_BUFFERS=1 jest",
-    "test:pack": "node scripts/test_package.js",
+    "test:pack": "node ./scripts/test-package.cjs",
     "test:local": "jest --detectOpenHandles",
     "test:local:watch": "npm run test:local --watch",
     "test": "npm run lint && JEST_JUNIT_OUTPUT_NAME=test-report.xml ./scripts/testWithKafka.sh 'npx jest --ci --maxWorkers=4 --no-watchman --forceExit'",
