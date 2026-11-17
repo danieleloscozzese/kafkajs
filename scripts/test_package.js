@@ -30,6 +30,8 @@ try {
     "package/index.js",
     "package/index.mjs",
     "package/src/index.js",
+    "package/src/utils/once.js",
+    "package/src/utils/once.mjs",
     "package/types/index.d.ts",
   ]) {
     assert(files.includes(requiredFile), `Tarball is missing ${requiredFile}`);
@@ -100,6 +102,7 @@ import {
   Partitioners,
   CompressionCodecs,
 } from "@dagher/kafkajs/index.mjs";
+import once from "@dagher/kafkajs/src/utils/once.mjs";
 
 const require = createRequire(import.meta.url);
 const commonjs = require("@dagher/kafkajs");
@@ -107,6 +110,7 @@ assert.strictEqual(Kafka, commonjs.Kafka);
 assert.strictEqual(Partitioners, commonjs.Partitioners);
 assert.strictEqual(KafkaJSError, commonjs.KafkaJSError);
 assert(new commonjs.KafkaJSError("shared constructor") instanceof KafkaJSError);
+assert.strictEqual(require("@dagher/kafkajs/src/utils/once.js"), once);
 
 const codec = () => "registered through ESM";
 CompressionCodecs[99] = codec;

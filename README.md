@@ -5,3 +5,6 @@
 This package is a fork of [`kafkajs`](https://www.npmjs.com/package/kafkajs)
 [with one fix for a minimum timeout](https://github.com/danieleloscozzese/kafkajs/commit/fc1d442763ce8c2e036b4a0f53d30de197d4adaf)
 to support Node.js v24 and above.
+
+Node.js 24.1.0 or later is required. This is a breaking change for earlier
+Node.js versions; CommonJS and ESM consumers remain supported.

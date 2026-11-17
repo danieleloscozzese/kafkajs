@@ -17,7 +17,7 @@
     "scram"
   ],
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=24.1.0"
   },
   "repository": {
     "type": "git",
