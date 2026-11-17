@@ -8,7 +8,7 @@ The following example assumes that you are using the local Kafka configuration d
 ```javascript
 const ip = require('ip')
 
-const { Kafka, CompressionTypes, logLevel } = require('kafkajs')
+const { Kafka, CompressionTypes, logLevel } = require('@dagher/kafkajs')
 
 const host = process.env.HOST_IP || ip.address()
 
@@ -76,7 +76,7 @@ signalTraps.forEach(type => {
 ## <a name="typescript-producer-example"></a> Typescript Example
 
 ```typescript
-import { Kafka, Message, Producer, ProducerBatch, TopicMessages } from 'kafkajs'
+import { Kafka, Message, Producer, ProducerBatch, TopicMessages } from '@dagher/kafkajs'
 
 interface CustomMessageFormat { a: string }
 
